@@ -1,23 +1,69 @@
 ---
+import SideLink from './SideLink.astro';
+
 export interface Props {}
+
+const links = [
+  {
+    iconName:"file-description",
+    href:"https://bit.ly/3sPIEcD",
+    title:"CV",
+  },
+  {
+    iconName: "user",
+    href: "https://www.longhoang.me/about/",
+    title: "About me",
+  },
+  {
+    iconName: "hash",
+    href: "https://www.longhoang.me/tags/",
+    title: "Tags",
+  },
+  {
+    iconName: "brand-github",
+    href: "https://github.com/longhoang0304/",
+    title: "Github",
+  },
+  {
+    iconName: "brand-linkedin",
+    href: "https://linkedin.com/in/notlonghoang/",
+    title: "Linkedin",
+  },
+]
+
 ---
 
 <div id="side">
-	<img id="avatar" src="avatar.webp" />
-  <div id="name">Long Hoang</div>
-  <div id="self-desc">Very curious. Don't talk much. Love teas, plants & cats. Learning cloud, security and French. Reversing everything</div>
-  <br class="sep" />
-  
-  <div>About Me</div>
-  <div>Tags</div>
-  <div>Github</div>
-  <div>Linkedin</div>
-  
-  <br class="sep" />
-  <div>Search</div>
-  <div>Light/Dark THeme</div>
+  <div>
+  <div id="side-info-block">
+    <div id="info-block-avatar-block">
+      <img id="info-block-avatar" src="avatar.webp" />
+      <div id="info-block-theme-toggle">
+        <i class="ti ti-sun"></i>
+      </div>
+    </div>
+    
+    <div id="info-block-name">
+      <span>Long Hoang</span>
+    </div>
+    <div id="info-block-desc">
+      Very curious. Don't talk much. Love teas, plants & cats. Learning cloud, security and French. Reversing everything
+    </div>
+  </div>
+
+  <div id="side-link-block" class="side-sep">
+    {links.map(link => <SideLink {...link}/>)}
+  </div>
+  </div>
+
+  <div id="side-function-block" class="side-sep">
+    <div id="side-search-block">
+      <i class="ti ti-search"></i>
+      <input placeholder="Search..." />
+    </div>
+  </div>
 </div>
-<style>
+<style is:global>
   #side {
     background: #f5f6fa;
     justify-items: stretch;
@@ -26,23 +72,101 @@ export interface Props {}
     padding: 3.125rem 1.25rem;
   }
   
-  #avatar {
+  #info-block-avatar-block {
+    position: relative;
+  }
+
+  #info-block-theme-toggle {
+    color: yellow;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid #333;
+    background: #333;
+    box-sizing: content-box;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  #info-block-theme-toggle:hover {
+    cursor: pointer;
+  }
+
+  #info-block-theme-toggle i {
+    position: absolute;
+    top: 4px;
+    right: -6px;
+  }
+
+  #info-block-avatar {
     border-radius: 50%;
     width: 10rem;
     margin-bottom: 0.5rem;
   }
 
-  #name {
+  #info-block-name {
     font-size: 3rem;
     margin-bottom: 0.5rem;
   }
 
-  #self-desc {
+  #info-block-desc {
     color: #888;
   }
 
-  .sep {
-    
+  #side-function-block {
+    width: 100%;
+  }
+
+  #side-search-block {
+    border-radius: 15px;
+    overflow: hidden;
+    padding: 5px;
+    display: flex;
+    background: #fff;
+    max-width: 100%;
+    border: 1px solid #fff;
+    height: 1.5rem;
+    align-items: stretch;
+    justify-content: flex-end;
+    align-self: stretch;
+  }
+
+  #side-search-block i {
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #side-search-block input {
+    outline: unset;
+    border: unset;
+    background: #fff;
+    margin-left: 5px;
+    padding: 0px;
+    font-family: inherit;
+    font-style: italic;
+    align-self: stretch;
+    width: 100%;
+  }
+
+  .side-sep {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .side-sep::before {
+    text-align: right;
+    content: " ";
+    display: block;
+    width: 30%;
+    height: 3px;
+    background: #666;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
   }
 
 </style>

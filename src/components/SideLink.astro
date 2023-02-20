@@ -1,0 +1,35 @@
+---
+export interface Props {
+  iconName: string;
+  href: string;
+  title: string;
+}
+
+const { iconName, href, title } = Astro.props;
+
+---
+
+<a href={href} rel="noreferrer" target="_blank" class="side-link">
+  <i class={`ti ti-${iconName}`}></i>
+  <span>{title}</span>
+</a>
+
+<style is:global>
+  .side-link {
+    display: block;
+    color: unset;
+    text-align: right;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+  }
+
+  .side-link i {
+    line-height: unset;
+  }
+
+  .side-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+</style>
