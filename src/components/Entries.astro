@@ -1,0 +1,48 @@
+---
+import type { Entries } from '../types';
+import Entry from './Entry.astro';
+
+export interface Props {
+	entries: Entries;
+}
+
+const { entries } = Astro.props;
+---
+
+<div id="entries-wrapper">
+	<div id="entries">
+		{entries.map(entry => <Entry {...entry} />)}
+	</div>
+	<div id="entries-nav">
+		<span id="entries-nav-prev">&lt; Prev</span>
+		<span id="entries-nav-next">Next &gt;</span>
+	</div>
+</div>
+<style is:global>
+	#entries {
+    text-align: left;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	#entries-wrapper {
+		padding: 3.125rem 1.25rem;
+		padding-bottom: 1.25rem;
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	#entries-nav {
+		margin-top: auto;
+		/* text-align: center; */
+	}
+	#entries-nav #entries-nav-prev {
+		margin-right: 1rem;
+
+	}
+	#entries-nav #entries-nav-prev {
+		
+	}
+</style>

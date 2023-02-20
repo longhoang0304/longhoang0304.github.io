@@ -1,0 +1,60 @@
+---
+export interface Props {
+	title: string;
+	date: string;
+	href: string;
+	tags: string[];
+}
+
+const { href, title, tags, date } = Astro.props;
+---
+
+<div class="entry">
+	<a href={href}>
+		{title}
+	</a>
+	<div class="entry-info">
+		<span class="date">{date}</span>
+		<span class="sep">|</span>
+		<span class="tags">
+			{tags.slice(0, -1).map(tag => <span>{tag},</span>)}
+			<span>{tags.at(-1)}</span>
+		</span>
+	</div>
+</div>
+<style is:global>
+	.entry {
+		margin-bottom: 1rem;
+		/* flex: 1; */
+	}
+
+	.entry > a {
+		display: block;
+		font-size: 1.2rem;
+		line-height: 1.75rem;
+		color: rgb(0, 108, 172);
+		text-decoration: none;
+	}
+
+	.entry > a:hover {
+		text-decoration: underline;
+	}
+
+	.entry-info {
+		margin-top: 0.1rem;
+	}
+
+	.entry-info > .date {
+		color: #888;
+		font-size: 0.9rem;
+	}
+	
+	.entry-info > .tags {
+		font-size: 0.85rem;
+	}
+
+	.entry-info > .sep {
+		margin-right: 0.25rem;
+		margin-left: 0.25rem;
+	}
+</style>
