@@ -34,33 +34,38 @@ const links = [
 ---
 
 <div id="side">
-  <div>
-  <div id="side-info-block">
-    <div id="info-block-avatar-block">
-      <img id="info-block-avatar" src="avatar.webp" />
-      <div id="info-block-theme-toggle">
-        <i class="ti ti-sun"></i>
+  <div id="side-top">
+    <div id="side-info-block">
+      <div id="info-block-avatar-block">
+        <img id="info-block-avatar" src="avatar.webp" />
+        <div id="info-block-theme-toggle">
+          <i class="ti ti-moon-filled"></i>
+        </div>
+      </div>
+      
+      <div id="info-block-name">
+        <span>Long Hoang</span>
+      </div>
+      <div id="info-block-desc">
+        Very curious. Don't talk much. Love teas, plants & cats. Learning cloud, security and French. Reversing everything
       </div>
     </div>
-    
-    <div id="info-block-name">
-      <span>Long Hoang</span>
+
+    <div id="side-link-block" class="side-sep">
+      {links.map(link => <SideLink {...link}/>)}
     </div>
-    <div id="info-block-desc">
-      Very curious. Don't talk much. Love teas, plants & cats. Learning cloud, security and French. Reversing everything
+
+    <div id="side-function-block" class="side-sep">
+      <div id="side-search-block">
+        <i class="ti ti-search"></i>
+        <input placeholder="Search..." />
+      </div>
     </div>
   </div>
 
-  <div id="side-link-block" class="side-sep">
-    {links.map(link => <SideLink {...link}/>)}
-  </div>
-  </div>
-
-  <div id="side-function-block" class="side-sep">
-    <div id="side-search-block">
-      <i class="ti ti-search"></i>
-      <input placeholder="Search..." />
-    </div>
+  <div id="side-copyright">
+    <span>© 2023 Long Hoang</span>
+    <!-- <i class="ti ti-heart-filled"></i> -->
   </div>
 </div>
 <style is:global>
@@ -69,17 +74,18 @@ const links = [
     justify-items: stretch;
     width: 360px;
     text-align: right;
-    padding: 3.125rem 1.25rem;
+    padding: 1.25rem;
+    flex-direction: column;
+    display: flex;
   }
   
   #info-block-avatar-block {
     position: relative;
   }
-
   #info-block-theme-toggle {
     color: yellow;
     position: absolute;
-    top: 10px;
+    top: 5px;
     right: 10px;
     font-size: 1.5rem;
     border-radius: 50%;
@@ -162,11 +168,20 @@ const links = [
     text-align: right;
     content: " ";
     display: block;
-    width: 30%;
+    width: 5rem;
     height: 3px;
     background: #666;
     margin-top: 1rem;
     margin-bottom: 1rem;
+  }
+
+  #side-copyright i {
+    color: #a83f39;
+  }
+
+  #side-copyright {
+    color: #888;
+    margin-top: auto;
   }
 
 </style>

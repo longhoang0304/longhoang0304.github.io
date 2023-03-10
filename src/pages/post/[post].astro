@@ -1,0 +1,21 @@
+---
+export interface Props {
+}
+
+export function getStaticPaths() {
+  return [
+    {params: {post: 'clifford'}},
+    {params: {post: 'rover'}},
+    {params: {post: 'spot'}},
+  ];
+}
+
+---
+
+<div id="post">
+  post
+</div>
+
+<style is:global>
+
+</style>

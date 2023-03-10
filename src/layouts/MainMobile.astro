@@ -1,0 +1,39 @@
+---
+import Entries from '@components/Entries.astro';
+import HeaderMobile from '@components/HeaderMobile.astro';
+import FooterMobile from '@components/FooterMobile.astro';
+import Layout from '@layouts/Layout.astro';
+
+export interface Props {}
+
+const entries = [...new Array(20)].map(e => ({
+    title:"Title", 
+    date: "2023-04-03",
+    href: "/abc",
+    tags: ["tag1", "tag2"],
+  }))
+
+---
+<Layout>
+  <div id="main-mobile">
+    <HeaderMobile />
+    <Entries entries={entries} />
+    <FooterMobile />
+  </div>
+</Layout>
+
+<style>
+  #main-mobile {
+    min-width: 320px;
+    width: calc(120% / 2);
+    box-shadow: 5px 0px 10px 10px #ccc;
+    background: white;
+    overflow: hidden;
+  }
+  
+  @media (min-width: 1024px) {
+    #main-mobile {
+      display: none;
+    }
+  }
+</style>

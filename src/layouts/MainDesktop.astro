@@ -1,0 +1,39 @@
+---
+import Entries from '@components/Entries.astro';
+import Side from '@components/Side.astro';
+import Layout from '@layouts/Layout.astro';
+
+export interface Props {}
+
+const entries = [...new Array(20)].map(e => ({
+    title:"Title", 
+    date: "2023-04-03",
+    href: "/abc",
+    tags: ["tag1", "tag2"],
+  }))
+
+---
+<Layout>
+  <div id="main-desktop">
+    <Side />
+    <Entries entries={entries} />
+  </div>
+</Layout>
+
+<style>
+  #main-desktop {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    border-radius: 0.5%;
+    box-shadow: 5px 0px 10px 10px #ccc;
+    background: white;
+  }
+
+  @media (max-width: 1024px) {
+    #main-desktop {
+      display: none;
+    }
+  }
+</style>

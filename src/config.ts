@@ -1,11 +1,12 @@
-import type { SocialObjects } from "./types";
+import type { SocialObjects } from "@types";
 
 export const SITE = {
   website: "https://longhoang.blog/",
-  desc: "",
-  title: "Long's blog",
+  desc: "Long's daily rants",
+  title: "Long's rants",
   ogImage: "thumb.jpg",
   lightAndDarkMode: true,
+  postPerPage: 10,
 };
 
 export const LOGO_IMAGE = {
