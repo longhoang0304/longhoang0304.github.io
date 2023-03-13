@@ -1,26 +1,22 @@
 ---
-import Entries from '@components/Entries.astro';
-import HeaderMobile from '@components/HeaderMobile.astro';
-import FooterMobile from '@components/FooterMobile.astro';
-import Layout from '@layouts/Layout.astro';
-import Navigation from '@components/Navigation.astro';
+import PostList from "@components/PostList.astro";
+import HeaderMobile from "@components/HeaderMobile.astro";
+import FooterMobile from "@components/FooterMobile.astro";
+import Layout from "@layouts/Layout.astro";
+import Navigation from "@components/Navigation.astro";
+import type { MainPage } from "@types";
 
-export interface Props {}
+export interface Props extends MainPage {}
 
-const entries = [...new Array(20)].map(e => ({
-    title:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-    date: "2023-04-03",
-    href: "/abc",
-    tags: ["tag1", "tag2"],
-  }))
+const { posts, currentPage, maxPage } = Astro.props;
 
 ---
 <Layout>
   <div id="main-mobile">
     <HeaderMobile />
     <div id="entries-wrapper">
-      <Entries entries={entries} />
-      <Navigation />
+      <PostList posts={posts} />
+      <Navigation currentPage={currentPage} maxPage={maxPage} />
     </div>
     <FooterMobile />
   </div>

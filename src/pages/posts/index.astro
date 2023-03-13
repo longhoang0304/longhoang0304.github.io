@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+
+import MainDesktop from "@layouts/MainDesktop.astro";
+import MainMobile from "@layouts/MainMobile.astro";
+
+import { transformPostCollectionToPosts, getSortedPosts, removeDraft } from "@utils/posts";
+import { SITE } from "@config";
+
+const postCollection = (await getCollection("blog"))
+const publishedPosts = removeDraft(postCollection)
+const transformedPosts = transformPostCollectionToPosts(publishedPosts)
+const sortedPost = getSortedPosts(transformedPosts)
+const pagedPost = sortedPost.slice(0, SITE.postPerPage)
+const maxPage = Math.ceil(postCollection.length / SITE.postPerPage);
+
+---
+
+<MainDesktop posts={pagedPost} currentPage={1} maxPage={maxPage} />
+<MainMobile posts={pagedPost} currentPage={1} maxPage={maxPage} />
+
+<style>
+</style>

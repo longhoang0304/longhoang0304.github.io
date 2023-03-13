@@ -1,16 +1,16 @@
 ---
-import type { Entries } from '../types';
-import Entry from './Entry.astro';
+import type { Posts } from "../types";
+import PostItem from "./PostItem.astro";
 
 export interface Props {
-	entries: Entries;
+	posts: Posts;
 }
 
-const { entries } = Astro.props;
+const { posts } = Astro.props;
 ---
 
 <main id="entries">
-	{entries.map(entry => <Entry {...entry} />)}
+	{posts.map(post => <PostItem {...post} />)}
 </main>
 
 <style is:global>

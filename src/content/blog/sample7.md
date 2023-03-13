@@ -1,13 +1,9 @@
 ---
-blogId: p1
-blogSlug: sample
-title: Sample post
+blogId: p7
+blogSlug: sample7
+title: Sample post 7
 publishedDateTime: 2023-03-12T15:57:52.737Z
 draft: false
-tags:
-  - sample
-  - sample2
-  - sample3
 description: This is a sample post
 ---
 

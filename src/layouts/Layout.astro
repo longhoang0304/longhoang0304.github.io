@@ -11,7 +11,7 @@ export interface Props {
 const {
   title = SITE.title,
   description = SITE.desc,
-  date = 'N/A',
+  date = "N/A",
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);

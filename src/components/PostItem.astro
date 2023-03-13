@@ -1,21 +1,22 @@
 ---
-export interface Props {
-	title: string;
-	date: string;
-	href: string;
-	tags: string[];
-}
 
-const { href, title, tags, date } = Astro.props;
+import type { Post } from "@types";
+
+export interface Props extends Post {}
+
+const { blogId, blogSlug, title, tags, formatedDate } = Astro.props;
+const href = `/post/${blogId}-${blogSlug}`;
+const tagList = tags.slice(0, -1)
+const lastTag = tags.at(-1);
 ---
 
 <div class="entry">
 	<a href={href}>{title}</a>
 	<div class="entry-info">
-		<span class="date">{date}</span>
+		<span class="date">{formatedDate}</span>
 		<span class="tags">
-			{tags.slice(0, -1).map(tag => <span>{tag},</span>)}
-			<span>{tags.at(-1)}</span>
+			{tagList.map(tag => <a href={`/tag/${tag}`}>{tag},</a>)}
+			<a href={`/tag/${lastTag}`}>{lastTag}</a>
 		</span>
 	</div>
 </div>
@@ -46,6 +47,11 @@ const { href, title, tags, date } = Astro.props;
 	
 	.entry-info > .tags {
 		font-size: 0.8rem;
+		display: inline-flex;
+	}
+
+	.entry-info .tags a:hover {
+		text-underline-offset: 2px;
 	}
 
 </style>

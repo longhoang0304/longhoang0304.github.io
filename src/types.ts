@@ -1,3 +1,5 @@
+import type { Dayjs } from "dayjs";
+
 export type SocialObjects = {
   name: SocialMedia;
   href: string;
@@ -5,13 +7,24 @@ export type SocialObjects = {
   linkTitle: string;
 }[];
 
-export type Entries = {
-	title: string;
-	date: string;
-	href: string;
-	tags: string[];
-}[];
+export type Post = {
+  blogId: string;
+  blogSlug: string;
+  title: string;
+  date: Dayjs;
+  formatedDate: string;
+  tags: string[];
+  draft: boolean;
+  description?: string;
+};
 
+export type Posts = Post[];
+
+export type MainPage = {
+  posts: Posts;
+  currentPage: number;
+  maxPage: number;
+}
 
 export type SocialIcons = {
   [social in SocialMedia]: string;

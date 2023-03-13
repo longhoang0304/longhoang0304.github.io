@@ -1,14 +1,16 @@
 ---
-import type { Entries } from '../types';
-import Entry from './Entry.astro';
 
 export interface Props {
+	maxPage: number;
+	currentPage: number;
 }
+
+const { currentPage, maxPage } = Astro.props;
 ---
 
 <nav id="entries-nav">
-  <span id="nav-prev">&lt; Prev</span>
-  <span id="nav-next">Next &gt;</span>
+  {currentPage > 1 && <a href={`/posts/${currentPage - 1}`} id="nav-prev">&lt; Prev</a>}
+  {currentPage < maxPage && <a href={`/posts/${currentPage + 1}`} id="nav-next">Next &gt;</a>}
 </nav>
 
 <style is:global>

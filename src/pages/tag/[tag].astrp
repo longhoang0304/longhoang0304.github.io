@@ -4,9 +4,9 @@ export interface Props {
 
 export function getStaticPaths() {
   return [
-    {params: {tag: 'clifford'}},
-    {params: {tag: 'rover'}},
-    {params: {tag: 'spot'}},
+    {params: {tag: "clifford"}},
+    {params: {tag: "rover"}},
+    {params: {tag: "spot"}},
   ];
 }
 
