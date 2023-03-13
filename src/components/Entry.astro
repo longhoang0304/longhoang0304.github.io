@@ -10,9 +10,7 @@ const { href, title, tags, date } = Astro.props;
 ---
 
 <div class="entry">
-	<a href={href}>
-		{title}
-	</a>
+	<a href={href}>{title}</a>
 	<div class="entry-info">
 		<span class="date">{date}</span>
 		<span class="tags">
@@ -24,20 +22,17 @@ const { href, title, tags, date } = Astro.props;
 <style is:global>
 	.entry {
 		margin-bottom: 1rem;
+		overflow-wrap: break-word;
+		width: 100%;
 		/* flex: 1; */
 	}
 
 	.entry > a {
-		display: block;
+		/* display: block; */
 		font-size: 1.2rem;
 		line-height: 1.75rem;
 		color: rgb(0, 108, 172);
 		text-decoration: none;
-	}
-
-	.entry > a:hover {
-		text-decoration: underline;
-		text-underline-offset: 5px;
 	}
 
 	.entry-info {

@@ -1,16 +1,67 @@
 ---
+import SearchBar from './SearchBar.astro';
+
 export interface Props {
+}
+
+let isSearchBarActive = true;
+
+function toggleSearchBar() {
+
 }
 
 ---
 
-<div id="header-mobile">
-  header
-</div>
+<header id="header-mobile">
+  <div id="header-blog-title">Long's blog</div>
+  <div id="header-fn">
+    <SearchBar />
+    <a id="header-fn-abt">About</a>
+    <div><i class="ti ti-moon"></i></div>
+  </div>
+</header>
 
 <style is:global>
   #header-mobile {
-    height: 100px;
-    border-bottom: 1px solid black;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid #666;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    /* background-color: red; */
   }
+
+  #header-fn-abt {
+    margin-right: calc(1rem + 7px) !important;
+  }
+
+  #header-fn-abt {
+    display: block;
+  }
+
+  #header-fn div {
+    margin-right: 1rem;
+  }
+
+  #header-fn div:last-child {
+    margin-right: -7px;
+  }
+
+  #header-blog-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  #header-fn {
+    display: flex;
+    align-items: center;
+  }
+
+  #header-fn i:hover {
+    color: rgb(0, 108, 172);
+    cursor: pointer;
+  }
+
 </style>

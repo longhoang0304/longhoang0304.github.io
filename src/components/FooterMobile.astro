@@ -1,16 +1,28 @@
 ---
+import { LINKS } from '@utils/links';
+import FooterLink from './FooterLink.astro';
+
 export interface Props {
 }
 
 ---
 
-<div id="footer-mobile">
-  footer
-</div>
+<footer id="footer-mobile">
+  <span id="footer-mobile-copyright">© 2023 Long Hoang</span>
+  <div id="footer-mobile-social">
+    {LINKS.map(link => <FooterLink {...link}/>)}
+  </div>
+</footer>
 
 <style is:global>
   #footer-mobile {
-    height: 50px;
-    border-top: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    border-top: 3px solid #666;
+    padding: 1.2rem 0px;
+  }
+
+  #footer-mobile-social {
+    display: flex;
   }
 </style>

@@ -1,39 +1,13 @@
 ---
+import { LINKS } from '@utils/links';
 import SideLink from './SideLink.astro';
+import SearchBar from './SearchBar.astro';
 
 export interface Props {}
 
-const links = [
-  {
-    iconName:"file-description",
-    href:"https://bit.ly/3sPIEcD",
-    title:"CV",
-  },
-  {
-    iconName: "user",
-    href: "https://www.longhoang.me/about/",
-    title: "About me",
-  },
-  {
-    iconName: "hash",
-    href: "https://www.longhoang.me/tags/",
-    title: "Tags",
-  },
-  {
-    iconName: "brand-github",
-    href: "https://github.com/longhoang0304/",
-    title: "Github",
-  },
-  {
-    iconName: "brand-linkedin",
-    href: "https://linkedin.com/in/notlonghoang/",
-    title: "Linkedin",
-  },
-]
-
 ---
 
-<div id="side">
+<aside id="side">
   <div id="side-top">
     <div id="side-info-block">
       <div id="info-block-avatar-block">
@@ -52,22 +26,20 @@ const links = [
     </div>
 
     <div id="side-link-block" class="side-sep">
-      {links.map(link => <SideLink {...link}/>)}
+      {LINKS.map(link => <SideLink {...link}/>)}
     </div>
 
-    <div id="side-function-block" class="side-sep">
-      <div id="side-search-block">
-        <i class="ti ti-search"></i>
-        <input placeholder="Search..." />
-      </div>
+    <div id="side-fn" class="side-sep">
+      <SearchBar />
     </div>
   </div>
 
   <div id="side-copyright">
     <span>© 2023 Long Hoang</span>
+    <!-- <SideLink {...links[4]}/> -->
     <!-- <i class="ti ti-heart-filled"></i> -->
   </div>
-</div>
+</aside>
 <style is:global>
   #side {
     background: #f5f6fa;
@@ -121,40 +93,7 @@ const links = [
     color: #888;
   }
 
-  #side-function-block {
-    width: 100%;
-  }
-
-  #side-search-block {
-    border-radius: 15px;
-    overflow: hidden;
-    padding: 5px;
-    display: flex;
-    background: #fff;
-    max-width: 100%;
-    border: 1px solid #fff;
-    height: 1.5rem;
-    align-items: stretch;
-    justify-content: flex-end;
-    align-self: stretch;
-  }
-
-  #side-search-block i {
-    margin-left: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #side-search-block input {
-    outline: unset;
-    border: unset;
-    background: #fff;
-    margin-left: 5px;
-    padding: 0px;
-    font-family: inherit;
-    font-style: italic;
-    align-self: stretch;
+  #side-fn {
     width: 100%;
   }
 
@@ -175,13 +114,10 @@ const links = [
     margin-bottom: 1rem;
   }
 
-  #side-copyright i {
-    color: #a83f39;
-  }
-
   #side-copyright {
     color: #888;
     margin-top: auto;
+    text-align: right;
   }
 
 </style>

@@ -1,0 +1,35 @@
+---
+export interface Props {
+  iconName: string;
+  href: string;
+  title?: string;
+}
+
+const { iconName, href, title } = Astro.props;
+
+---
+
+<a href={href} rel="noreferrer" target="_blank" class="footer-link" title={title}>
+  <i class={`ti ti-${iconName}`}></i>
+</a>
+
+<style is:global>
+  .footer-link {
+    display: block;
+    color: unset;
+    text-align: right;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  .footer-link i {
+    line-height: unset;
+    display: block;
+  }
+
+  .footer-link:hover {
+    text-decoration: none;
+    color: rgb(0, 108, 172);
+  }
+
+</style>

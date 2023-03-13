@@ -1,0 +1,47 @@
+---
+import type { Entries } from '../types';
+import Entry from './Entry.astro';
+
+export interface Props {
+}
+---
+
+<nav id="entries-nav">
+  <span id="nav-prev">&lt; Prev</span>
+  <span id="nav-next">Next &gt;</span>
+</nav>
+
+<style is:global>
+	#entries-nav {
+		margin-top: auto;
+		/* text-align: center; */
+	}
+
+	#entries-nav::before {
+    text-align: left;
+    content: " ";
+    display: block;
+    width: 8.8rem;
+    height: 3px;
+    background: #666;
+		/* margin-top: 2px; */
+    margin-bottom: 1rem;
+	}
+
+	@media screen and (max-width: 1024px) {
+		#entries-nav::before {
+			display: none;
+		}
+	}
+
+	#entries-nav #nav-prev {
+		margin-right: 1rem;
+
+	}
+
+	#nav-prev:hover, #nav-next:hover {
+		cursor: pointer;
+		text-decoration: underline;
+		text-underline-offset: 5px;
+	}
+</style>
