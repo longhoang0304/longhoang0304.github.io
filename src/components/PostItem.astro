@@ -4,8 +4,8 @@ import type { Post } from "@types";
 
 export interface Props extends Post {}
 
-const { blogId, blogSlug, title, tags, formatedDate } = Astro.props;
-const href = `/post/${blogId}-${blogSlug}`;
+const { postId, postSlug, title, tags, formatedDate } = Astro.props;
+const href = `/post/${postId}-${postSlug}`;
 const tagList = tags.slice(0, -1)
 const lastTag = tags.at(-1);
 ---

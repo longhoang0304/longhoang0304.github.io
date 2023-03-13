@@ -21,7 +21,7 @@ export const LINKS = [
   },
   {
     iconName: "rss",
-    href: "https://www.longhoang.me/rss/",
+    href: "/rss/",
     title: "RSS",
   },
 ]

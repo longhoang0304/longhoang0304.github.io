@@ -8,8 +8,8 @@ export type SocialObjects = {
 }[];
 
 export type Post = {
-  blogId: string;
-  blogSlug: string;
+  postId: string;
+  postSlug: string;
   title: string;
   date: Dayjs;
   formatedDate: string;

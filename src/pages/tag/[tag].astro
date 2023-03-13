@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import { transformPostCollectionToPosts, getPostById, removeDraft, getAllTags } from "@utils/posts";
+
+
+export async function getStaticPaths() {
+  const postCollection = await getCollection("blog")
+  const publishedPosts = removeDraft(postCollection)
+  const transformedPosts = transformPostCollectionToPosts(publishedPosts)
+  const allTags = getAllTags(transformedPosts)
+  const statisPath = allTags.map((tag: string) => ({
+    params: {tag: tag.toLowerCase()}
+  }))
+  return statisPath;
+}
+
+const { tag } = Astro.params;
+
+---
+<div>{tag}</div>
+
+<style>
+</style>

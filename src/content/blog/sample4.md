@@ -1,6 +1,6 @@
 ---
-blogId: p4
-blogSlug: sample4
+postId: p4
+postSlug: sample4
 title: Sample post 4
 publishedDateTime: 2023-03-12T15:57:52.737Z
 draft: false

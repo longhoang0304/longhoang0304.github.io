@@ -8,7 +8,7 @@ export async function getStaticPaths() {
   const publishedPosts = removeDraft(postCollection)
   const transformedPosts = transformPostCollectionToPosts(publishedPosts)
   const statisPath = transformedPosts.map(post => ({
-    params: {id: post.postId }
+    params: {id: post.postId, slug: post.postSlug}
   }))
   return statisPath;
 }

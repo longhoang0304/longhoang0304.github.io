@@ -9,7 +9,7 @@ import { SITE } from "@config";
 
 
 export async function getStaticPaths() {
-  const postCollection = (await getCollection("blog"))
+  const postCollection = await getCollection("blog")
   const publishedPosts = removeDraft(postCollection)
   const maxPage = Math.ceil(publishedPosts.length / SITE.postPerPage);
   const statisPath = [...new Array(maxPage)].map((_, idx) => ({
@@ -23,7 +23,7 @@ let page = Number(pageStr) ? Number(pageStr) : 1;
 page = page < 0 ? 1 : page;
 page = page - 1;
 
-const postCollection = (await getCollection("blog"))
+const postCollection = await getCollection("blog")
 const publishedPosts = removeDraft(postCollection)
 const transformedPosts = transformPostCollectionToPosts(publishedPosts)
 const sortedPost = getSortedPosts(transformedPosts)
