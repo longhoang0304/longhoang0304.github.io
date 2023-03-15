@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { transformPostCollectionToPosts, getPostById, removeDraft } from "@utils/posts";
+import PostLayout from "@layouts/PostLayout.astro";
 
 
 export async function getStaticPaths() {
@@ -27,7 +28,7 @@ const post = getPostById(transformedPosts, postId)
   </script>
 )}
 
-<div>Hello</div>
+<PostLayout post={post} />
 
 <style>
 </style>

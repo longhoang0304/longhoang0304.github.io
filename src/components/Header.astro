@@ -12,21 +12,28 @@ function toggleSearchBar() {
 
 ---
 
-<header id="header-mobile">
+<header id="header">
   <div id="header-blog-title">
-    <a href="/">Long's blog</a>
+    <img id="avatar-mobile" src="/avatar.jpg" />
+    <a id="header-blog-name" href="/"><h3>Long's blog</h3></a>
   </div>
   <div id="header-fn">
-    <SearchBar />
     <a id="header-fn-abt">About</a>
+    <div><i class="ti ti-search"></i></div>
     <div><i class="ti ti-moon"></i></div>
   </div>
 </header>
 
 <style is:global>
-  #header-mobile {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+  #avatar-mobile {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+  }
+
+  #header {
+    padding-top: 1.8rem;
+    padding-bottom: 1.8rem;
     border-bottom: 3px solid #666;
     display: flex;
     justify-content: space-between;
@@ -54,6 +61,16 @@ function toggleSearchBar() {
   #header-blog-title {
     font-size: 1.5rem;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+
+  #header-blog-title h3 {
+    margin: unset;
+  }
+
+  #header-blog-name {
+    margin-left: 1rem;
   }
 
   #header-fn {

@@ -7,5 +7,6 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://longhoang.me",
   integrations: [sitemap()],
-  base: "/"
+  base: "/",
+  trailingSlash: "ignore",
 });

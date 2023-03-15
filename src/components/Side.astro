@@ -1,7 +1,6 @@
 ---
 import { LINKS } from "@utils/links";
 import SideLink from "./SideLink.astro";
-import SearchBar from "./SearchBar.astro";
 
 export interface Props {}
 
@@ -11,17 +10,17 @@ export interface Props {}
   <div id="side-top">
     <div id="side-info-block">
       <div id="info-block-avatar-block">
-        <img id="info-block-avatar" src="/avatar.webp" />
+        <img id="info-block-avatar" src="/avatar.jpg" />
         <div id="info-block-theme-toggle">
           <i class="ti ti-moon-filled"></i>
         </div>
       </div>
       
       <div id="info-block-name">
-        <a href="/">Long Hoang</a>
+        <a href="/"><h1>Long Hoang</h1></a>
       </div>
       <div id="info-block-desc">
-        Curious. Don't talk much. Love teas, plants & cats. Learning cloud, security and French. Reversing everything
+        Curious person. Don't talk much. Love teas, plants & cats. Learning cloud, security and French. Reversing everything
       </div>
     </div>
 
@@ -29,9 +28,6 @@ export interface Props {}
       {LINKS.map(link => <SideLink {...link}/>)}
     </div>
 
-    <div id="side-fn" class="side-sep">
-      <SearchBar />
-    </div>
   </div>
 
   <div id="side-copyright">
@@ -42,7 +38,7 @@ export interface Props {}
 </aside>
 <style is:global>
   #side {
-    background: #f5f6fa;
+    /* background: #fff; */
     justify-items: stretch;
     width: 360px;
     text-align: right;
@@ -87,6 +83,11 @@ export interface Props {}
   #info-block-name {
     font-size: 3rem;
     margin-bottom: 0.5rem;
+  }
+
+  #info-block-name h1 {
+    margin: unset;
+    font-size: 3rem;
   }
 
   #info-block-desc {

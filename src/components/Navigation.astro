@@ -6,11 +6,15 @@ export interface Props {
 }
 
 const { currentPage, maxPage } = Astro.props;
+const nextLink = currentPage < maxPage ? `/posts/${currentPage + 1}` : "#"
+const prevLink = currentPage > 1 ? `/posts/${currentPage - 1}` : "#"
+const disableNext = currentPage >= maxPage
+const disablePrev = currentPage <= 1
 ---
 
 <nav id="entries-nav">
-  {currentPage > 1 && <a href={`/posts/${currentPage - 1}`} id="nav-prev">&lt; Prev</a>}
-  {currentPage < maxPage && <a href={`/posts/${currentPage + 1}`} id="nav-next">Next &gt;</a>}
+  <a href={prevLink} class={disablePrev ? "link-disabled" : ""} id="nav-prev">&lt; Prev</a>
+  <a href={nextLink} class={disableNext ? "link-disabled" : ""} id="nav-next">Next &gt;</a>
 </nav>
 
 <style is:global>
@@ -46,4 +50,14 @@ const { currentPage, maxPage } = Astro.props;
 		text-decoration: underline;
 		text-underline-offset: 5px;
 	}
+
+	.link-disabled {
+		color: #888;
+		cursor: default !important;
+	}
+
+	.link-disabled:hover {
+		text-decoration: none !important;
+	}
+
 </style>

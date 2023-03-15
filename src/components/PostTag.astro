@@ -1,0 +1,26 @@
+---
+export interface Props {
+  tag: Required<string>;
+  
+}
+
+const { tag } = Astro.props;
+
+---
+
+<a href={`/tag/${tag}`} class="post-tag">
+  <i class="ti ti-hash"></i>
+  <span>{tag}</span>
+</a>
+
+<style is:global>
+  .post-tag {
+    display: inline-flex;
+    margin-left: 1rem;
+    align-items: center;
+  }
+  .post-tag span {
+    margin-left: -0.5rem;
+  }
+
+</style>

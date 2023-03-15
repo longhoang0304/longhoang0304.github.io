@@ -23,6 +23,7 @@ export const transformPostCollectionToPosts = (posts: CollectionEntry<"blog">[])
       const postDate = dayjs(data.publishedDateTime);
 
       return {
+        originalPost: post,
         ...data,
         date: postDate,
         formatedDate: postDate.format("DD-MM-YYYY"),

@@ -6,5 +6,5 @@ export const SITE = {
   title: "Long's rants",
   ogImage: "thumb.jpg",
   lightAndDarkMode: true,
-  postPerPage: 10,
+  postPerPage: 15,
 };

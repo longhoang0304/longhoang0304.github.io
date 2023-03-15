@@ -7,22 +7,22 @@ export interface Props {
 
 ---
 
-<footer id="footer-mobile">
-  <span id="footer-mobile-copyright">© 2023 Long Hoang</span>
-  <div id="footer-mobile-social">
+<footer id="footer">
+  <span id="footer-copyright">© 2023 Long Hoang</span>
+  <div id="footer-social">
     {LINKS.map(link => <FooterLink {...link}/>)}
   </div>
 </footer>
 
 <style is:global>
-  #footer-mobile {
+  #footer {
     display: flex;
     justify-content: space-between;
     border-top: 3px solid #666;
     padding: 1.2rem 0px;
   }
 
-  #footer-mobile-social {
+  #footer-social {
     display: flex;
   }
 </style>

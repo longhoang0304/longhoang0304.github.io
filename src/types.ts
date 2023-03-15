@@ -1,3 +1,4 @@
+import type { CollectionEntry } from "astro:content";
 import type { Dayjs } from "dayjs";
 
 export type SocialObjects = {
@@ -16,6 +17,7 @@ export type Post = {
   tags: string[];
   draft: boolean;
   description?: string;
+  originalPost: CollectionEntry<"blog">,
 };
 
 export type Posts = Post[];

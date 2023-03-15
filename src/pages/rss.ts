@@ -9,7 +9,7 @@ export async function get(context) {
   const sortedPost = getSortedPosts(transformedPosts)
   const rssItems = sortedPost.map(post => ({
     title: post.title,
-    pubDate: post.formatedDate,
+    pubDate: post.date.toISOString(),
     description: post.description,
     link: `/post/${post.postId}/`,
     customData: post.tags.map(tag => `<tag>${tag}</tag>`).join(),
@@ -28,5 +28,6 @@ export async function get(context) {
     items: rssItems,
     // (optional) inject custom xml
     customData: `<language>en-us</language>`,
+    trailingSlash: true,
   });
 }
