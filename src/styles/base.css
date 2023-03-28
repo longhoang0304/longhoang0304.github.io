@@ -49,8 +49,8 @@ body {
 
 h1 {
   font-size: 2rem !important;
-  margin-bottom: 1.25rem;
-  margin-top: 1.25rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 a {
@@ -62,4 +62,12 @@ a {
 a:hover {
   text-decoration: underline;
   text-underline-offset: 5px;
+}
+
+blockquote {
+  background: rgba(0, 108, 172, 0.05);
+  margin: unset;
+  padding: 1rem;
+  font-style: italic;
+  border-left: 0.5rem solid rgb(0, 108, 172);
 }
