@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import { transformPostCollectionToPosts, getPostById, removeDraft, getAllTags } from "@utils/posts";
+import { transformPostCollectionToPosts, removeDraft, getAllTags, getSortedPosts, filterByTag } from "@utils/posts";
+import PostsByTag from "@layouts/PostsByTag.astro";
 
 
 export async function getStaticPaths() {
@@ -16,8 +17,21 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 
+const postCollection = await getCollection("blog")
+const publishedPosts = removeDraft(postCollection)
+const transformedPosts = transformPostCollectionToPosts(publishedPosts)
+const sortedPost = getSortedPosts(transformedPosts)
+const filteredPost = tag ? filterByTag(sortedPost, tag) : []
+
 ---
-<div>{tag}</div>
+
+{!tag && (
+  <script>
+    window.location.replace("/404");
+  </script>
+)}
+
+{tag && <PostsByTag posts={filteredPost} tag={tag}/>}
 
 <style>
 </style>

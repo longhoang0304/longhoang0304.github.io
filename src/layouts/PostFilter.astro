@@ -1,0 +1,15 @@
+---
+import SingleColumn from "./SingleColumn.astro";
+import type { Posts } from "@types";
+import PostList from "@components/PostList.astro";
+
+export interface Props {
+  posts: Posts;
+}
+
+const { posts } = Astro.props;
+
+---
+<SingleColumn>
+  <PostList posts={posts} />
+</SingleColumn>

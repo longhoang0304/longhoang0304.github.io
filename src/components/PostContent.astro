@@ -2,6 +2,7 @@
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { Post } from "../types";
 import PostTag from "./PostTag.astro";
+import Nav from "./Nav.astro";
 
 export interface Props {
 	post: Required<Post>;
@@ -16,11 +17,7 @@ const lastTag = post.tags.at(-1)
 
 <main id="post-wrapper">
 	<section id="post-header">
-		<nav>
-			<a href="#" onclick="history.back()">&lt; Back</a>
-			<span>|</span>
-			<a href="#" onclick="history.back()">Home</a>
-		</nav>
+		<Nav />
 		<h1>{post.title}</h1>
 		<time>
 			<i class="ti ti-calendar"></i>
@@ -49,7 +46,7 @@ const lastTag = post.tags.at(-1)
 	}
 
 	#post-header {
-		margin-top: 1.8rem;
+		/* margin-top: 1.8rem; */
 	}
 
 	#post-header time {
@@ -77,11 +74,16 @@ const lastTag = post.tags.at(-1)
 	#post-content {
 		margin-top: 1.8rem;
 		margin-bottom: 1.8rem;
+		line-height: 1.75;
 	}
 
 	#post-tags {
-		margin-bottom: 1.8rem;
+		/* margin-bottom: 1.8rem; */
 		display: flex;
+	}
+
+	#post-tags .post-tag {
+		margin-left: 1rem;
 	}
 
 </style>

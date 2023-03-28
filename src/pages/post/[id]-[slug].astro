@@ -28,7 +28,7 @@ const post = getPostById(transformedPosts, postId)
   </script>
 )}
 
-<PostLayout post={post} />
+{post && <PostLayout post={post} />}
 
 <style>
 </style>

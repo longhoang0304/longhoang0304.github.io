@@ -1,0 +1,29 @@
+---
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Layout from "@layouts/Layout.astro";
+---
+<Layout>
+  <div class="single-column-layout">
+    <Header />
+    <div class="single-col-main">
+      <slot />
+    </div>
+    <Footer />
+  </div>
+</Layout>
+
+<style is:global>
+  .single-column-layout {
+    max-width: 48rem;
+    /* background: white; */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+  }
+
+  .single-column-layout .single-col-main {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+</style>

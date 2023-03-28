@@ -5,6 +5,8 @@ title: Sample post2
 publishedDateTime: 2023-03-12T15:57:52.737Z
 draft: false
 description: This is a sample post
+tags:
+  - sample
 ---
 
 What is Lorem Ipsum?

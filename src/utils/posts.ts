@@ -9,6 +9,9 @@ export const removeDraft = (posts: CollectionEntry<"blog">[]) => posts
 export const getSortedPosts = (posts: Posts) => posts
     .sort((a, b) => a.date.diff(b.date));
 
+export const filterByTag = (posts: Posts, tag: string) => posts
+    .filter(p => p.tags.includes(tag));
+
 export const getPostById = (posts: Posts, id?: string) => posts.find(post => post.postId == id)
 
 export const getAllTags = (posts: Posts): string[] => {

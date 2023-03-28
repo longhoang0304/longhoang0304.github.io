@@ -1,0 +1,30 @@
+---
+import SingleColumn from "./SingleColumn.astro";
+import type { Posts } from "@types";
+import PostList from "@components/PostList.astro";
+import Nav from "@components/Nav.astro";
+import PostTag from "@components/PostTag.astro";
+
+export interface Props {
+  posts: Posts;
+  tag: Required<string>;
+}
+
+const { posts, tag } = Astro.props;
+
+---
+<SingleColumn>
+  <section id="post-by-tag-header">
+		<Nav />
+		<h1>
+      <PostTag tag={tag} />
+    </h1>
+	</section>
+  <PostList posts={posts} />
+</SingleColumn>
+
+<style>
+  .post-by-tag-header .post-tag { 
+    margin-left: 0rem !important;
+  }
+</style>
