@@ -12,9 +12,12 @@ export async function getStaticPaths() {
   const postCollection = await getCollection("blog")
   const publishedPosts = removeDraft(postCollection)
   const maxPage = Math.ceil(publishedPosts.length / SITE.postPerPage);
-  const statisPath = [...new Array(maxPage)].map((_, idx) => ({
+  let statisPath = [...new Array(maxPage)].map((_, idx) => ({
     params: {page: String(idx + 1)}
   }))
+  if (!statisPath.length) {
+    statisPath = [ {params: { page: "1" }} ]
+  }
   return statisPath;
 }
 

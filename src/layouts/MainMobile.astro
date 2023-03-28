@@ -10,12 +10,12 @@ const { posts, currentPage, maxPage } = Astro.props;
 
 ---
 <div id="main-mobile">
-<SingleColumn>
-  <div id="entries-wrapper">
-    <PostList posts={posts} />
-    <Navigation currentPage={currentPage} maxPage={maxPage} />
-  </div>
-</SingleColumn>
+  <SingleColumn>
+    <div id="entries-wrapper">
+      <PostList posts={posts} />
+      <Navigation currentPage={currentPage} maxPage={maxPage} />
+    </div>
+  </SingleColumn>
 </div>
 
 <style is:global>

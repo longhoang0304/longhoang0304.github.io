@@ -8,8 +8,8 @@ export interface Props {
 
 const { posts } = Astro.props;
 ---
-
 <main id="entries">
+	{!posts.length && <i>So sorry, there is no post yet!</i>}
 	{posts.map(post => <PostItem {...post} />)}
 </main>
 
