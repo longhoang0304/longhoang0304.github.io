@@ -7,9 +7,9 @@ export const LINKS = [
   },
   {
     iconName: "user",
-    href: "https://www.longhoang.me/about/",
+    href: "/about/",
     title: "About me",
-    newTab: true,
+    newTab: false,
   },
   {
     iconName: "brand-github",

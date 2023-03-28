@@ -8,6 +8,10 @@
   /* font-size: 16px; */
 }
 
+* {
+  font-family: "IBM Plex Mono", "monospace";
+}
+
 html {
   background-color: rgb(251, 254, 251);
 }
@@ -41,6 +45,12 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border: 0;
+}
+
+h1 {
+  font-size: 2rem !important;
+  margin-bottom: 1.25rem;
+  margin-top: 1.25rem;
 }
 
 a {

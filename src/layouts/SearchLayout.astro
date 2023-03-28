@@ -1,0 +1,148 @@
+---
+import Nav from "@components/Nav.astro";
+import SingleColumn from "./SingleColumn.astro";
+import type { Posts } from "@types";
+
+export interface Props {
+  posts: Posts;
+}
+
+const { posts } = Astro.props;
+
+---
+
+<SingleColumn>
+  <Nav />
+  <h1>Search</h1>
+  <input id="post-search" placeholder="Type to search..." />
+  <main id="entries"></main>
+</SingleColumn>
+
+<style is:global>
+	#entries {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .entry {
+    margin-bottom: 1rem;
+    overflow-wrap: break-word;
+    width: 100%;
+    /* flex: 1; */
+  }
+
+  .entry:last-child {
+    margin-bottom: unset;
+  }
+
+  .entry > a {
+    /* display: block; */
+    font-size: 1.2rem;
+    line-height: 1.75rem;
+    color: rgb(0, 108, 172);
+    text-decoration: none;
+  }
+
+  .entry-info {
+    margin-top: 0.1rem;
+  }
+
+  .entry-info > .date {
+    color: #888;
+    font-size: 0.9rem;
+  }
+
+  .entry-info > .tags {
+    font-size: 0.8rem;
+    display: inline-flex;
+  }
+
+  .entry-info .tags a:hover {
+    text-underline-offset: 2px;
+  }
+
+  #post-search {
+    width: calc(100% - 1rem);
+    padding: unset;
+    margin: unset;
+    outline: unset;
+    height: 2rem;
+    border-radius: 1rem;
+    border: 1px solid #ccc;
+    padding-left: 1rem;
+    margin-bottom: 1.25rem;
+    font-style: italic;
+  }
+
+</style>
+
+<script client:load define:vars={{ posts }} type="module">
+  import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.esm.js";
+  const allPost = posts;
+  const fuse = new Fuse(allPost, { keys: ['title'] })
+  const searchResult = document.getElementById("entries")
+  const searchInb = document.getElementById("post-search")
+
+  function throttle(fn, ms) {
+    let isThrottled = false
+
+    return function(...args) {
+      if (isThrottled) return
+      isThrottled = true
+      setTimeout(() => {
+        fn(...args)
+        isThrottled = false
+      }, ms)
+    }
+  }
+
+  function renderResult() {
+    const searchParams = new URLSearchParams(window.location.search);
+    const searchTerm = searchParams.get("s")
+    if (!searchTerm) {
+      searchResult.innerHTML = `<div><i>No result</i></div>`
+      return
+    }
+    const filteredPost = fuse.search(searchTerm)
+
+    let html = []
+    for (const item of filteredPost) {
+      const { item: post } = item;
+      console.log(post)
+      html.push(`
+        <div class="entry">
+          <a href="/post/${post.postId}-${post.postSlug}">${post.title}</a>
+          <div class="entry-info">
+            <span class="date">${post.formatedDate}</span>
+            <span class="tags">
+              ${post.tags.map(tag => `<a href="/tag/${tag}">${tag}</a>`)}
+            </span>
+          </div>
+        </div>
+      `
+      )
+    }
+    if (!filteredPost.length) {
+      searchResult.innerHTML = `<div><i>No result</i></div>`
+      return
+    }
+    searchResult.innerHTML = html.join("\n")
+    searchInb.value = searchTerm
+  }
+
+  function listenSearch(evt) {
+    var searchParams = new URLSearchParams(window.location.search)
+    searchParams.set("s", searchInb.value)
+    if (searchInb.value) window.history.replaceState(null, null, `/search?${searchParams.toString()}`)
+    else window.history.replaceState(null, null, `/search`)
+    renderResult()
+  }
+
+  searchInb.addEventListener("keyup", throttle(listenSearch, 250))
+  renderResult()
+</script>

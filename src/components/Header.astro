@@ -19,8 +19,8 @@ function toggleSearchBar() {
   </div>
   <div id="header-fn">
     <a id="header-fn-abt">About</a>
-    <div><i class="ti ti-search"></i></div>
-    <div><i class="ti ti-moon"></i></div>
+    <a id="header-fn-search" href="/search"><i class="ti ti-search"></i></a>
+    <!-- <div><i class="ti ti-moon"></i></div> -->
   </div>
 </header>
 
@@ -48,6 +48,10 @@ function toggleSearchBar() {
 
   #header-fn-abt {
     display: block;
+  }
+
+  #header-fn-search:hover {
+    text-decoration: none;
   }
 
   #header-fn div {
