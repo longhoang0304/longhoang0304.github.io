@@ -14,5 +14,6 @@
 		"@astrojs/sitemap": "^1.0.1",
 		"astro": "^2.0.4",
 		"dayjs": "^1.11.7"
-	}
+	},
+	"packageManager": "yarn@3.5.0"
 }
