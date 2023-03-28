@@ -2,14 +2,39 @@
 import PostContent from "@components/PostContent.astro";
 import SingleColumn from "./SingleColumn.astro";
 import type { Post } from "@types";
+import PostTag from "@components/PostTag.astro";
+import Nav from "@components/Nav.astro";
 
 export interface Props {
-  post: Required<Post>
+  tags: string[]
 }
 
-const { post } = Astro.props;
+const { tags } = Astro.props;
 
 ---
 <SingleColumn>
-  <PostContent post={post} />
+  <section id="post-by-tag-header">
+		<Nav />
+		<h1>
+      All tags
+    </h1>
+	</section>
+  <div id="tag-list">
+  {tags.map(tag => <PostTag tag={tag} />)}
+  </div>
 </SingleColumn>
+
+<style is:global>
+  #tag-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #tag-list .post-tag {
+    color: rgb(0, 108, 172)
+  }
+
+  #tag-list a {
+    margin-bottom: 0.5rem;
+  }
+</style>

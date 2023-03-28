@@ -4,7 +4,7 @@ import SingleColumn from "./SingleColumn.astro";
 import type { Post } from "@types";
 
 export interface Props {
-  post: Required<Post>
+  post: Post;
 }
 
 const { post } = Astro.props;

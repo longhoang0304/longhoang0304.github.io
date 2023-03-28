@@ -1,19 +1,16 @@
 ---
 import { getCollection } from "astro:content";
 import { transformPostCollectionToPosts, removeDraft, getAllTags } from "@utils/posts";
+import TagList from "@layouts/TagList.astro";
 
 
 const postCollection = await getCollection("blog")
 const publishedPosts = removeDraft(postCollection)
 const transformedPosts = transformPostCollectionToPosts(publishedPosts)
 const allTags = getAllTags(transformedPosts)
-const lastTag = allTags.at(-1)
-const tags = allTags.slice(0, -1)
 
 ---
-<div>
-  {tags.map(tag => <span>{tag},</span>)}<span>{lastTag}</span>
-</div>
+<TagList tags={allTags} />
 
 <style>
 </style>

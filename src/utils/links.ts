@@ -35,4 +35,10 @@ export const LINKS = [
     title: "Search",
     newTab: false,
   },
+  {
+    iconName: "hash",
+    href: "/tags/",
+    title: "Tags",
+    newTab: false,
+  },
 ]
