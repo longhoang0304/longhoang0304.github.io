@@ -25,7 +25,7 @@ export const LINKS = [
   },
   {
     iconName: "rss",
-    href: "/rss",
+    href: "/rss.xml",
     title: "RSS",
     newTab: true,
   },
