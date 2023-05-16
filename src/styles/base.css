@@ -64,10 +64,14 @@ a:hover {
   text-underline-offset: 5px;
 }
 
-blockquote {
+#post-content blockquote {
   background: rgba(0, 108, 172, 0.05);
   margin: unset;
   padding: 1rem;
   font-style: italic;
   border-left: 0.5rem solid rgb(0, 108, 172);
+}
+
+#post-content .post-p-image {
+  text-align: center;
 }
