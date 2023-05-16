@@ -75,3 +75,7 @@ a:hover {
 #post-content .post-p-image {
   text-align: center;
 }
+
+#post-content a {
+  color: rgb(0, 108, 172);
+}
