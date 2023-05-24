@@ -64,6 +64,11 @@ a:hover {
   text-underline-offset: 5px;
 }
 
+iframe {
+  border: none;
+  overflow: hidden;
+}
+
 #post-content blockquote {
   background: rgba(0, 108, 172, 0.05);
   margin: unset;

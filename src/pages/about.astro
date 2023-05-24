@@ -2,8 +2,15 @@
 import SingleColumn from "@layouts/SingleColumn.astro";
 
 ---
-
 <SingleColumn>
   <h1>Hi, I'm Long!</h1>
   <div>Welcome to my rant site</div>
+  <div>Game?</div>
+  <div style="text-align: center;">
+    <iframe id="gosnack" src="/gosnack" width="490" height="490" scrolling="no" ></iframe>
+  </div>
 </SingleColumn>
+<script is:inline>
+  const gosnack = document.getElementById("gosnack")
+  gosnack.focus()
+</script>
