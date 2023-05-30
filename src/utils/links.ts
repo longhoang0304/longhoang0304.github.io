@@ -12,6 +12,12 @@ export const LINKS = [
     newTab: false,
   },
   {
+    iconName: "mail",
+    href: "mailto:hey@longhoang.me",
+    title: "Email",
+    newTab: false,
+  },
+  {
     iconName: "brand-github",
     href: "https://github.com/longhoang0304/",
     title: "Github",
