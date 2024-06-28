@@ -1,5 +1,5 @@
 ---
-postId: p4
+postId: p3
 postSlug: shaped-skills-are-bullshits
 title: T-shaped, M-shaped, π-shaped are bullshits!
 publishedDateTime: 2023-05-16T11:45:00Z
@@ -17,7 +17,7 @@ For the dash sharp, it tells that a person knows a lots but doesn't have any spe
 So as may you can guest, the T-shaped person is a person who know enough general knowledge and focus on a specific skill. Then π-shaped tells that person has developed more specialities skills and ultimately, you will evolved into M-shaped person.
 
 <div class="post-p-image">
-  <img src="/blog-assets/p4/p4-t-sharp-example.jpg" width=480 />
+  <img src="/blog-assets/p3/p3-t-sharp-example.jpg" width=480 />
 
   *An example of a T-skilled software engineer*
 </div>
@@ -37,7 +37,7 @@ And finally, how to be called specialized? If I learn math and hardware to suppo
 Final note, to visualize a person skill correctly, I believe we should use curves or hill-model. Like this
 
 <div class="post-p-image">
-  <img src="/blog-assets/p4/p4-suggested-skill-model.jpg" width=540>
+  <img src="/blog-assets/p3/p3-suggested-skill-model.jpg" width=540>
 
   *Suggestion of the visualized person's skill*
 </div>
@@ -45,13 +45,13 @@ Final note, to visualize a person skill correctly, I believe we should use curve
 As we can see from the chart, it shows that how much a skill helps another one, how many skill this person have and how deep they know a topic. So if you want to looking for a specialized person? Look for a bell-curve. A generalist with deep knowledge? Looking for a wave curve.
 
 <div class="post-p-image">
-  <img src="/blog-assets/p4/p4-bell-curve.jpg" width=320>
+  <img src="/blog-assets/p3/p3-bell-curve.jpg" width=320>
 
   *Bell curve will show a person has a specialized skill*
 </div>
 
 <div class="post-p-image">
-  <img src="/blog-assets/p4/p4-wave-curve.jpg" width=320>
+  <img src="/blog-assets/p3/p3-wave-curve.jpg" width=320>
 
   *Wave curve will show a person has a general skills. More waves mean more skills*
 </div>
