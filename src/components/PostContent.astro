@@ -1,5 +1,5 @@
 ---
-import type { AstroComponentFactory } from "astro/dist/runtime/server";
+import { render } from "astro:content";
 import type { Post } from "../types";
 import PostTag from "./PostTag.astro";
 import Nav from "./Nav.astro";
@@ -9,7 +9,7 @@ export interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } : { Content: AstroComponentFactory } = await post.originalPost.render()
+const { Content } = await render(post.originalPost)
 
 const tags = post.tags.slice(0, -1)
 const lastTag = post.tags.at(-1)

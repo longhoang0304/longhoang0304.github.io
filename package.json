@@ -10,11 +10,11 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/rss": "^4.0.7",
-		"@astrojs/sitemap": "^3.1.6",
-		"astro": "^4.11.3",
-		"dayjs": "^1.11.11",
-		"fuse.js": "^7.0.0"
+		"@astrojs/rss": "^4.0.18",
+		"@astrojs/sitemap": "^3.7.3",
+		"astro": "^7.0.0",
+		"dayjs": "^1.11.21",
+		"fuse.js": "^7.4.2"
 	},
-	"packageManager": "yarn@3.5.0"
+	"packageManager": "yarn@4.17.0"
 }

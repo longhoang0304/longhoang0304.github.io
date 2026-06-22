@@ -1,4 +1,5 @@
 import { defineCollection, z } from "astro:content";
+import { glob } from "astro/loaders";
 
 
 export const blogSchema = z
@@ -14,6 +15,7 @@ export const blogSchema = z
   .strict();
 
 const blog = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
   schema: blogSchema,
 });
 
