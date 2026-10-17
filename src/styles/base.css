@@ -5,7 +5,6 @@
   color: #333;
   text-rendering: optimizeLegibility;
   background-color: rgb(251, 254, 251);
-  /* font-size: 16px; */
 }
 
 * {
@@ -19,7 +18,7 @@ html {
 body {
   width: calc(100% - 2rem);
   height: calc(100% - 2rem);
-  margin: 0px;
+  margin: 0;
   padding: 1rem;
 }
 
@@ -27,7 +26,7 @@ body {
   body {
     width: unset;
     min-width: 100%;
-    padding: 0rem;
+    padding: 0;
     height: unset;
     min-height: 100vh;
   }
