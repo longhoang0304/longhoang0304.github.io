@@ -6,7 +6,6 @@ publishedDateTime: 2023-03-28T16:45:00Z
 draft: false
 description: What does a manager do? How to be a successful manager?
 tags:
-  - rant
   - management
   - software
 ---

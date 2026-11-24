@@ -7,7 +7,6 @@ draft: false
 description: T-shaped, M-shaped, π-shaped are bullshits!
 tags:
   - management
-  - rant
 ---
 
 Let's first define what are T-sharped, M-shaped, π-shaped skill? In the basic definition, shaped skill formed from 2 basic sharps: dash (-) and letter I.
