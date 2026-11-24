@@ -12,7 +12,7 @@ export default defineConfig({
   markdown: {
     // Code is colored for both themes at build time; Prose shows the dark colors in dark mode.
     shikiConfig: {
-      themes: { light: "everforest-light", dark: "everforest-dark" },
+      themes: { light: "github-light", dark: "github-dark" },
     },
   },
 });
