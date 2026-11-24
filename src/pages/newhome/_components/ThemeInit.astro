@@ -1,0 +1,15 @@
+---
+/**
+ * Sets data-theme on <html> before first paint.
+ * Kept inline (not bundled) so it runs immediately; place it early in <head>.
+ */
+---
+
+<script is:inline>
+    (function () {
+        var stored = null;
+        try { stored = localStorage.getItem('theme'); } catch (e) {}
+        var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = stored === 'light' || stored === 'dark' ? stored : system;
+    })();
+</script>

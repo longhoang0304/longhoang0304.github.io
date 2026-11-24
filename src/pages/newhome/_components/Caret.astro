@@ -1,0 +1,26 @@
+---
+/** Blinking text cursor; sizes itself from the surrounding font size. */
+---
+
+<span class="caret" aria-hidden="true"></span>
+
+<style>
+    .caret {
+        display: inline-block;
+        width: 0.06em;
+        height: 0.75em;
+        margin-left: 0.08em;
+        vertical-align: -0.02em;
+        background: var(--c-accent);
+        animation: blink 1.1s step-end infinite;
+    }
+
+    @keyframes blink {
+        0%, 49% { opacity: 1; }
+        50%, 100% { opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .caret { animation: none; }
+    }
+</style>

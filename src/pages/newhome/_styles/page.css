@@ -1,0 +1,65 @@
+/* Page-wide styles shared by every newhome component. */
+
+body {
+    margin: 0;
+    background: var(--c-bg);
+}
+
+.site a {
+    color: var(--c-text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.site a:hover {
+    color: var(--c-accent);
+}
+
+.site a:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* Fixed header/footer bars that stay put while sections scroll. */
+.site .corner-row {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    min-height: calc(44px + 2 * var(--edge-y));
+    padding: var(--edge-y) var(--edge-x);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    background: var(--c-bg);
+    transition: opacity 0.3s ease;
+}
+
+/* Fade the bars out while the page is scrolling; they come back once it settles. */
+:root[data-scrolling] .site .corner-row {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Italic accent word, e.g. "curiosity", "led". */
+.site .word {
+    font-family: var(--font-poetic);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.22em;
+    letter-spacing: -0.01em;
+    color: var(--c-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site a,
+    .site .corner-row { transition: none; }
+}

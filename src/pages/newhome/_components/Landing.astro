@@ -1,0 +1,68 @@
+---
+import type { NavLink } from '../_lib/types';
+import BracketLink from './BracketLink.astro';
+import Caret from './Caret.astro';
+
+interface Props {
+    links: NavLink[];
+}
+
+const { links } = Astro.props;
+---
+
+<section id="top" class="landing" aria-label="Introduction" data-section>
+    <div class="center">
+        <h1 class="headline">
+            Driven by <span class="word">curiosity</span><Caret />
+        </h1>
+
+        <nav aria-label="Main" class="nav">
+            {links.map((link) => (
+                    <BracketLink href={link.href}>{link.label}</BracketLink>
+            ))}
+        </nav>
+    </div>
+</section>
+
+<style>
+    .landing {
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        padding: var(--bar-space) var(--edge-x);
+    }
+
+    .center {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        padding: 4rem 0;
+        text-align: center;
+    }
+
+    .headline {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(3rem, 9vw, 8rem);
+        line-height: 1;
+        letter-spacing: -0.035em;
+    }
+
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem 1.5rem;
+        font-size: 0.9375rem;
+    }
+
+    @media (max-width: 480px) {
+        .center { gap: 2rem; }
+    }
+</style>

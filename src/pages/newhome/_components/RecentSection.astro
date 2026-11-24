@@ -1,0 +1,183 @@
+---
+import type { Category, CategoryInfo, Post } from '../_lib/types';
+import { formatShortDate } from '../_lib/posts';
+import Caret from './Caret.astro';
+
+interface Props {
+    id: string;
+    posts: Post[];
+    categories: Record<Category, CategoryInfo>;
+}
+
+const { id, posts, categories } = Astro.props;
+---
+
+<section id={id} class="feed" aria-labelledby={`${id}-heading`} data-section>
+    <div class="feed-block">
+        <h2 id={`${id}-heading`} class="feed-heading">Where it <span class="word">led</span><Caret /></h2>
+        {posts.length === 0 ? (
+                <p class="feed-empty">
+                    <span class="feed-meta">[Soon]</span>
+                    <span>Nowhere yet. Still wandering, check back soon.</span>
+                </p>
+        ) : (
+                <ul class="feed-list">
+                    {posts.map((post) => (
+                            <li>
+                                <a href={post.href} class="feed-link">
+                                    <span class="feed-meta">
+                                        <time class="feed-date" datetime={post.date}>[{formatShortDate(post.date)}]</time>
+                                        <span class="feed-category">[{categories[post.category].label}]</span>
+                                    </span>
+                                    <span class="feed-title" data-truncate>{post.title}</span>
+                                    <span class="feed-popup" aria-hidden="true">{post.title}</span>
+                                </a>
+                            </li>
+                    ))}
+                </ul>
+        )}
+    </div>
+</section>
+
+<style>
+    .feed {
+        position: relative;
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--header-space) var(--edge-x) var(--bar-space);
+    }
+
+    /* Shrink to the widest line so the visible text is centered, not a mostly-empty box. */
+    .feed-block {
+        width: fit-content;
+        max-width: min(40rem, 100%);
+        text-align: left;
+    }
+
+    .feed-heading {
+        margin: 0 0 2rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+    }
+
+    .feed-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .feed-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        min-height: 44px;
+        padding: 0.625rem 0;
+    }
+
+    .feed-meta {
+        flex-shrink: 0;
+        display: inline-flex;
+        font-size: 0.875rem;
+        color: var(--c-muted);
+        font-variant-numeric: tabular-nums;
+        transition: color 0.2s ease;
+    }
+
+    /* Always one line, then "…". */
+    .feed-title {
+        min-width: 0;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: var(--font-display);
+        font-size: 1.375rem;
+        line-height: 1.35;
+    }
+
+    /* Shown instead of the list when there are no posts yet. */
+    .feed-empty {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        min-height: 44px;
+        margin: 0;
+        padding: 0.625rem 0;
+        font-family: var(--font-display);
+        font-size: 1.375rem;
+        line-height: 1.35;
+        color: var(--c-muted);
+    }
+
+    .feed-empty .feed-meta {
+        font-family: var(--font-mono);
+    }
+
+    .feed-link:hover .feed-meta {
+        color: var(--c-accent);
+    }
+
+    /* Full title pop-up, only for titles cut off with "…". */
+    .feed-popup {
+        position: absolute;
+        top: calc(100% - 0.25rem);
+        left: 0;
+        right: 0;
+        z-index: 5;
+        padding: 0.625rem 0.875rem;
+        border: 1px solid var(--c-border);
+        border-radius: 8px;
+        background: var(--c-bg);
+        box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.25);
+        color: var(--c-text);
+        font-family: var(--font-display);
+        font-size: 1.0625rem;
+        line-height: 1.4;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px) scale(0.98);
+        transform-origin: top left;
+        pointer-events: none;
+        transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+    }
+
+    .feed-link:hover .feed-title[data-truncated] + .feed-popup,
+    .feed-link:focus-visible .feed-title[data-truncated] + .feed-popup {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        /* Short delay so sweeping the mouse down the list doesn't flash every pop-up. */
+        transition: opacity 0.22s ease 0.15s, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s, visibility 0s linear 0.15s;
+    }
+
+    @media (max-width: 480px) {
+        .feed-link,
+        .feed-empty { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .feed-meta { transition: none; }
+        .feed-popup,
+        .feed-link:hover .feed-title[data-truncated] + .feed-popup,
+        .feed-link:focus-visible .feed-title[data-truncated] + .feed-popup {
+            transform: none;
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    import { initTruncationFlags } from '../_lib/truncation';
+
+    initTruncationFlags();
+</script>

@@ -1,0 +1,47 @@
+/*
+ * Global colour scheme.
+ *
+ * Follows the visitor's system setting by default.
+ * Force a theme by setting data-theme="light" or data-theme="dark" on <html>.
+ */
+
+/* ---- Colour scheme: light (default) ---- */
+:root {
+    --c-bg: #fdfcf9;        /* Paper */
+    --c-text: #2e1d12;      /* Dark chocolate */
+    --c-muted: #4e3b2c;     /* Deep brown */
+    --c-bracket: #a08870;   /* Wood */
+    --c-border: #e3ded3;    /* Oat line */
+    --c-accent: #4a6b55;    /* Soft monstera */
+    --c-pollen: #d9c27f;    /* Pale pollen */
+    --c-tint: #c9d6c3;      /* Sage mist */
+    color-scheme: light;
+}
+
+/* ---- Dark: follows system unless forced light ---- */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        --c-bg: #17120d;      /* Espresso */
+        --c-text: #f3eee4;    /* Cream */
+        --c-muted: #c9bba8;   /* Latte */
+        --c-bracket: #7d6a57; /* Smoked wood */
+        --c-border: #3a2f25;  /* Bark line */
+        --c-accent: #8fb59a;  /* Moonlit monstera */
+        --c-pollen: #e3cb82;  /* Warm pollen */
+        --c-tint: #2c3a2f;    /* Deep sage */
+        color-scheme: dark;
+    }
+}
+
+/* ---- Dark: forced ---- */
+:root[data-theme='dark'] {
+    --c-bg: #17120d;
+    --c-text: #f3eee4;
+    --c-muted: #c9bba8;
+    --c-bracket: #7d6a57;
+    --c-border: #3a2f25;
+    --c-accent: #8fb59a;
+    --c-pollen: #e3cb82;
+    --c-tint: #2c3a2f;
+    color-scheme: dark;
+}

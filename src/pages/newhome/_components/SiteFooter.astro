@@ -1,0 +1,23 @@
+---
+import Socials from './Socials.astro';
+
+interface Props {
+    year: number;
+    githubUrl: string;
+    linkedinUrl: string;
+    email: string;
+}
+
+const { year, githubUrl, linkedinUrl, email } = Astro.props;
+---
+
+<footer class="corner-row site-footer">
+    <span>© {year}</span>
+    <Socials githubUrl={githubUrl} linkedinUrl={linkedinUrl} email={email} />
+</footer>
+
+<style>
+    .site-footer {
+        bottom: 0;
+    }
+</style>
