@@ -1,7 +1,8 @@
 ---
 /**
  * A list of one-line links with bracketed meta before each: [11 Oct 2026][Rant] Title.
- * Long titles end in "…" and show in full in a pop-up on hover or focus.
+ * Hovering or focusing a row shows a pop-up with its description, and the full title when
+ * it's cut off with "…"; rows with neither get no pop-up.
  */
 import type { HTMLAttributes } from 'astro/types';
 import type { LinkItem } from '../features/types';
@@ -21,7 +22,10 @@ const { items, ...attrs } = Astro.props;
                         {item.meta.map((m) => (m.datetime ? <span>[<time datetime={m.datetime} data-local-date>{m.text}</time>]</span> : <span>[{m.text}]</span>))}
                     </span>
                     <span class="title" data-truncate>{item.title}</span>
-                    <span class="popup" aria-hidden="true">{item.title}</span>
+                    <span class="popup" aria-hidden="true" data-described={item.description ? '' : undefined}>
+                        <span class="popup-title">{item.title}</span>
+                        {item.description && <span class="popup-description">{item.description}</span>}
+                    </span>
                 </a>
             </li>
     ))}
@@ -74,8 +78,11 @@ const { items, ...attrs } = Astro.props;
         line-height: 1.35;
     }
 
-    /* Full title pop-up, only for titles cut off with "…". */
+    /* Pop-up with the description and, for titles cut off with "…", the full title. */
     .popup {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
         position: absolute;
         top: calc(100% - 0.25rem);
         left: 0;
@@ -98,8 +105,20 @@ const { items, ...attrs } = Astro.props;
         transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
     }
 
+    /* The title is already fully visible unless it was cut off. */
+    .title:not([data-truncated]) + .popup .popup-title {
+        display: none;
+    }
+
+    .popup-description {
+        font-size: 0.9375rem;
+        color: var(--c-muted);
+    }
+
     .link:hover .title[data-truncated] + .popup,
-    .link:focus-visible .title[data-truncated] + .popup {
+    .link:focus-visible .title[data-truncated] + .popup,
+    .link:hover .popup[data-described],
+    .link:focus-visible .popup[data-described] {
         opacity: 1;
         visibility: visible;
         transform: none;
@@ -115,7 +134,9 @@ const { items, ...attrs } = Astro.props;
         .meta { transition: none; }
         .popup,
         .link:hover .title[data-truncated] + .popup,
-        .link:focus-visible .title[data-truncated] + .popup {
+        .link:focus-visible .title[data-truncated] + .popup,
+        .link:hover .popup[data-described],
+        .link:focus-visible .popup[data-described] {
             transform: none;
             transition: none;
         }

@@ -1,4 +1,5 @@
 import { toPostItem } from './post-item';
+import { summaryOf } from './post-summary';
 import { categories } from './site-info';
 import type { SitePost } from './site-posts';
 import type { LinkItem } from './types';
@@ -14,10 +15,9 @@ export interface PostHeader {
 
 export function toPostHeader(post: SitePost): PostHeader {
     const { href, heading } = categories[post.category];
-    const repeatsTitle = post.description?.trim().toLowerCase() === post.title.trim().toLowerCase();
     return {
         meta: [...toPostItem(post).meta, ...(post.draft ? [{ text: 'Draft' }] : [])],
-        summary: repeatsTitle ? undefined : post.description,
+        summary: summaryOf(post),
         section: { href, name: `${heading.lead} ${heading.accent}` },
     };
 }

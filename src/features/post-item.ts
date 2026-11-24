@@ -11,6 +11,7 @@ export function toPostItem(post: Post, withCategory = true): LinkItem {
     return {
         href: post.href,
         title: post.title,
+        description: post.description,
         meta: withCategory ? [date, { text: categories[post.category].label }] : [date],
     };
 }

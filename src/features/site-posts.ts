@@ -5,7 +5,6 @@ import { removeDraft } from '@utils/posts';
 import type { Category, Post } from './types';
 
 export interface SitePost extends Post {
-    description?: string;
     tags: string[];
     draft: boolean;
 }

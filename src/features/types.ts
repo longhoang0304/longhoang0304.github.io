@@ -20,6 +20,7 @@ export interface Post {
     category: Category;
     title: string;
     href: string;
+    description?: string;
 }
 
 export interface Section {
@@ -34,6 +35,8 @@ export interface LinkItem {
     /** Shown before the title, each in brackets: [11 Oct 2026][Rant]. With a datetime, the text is
      *  a date that the browser re-formats for the visitor's locale (features/local-dates.ts). */
     meta: { text: string; datetime?: string }[];
+    /** Shown in the hover pop-up, with the full title when it's cut off. */
+    description?: string;
     hidden?: boolean;
     /** Extra attributes for the row, e.g. data-* hooks for scripts. */
     attrs?: Record<string, string | undefined>;
