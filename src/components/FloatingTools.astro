@@ -1,7 +1,8 @@
 ---
 /**
- * Back to top, the theme toggle and jump to bottom, floating in the bottom-right corner of a long
- * page once its header has scrolled away (features/scroll-helpers.ts shows and hides it).
+ * Back to top, the theme toggle and jump to bottom, floating at the middle of the left edge of a
+ * long page (the bottom-right corner on narrower screens, where wide tables and code fill the margin)
+ * once its header has scrolled away (features/scroll-helpers.ts shows and hides it).
  */
 import IconButton from '../elements/IconButton.astro';
 import ThemeToggle from '../elements/ThemeToggle.astro';
@@ -19,6 +20,8 @@ import ThemeToggle from '../elements/ThemeToggle.astro';
 
 <style>
     .tools {
+        /* How far the group is moved to sit where it belongs; it slides in from 8px lower. */
+        --shift: 0px;
         position: fixed;
         right: var(--edge-x);
         bottom: var(--edge-y);
@@ -28,20 +31,31 @@ import ThemeToggle from '../elements/ThemeToggle.astro';
         gap: 0.5rem;
         opacity: 0;
         visibility: hidden;
-        transform: translateY(8px);
+        transform: translateY(calc(var(--shift) + 8px));
         transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
     }
 
     .tools[data-visible] {
         opacity: 1;
         visibility: visible;
-        transform: none;
+        transform: translateY(var(--shift));
         transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s;
+    }
+
+    /* Wide enough for the text column, its widest breakout and the group beside them. */
+    @media (min-width: 72rem) {
+        .tools {
+            --shift: -50%;
+            top: 50%;
+            right: auto;
+            bottom: auto;
+            left: var(--edge-x);
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {
         .tools,
-        .tools[data-visible] { transition: none; transform: none; }
+        .tools[data-visible] { transition: none; transform: translateY(var(--shift)); }
     }
 </style>
 
