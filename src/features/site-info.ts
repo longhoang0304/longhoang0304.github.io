@@ -1,4 +1,4 @@
-import type { Category, CategoryInfo, NavLink } from './types';
+import type { Category, CategoryInfo, IconLink, NavLink } from './types';
 
 export const location = 'Reading, UK';
 export const timeZone = 'Europe/London';
@@ -16,6 +16,17 @@ export const linksWithHome: NavLink[] = [{ label: 'Home', href: '/' }, ...links]
 export const githubUrl = 'https://github.com/longhoang0304';
 export const linkedinUrl = 'https://www.linkedin.com/in/notlonghoang/';
 export const email = 'hey@longhoang.me';
+export const cvUrl = 'https://bit.ly/3sPIEcD';
+export const rssUrl = '/rss.xml';
+
+/** Shown in the footer and on the About page. */
+export const socialLinks: IconLink[] = [
+    { label: 'GitHub', href: githubUrl, icon: 'github', external: true, me: true },
+    { label: 'LinkedIn', href: linkedinUrl, icon: 'linkedin', external: true, me: true },
+    { label: 'Email', href: `mailto:${email}`, icon: 'mail' },
+    { label: 'CV', href: cvUrl, icon: 'cv', external: true },
+    { label: 'RSS feed', href: rssUrl, icon: 'rss', external: true },
+];
 
 export const categories: Record<Category, CategoryInfo> = {
     rant: { label: 'Rant', href: '/rants', heading: { lead: 'Stray', accent: 'thoughts' } },

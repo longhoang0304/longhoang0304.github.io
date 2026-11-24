@@ -1,33 +1,29 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { transformPostCollectionToPosts, removeDraft, getSortedPosts } from "@utils/posts";
+import type { APIContext } from 'astro';
+import { SITE } from '@config';
+import { categories } from '@features/site-info';
+import { getSitePosts } from '@features/site-posts';
 
-export async function GET(context) {
-  const postCollection = await getCollection("rants")
-  const publishedPosts = removeDraft(postCollection)
-  const transformedPosts = transformPostCollectionToPosts(publishedPosts)
-  const sortedPost = getSortedPosts(transformedPosts)
-  const rssItems = sortedPost.map(post => ({
-    title: post.title,
-    pubDate: post.date.toISOString(),
-    description: post.description,
-    link: `/rants/${post.postId}-${post.postSlug}/`,
-    customData: post.tags.map(tag => `<tag>${tag}</tag>`).join(),
-  }))
+/** "Rant" and a "rant" tag are the same category to a feed reader. */
+const uniqueIgnoringCase = (words: string[]) =>
+  words.filter((word, i) => words.findIndex((w) => w.toLowerCase() === word.toLowerCase()) === i);
+
+/** Every published rant, project and research post, newest first. */
+export async function GET(context: APIContext) {
+  const posts = await getSitePosts();
 
   return rss({
-    // `<title>` field in output xml
-    title: 'Long\'s Blog',
-    // `<description>` field in output xml
-    description: 'Long\'s rants',
-    // Pull in your project "site" from the endpoint context
-    // https://docs.astro.build/en/reference/api-reference/#contextsite
-    site: context.site,
-    // Array of `<item>`s in output xml
-    // See "Generating items" section for examples using content collections and glob imports
-    items: rssItems,
-    // (optional) inject custom xml
-    customData: `<language>en-us</language>`,
+    title: SITE.title,
+    description: SITE.desc,
+    site: context.site!,
+    items: posts.map((post) => ({
+      title: post.title,
+      pubDate: new Date(`${post.date}T00:00:00Z`),
+      description: post.description,
+      link: `${post.href}/`,
+      categories: uniqueIgnoringCase([categories[post.category].label, ...post.tags]),
+    })),
+    customData: `<language>en-gb</language>`,
     trailingSlash: true,
   });
 }

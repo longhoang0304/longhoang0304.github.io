@@ -1,13 +1,16 @@
 ---
+import SocialLinks from '../components/SocialLinks.astro';
 import AccentWord from '../elements/AccentWord.astro';
 import Caret from '../elements/Caret.astro';
 import Heading from '../elements/Heading.astro';
 import Text from '../elements/Text.astro';
+import { socialLinks } from '../features/site-info';
 ---
 
 <section class="about" aria-labelledby="about-heading">
     <Heading as="h1" size="hero" id="about-heading">Hi, I'm <AccentWord>Long</AccentWord><Caret /></Heading>
     <Text>Welcome to my corner of the internet: stray thoughts, side quests and the odd rabbit hole.</Text>
+    <SocialLinks links={socialLinks} />
 </section>
 
 <style>

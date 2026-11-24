@@ -23,6 +23,19 @@ export interface Post {
     description?: string;
 }
 
+export type IconName = 'github' | 'linkedin' | 'mail' | 'cv' | 'rss';
+
+/** A link drawn as an icon only; `label` is its accessible name. */
+export interface IconLink {
+    label: string;
+    href: string;
+    icon: IconName;
+    /** Open in a new tab. */
+    external?: boolean;
+    /** Marks a profile of the site's owner (rel="me"). */
+    me?: boolean;
+}
+
 export interface Section {
     id: string;
     label: string;

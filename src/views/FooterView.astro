@@ -2,17 +2,17 @@
 import FixedBar from '../components/FixedBar.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 
+import type { IconLink } from '../features/types';
+
 interface Props {
     year: number;
-    githubUrl: string;
-    linkedinUrl: string;
-    email: string;
+    links: IconLink[];
 }
 
-const { year, githubUrl, linkedinUrl, email } = Astro.props;
+const { year, links } = Astro.props;
 ---
 
 <FixedBar edge="bottom">
     <span>© {year}</span>
-    <SocialLinks githubUrl={githubUrl} linkedinUrl={linkedinUrl} email={email} />
+    <SocialLinks links={links} />
 </FixedBar>
