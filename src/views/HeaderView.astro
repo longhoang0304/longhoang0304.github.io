@@ -19,13 +19,13 @@ const { location, timeZone, links, alwaysShowNav = false } = Astro.props;
 ---
 
 <FixedBar edge="top">
-    <span>{location}</span>
+    <span class="side">{location}</span>
     <nav aria-label="Site" class="nav" data-always={alwaysShowNav || undefined}>
         {links.map((link) => (
                 <BracketLink href={link.href}>{link.label}</BracketLink>
         ))}
     </nav>
-    <div class="right">
+    <div class="side right">
         <LocalClock timeZone={timeZone} />
         <SearchButton />
         <ThemeToggle />
@@ -48,8 +48,14 @@ const { location, timeZone, links, alwaysShowNav = false } = Astro.props;
         visibility: hidden;
     }
 
+    /* Equal sides, so the nav sits in the true center whatever each side holds. */
+    .side {
+        flex: 1 1 0;
+    }
+
     .right {
         display: inline-flex;
+        justify-content: flex-end;
         align-items: center;
         gap: 0.75rem;
     }
