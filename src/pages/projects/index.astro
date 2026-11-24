@@ -1,0 +1,14 @@
+---
+/** Every project, newest first. */
+import { getCategoryPosts } from '@features/category-posts';
+import { categories, linksWithHome } from '@features/site-info';
+import PageShell from '@shell/PageShell.astro';
+import PostListView from '@views/PostListView.astro';
+
+const posts = await getCategoryPosts('project');
+const { heading } = categories.project;
+---
+
+<PageShell title={`${heading.lead} ${heading.accent}`} headerNav="always" navLinks={linksWithHome} bars="flow">
+    <PostListView lead={heading.lead} accent={heading.accent} posts={posts} />
+</PageShell>

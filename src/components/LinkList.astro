@@ -1,0 +1,150 @@
+---
+/**
+ * A list of one-line links with bracketed meta before each: [11 Oct 2026][Rant] Title.
+ * Hovering or focusing a row shows a pop-up with its description, and the full title when
+ * it's cut off with "…"; rows with neither get no pop-up.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import type { LinkItem } from '../features/types';
+
+type Props = HTMLAttributes<'ul'> & {
+    items: LinkItem[];
+};
+
+const { items, ...attrs } = Astro.props;
+---
+
+<ul {...attrs} class="list">
+    {items.map((item) => (
+            <li hidden={item.hidden} {...item.attrs}>
+                <a href={item.href} class="link">
+                    <span class="meta">
+                        {item.meta.map((m) => (m.datetime ? <span>[<time datetime={m.datetime} data-local-date>{m.text}</time>]</span> : <span>[{m.text}]</span>))}
+                    </span>
+                    <span class="title" data-truncate>{item.title}</span>
+                    <span class="popup" aria-hidden="true" data-described={item.description ? '' : undefined}>
+                        <span class="popup-title">{item.title}</span>
+                        {item.description && <span class="popup-description">{item.description}</span>}
+                    </span>
+                </a>
+            </li>
+    ))}
+</ul>
+
+<style>
+    .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .list[hidden] {
+        display: none;
+    }
+
+    .link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        min-height: 44px;
+        padding: 0.625rem 0;
+    }
+
+    .meta {
+        flex-shrink: 0;
+        display: inline-flex;
+        font-size: 0.875rem;
+        color: var(--c-muted);
+        font-variant-numeric: tabular-nums;
+        transition: color 0.2s ease;
+    }
+
+    .link:hover .meta {
+        color: var(--c-accent);
+    }
+
+    /* Always one line, then "…". */
+    .title {
+        min-width: 0;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: var(--font-display);
+        font-size: 1.375rem;
+        line-height: 1.35;
+    }
+
+    /* Pop-up with the description and, for titles cut off with "…", the full title. */
+    .popup {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        position: absolute;
+        top: calc(100% - 0.25rem);
+        left: 0;
+        right: 0;
+        z-index: 5;
+        padding: 0.625rem 0.875rem;
+        border: 1px solid var(--c-border);
+        border-radius: 8px;
+        background: var(--c-bg);
+        box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.25);
+        color: var(--c-text);
+        font-family: var(--font-display);
+        font-size: 1.0625rem;
+        line-height: 1.4;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px) scale(0.98);
+        transform-origin: top left;
+        pointer-events: none;
+        transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+    }
+
+    /* The title is already fully visible unless it was cut off. */
+    .title:not([data-truncated]) + .popup .popup-title {
+        display: none;
+    }
+
+    .popup-description {
+        font-size: 0.9375rem;
+        color: var(--c-muted);
+    }
+
+    .link:hover .title[data-truncated] + .popup,
+    .link:focus-visible .title[data-truncated] + .popup,
+    .link:hover .popup[data-described],
+    .link:focus-visible .popup[data-described] {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        /* Short delay so sweeping the mouse down the list doesn't flash every pop-up. */
+        transition: opacity 0.22s ease 0.15s, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s, visibility 0s linear 0.15s;
+    }
+
+    @media (max-width: 480px) {
+        .link { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .meta { transition: none; }
+        .popup,
+        .link:hover .title[data-truncated] + .popup,
+        .link:focus-visible .title[data-truncated] + .popup,
+        .link:hover .popup[data-described],
+        .link:focus-visible .popup[data-described] {
+            transform: none;
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    import { initTruncationFlags } from '../features/truncation';
+
+    initTruncationFlags();
+</script>

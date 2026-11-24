@@ -1,0 +1,26 @@
+/* Page-wide basics under the shell: page background and the link baseline every element builds on. */
+
+body {
+    margin: 0;
+    background: var(--c-bg);
+}
+
+.site a {
+    color: var(--c-text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.site a:hover {
+    color: var(--c-accent);
+}
+
+.site a:focus-visible {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site a { transition: none; }
+}

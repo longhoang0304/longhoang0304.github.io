@@ -1,0 +1,35 @@
+---
+/**
+ * Page metadata for browsers, search engines and link previews: favicon, canonical URL,
+ * description, Open Graph and Twitter cards, and the feed.
+ */
+import { SITE } from '@config';
+import { rssUrl } from '../features/site-info';
+
+interface Props {
+    title: string;
+    description: string;
+}
+
+const { title, description } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(SITE.ogImage, Astro.site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+<link rel="icon" href="/favicon.ico" />
+<link rel="alternate" type="application/rss+xml" title={SITE.title} href={rssUrl} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE.title} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={imageURL} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />

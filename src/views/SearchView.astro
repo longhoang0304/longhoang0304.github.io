@@ -1,0 +1,55 @@
+---
+import LinkList from '../components/LinkList.astro';
+import AccentWord from '../elements/AccentWord.astro';
+import Caret from '../elements/Caret.astro';
+import Heading from '../elements/Heading.astro';
+import Note from '../elements/Note.astro';
+import SearchField from '../elements/SearchField.astro';
+import { toSearchItem } from '../features/search-item';
+import type { SitePost } from '../features/site-posts';
+
+interface Props {
+    /** Every post, newest first; features/search.ts filters them in the browser. */
+    posts: SitePost[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="search" aria-labelledby="search-heading">
+    <div class="block">
+        <Heading as="h1" id="search-heading">
+            Looking for <AccentWord>something</AccentWord>?<Caret />
+        </Heading>
+
+        <div class="results">
+            <SearchField id="search-input" label="Search posts" placeholder="a word, a tag, a hunch…" status="[Recent]" />
+            <LinkList items={posts.map(toSearchItem)} data-search-list />
+            <Note label="None" data-search-empty hidden={posts.length !== 0}>Nothing turned up. Try another word.</Note>
+        </div>
+    </div>
+</section>
+
+<style>
+    .search {
+        min-height: var(--screen-height);
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        /* Top-aligned (unlike the other pages) so results grow downward, not around the input. */
+        padding: calc(var(--header-space) + 3rem) var(--edge-x) var(--bar-space);
+    }
+
+    .block {
+        width: min(40rem, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .results {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+</style>

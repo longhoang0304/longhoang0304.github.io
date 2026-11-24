@@ -1,0 +1,42 @@
+---
+/** Tags as bracket links with how many posts each has: [#management] 2. */
+import BracketLink from '../elements/BracketLink.astro';
+
+interface Props {
+    items: { label: string; href: string; count: number }[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="cloud">
+    {items.map((item) => (
+            <li class="item">
+                <BracketLink href={item.href} size="body">#{item.label}</BracketLink>
+                <span class="count" aria-label={`${item.count} ${item.count === 1 ? 'post' : 'posts'}`}>{item.count}</span>
+            </li>
+    ))}
+</ul>
+
+<style>
+    .cloud {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1.5rem;
+    }
+
+    .item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .count {
+        font-size: 0.75rem;
+        color: var(--c-muted);
+        font-variant-numeric: tabular-nums;
+    }
+</style>

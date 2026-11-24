@@ -1,0 +1,129 @@
+---
+/**
+ * The shell: the frame every page wraps itself in. Document head, fonts, theme, the
+ * header and footer views, and the global styles. It sits outside the UI layers, between
+ * pages and views: pages use it, it uses views and below.
+ *
+ * Page content goes in the default slot (inside <main>); extras that sit outside <main>
+ * (e.g. the scroll hint) go in slot="after".
+ */
+import { SITE } from '@config';
+import '@styles/theme.css';
+import './base.css';
+
+import { links, location, socialLinks, timeZone } from '../features/site-info';
+import type { NavLink } from '../features/types';
+import FooterView from '../views/FooterView.astro';
+import HeaderView from '../views/HeaderView.astro';
+import HeadMeta from './HeadMeta.astro';
+import ThemeInit from './ThemeInit.astro';
+
+interface Props {
+    title?: string;
+    /** For search results and link previews. */
+    description?: string;
+    /** "auto": header nav appears after scrolling past the landing. "always": shown from the start. */
+    headerNav?: 'auto' | 'always';
+    /** Header nav links; defaults to the site links from site-info.ts. */
+    navLinks?: NavLink[];
+    /** "pinned": header and footer stay on screen. "flow": they scroll away with the page (long reads). */
+    bars?: 'pinned' | 'flow';
+}
+
+const { title = SITE.title, description = SITE.desc, headerNav = 'auto', navLinks = links, bars = 'pinned' } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <HeadMeta title={title} description={description} />
+
+    <ThemeInit />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+</head>
+<body>
+    <div class="site" data-bars={bars}>
+        <HeaderView location={location} timeZone={timeZone} links={navLinks} alwaysShowNav={headerNav === 'always'} />
+
+        <main>
+            <slot />
+        </main>
+
+        <FooterView year={year} links={socialLinks} />
+        <slot name="after" />
+    </div>
+</body>
+</html>
+
+<script>
+    import { initLocalDates } from '../features/local-dates';
+    import { initScrollFade } from '../features/scroll-fade';
+    import { initSearchShortcut } from '../features/search-shortcut';
+
+    initLocalDates();
+    initScrollFade();
+    initSearchShortcut();
+</script>
+
+<style>
+    .site {
+        --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+        --font-poetic: 'Cormorant Garamond', Garamond, Georgia, serif;
+        --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+        /* Page gutters; sections pad by --bar-space so the fixed header/footer never cover them. */
+        --edge-x: 2.5rem;
+        --edge-y: 1.25rem;
+        --bar-space: calc(44px + 2 * var(--edge-y) + 1rem);
+        /* Header is taller where its nav wraps to a second row (see HeaderView). */
+        --header-space: var(--bar-space);
+        /* Full-screen sections fill the viewport; in the page flow they just take their content's height. */
+        --screen-height: 100vh;
+
+        display: block;
+        background: var(--c-bg);
+        color: var(--c-text);
+        font-family: var(--font-mono);
+    }
+
+    @media (max-width: 800px) {
+        .site {
+            --header-space: calc(var(--bar-space) + 44px);
+        }
+    }
+
+    @supports (height: 100dvh) {
+        .site { --screen-height: 100dvh; }
+    }
+
+    /* Bars in the page flow take their own space, so content needs no room kept for them;
+       main grows so the footer still sits at the bottom of a short page. */
+    .site[data-bars='flow'] {
+        --header-space: 0px;
+        --bar-space: 0px;
+        --screen-height: auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    .site[data-bars='flow'] > main {
+        flex: 1;
+    }
+
+    @media (max-width: 480px) {
+        .site {
+            --edge-x: 1.25rem;
+            --edge-y: 0.75rem;
+        }
+    }
+</style>

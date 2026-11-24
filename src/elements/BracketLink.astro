@@ -1,0 +1,47 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'a'> & {
+    /** "inherit" takes the surrounding text size (e.g. in the header bar); "body" is the main nav size. */
+    size?: 'inherit' | 'body';
+};
+
+const { class: className, size = 'inherit', ...attrs } = Astro.props;
+---
+
+<a class:list={['nav-link', className]} data-size={size} {...attrs}>
+    <span class="bracket" aria-hidden="true">[</span>
+    <slot />
+    <span class="bracket" aria-hidden="true">]</span>
+</a>
+
+<style>
+    .nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        min-height: 44px;
+        padding: 0 0.25rem;
+    }
+
+    .nav-link[data-size='body'] {
+        font-size: 0.9375rem;
+    }
+
+    .bracket {
+        color: var(--c-bracket);
+        transition: color 0.2s ease;
+    }
+
+    .nav-link:hover .bracket {
+        color: var(--c-accent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .nav-link[data-size='body'] {
+        font-size: 0.9375rem;
+    }
+
+    .bracket { transition: none; }
+    }
+</style>

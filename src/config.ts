@@ -1,10 +1,5 @@
-import type { SocialObjects } from "@types";
-
 export const SITE = {
-  website: "https://longhoang.blog/",
-  desc: "Long's daily rants",
-  title: "Long's rants",
+  desc: "Stray thoughts, side quests and the odd rabbit hole.",
+  title: "Driven by curiosity",
   ogImage: "thumb.jpg",
-  lightAndDarkMode: true,
-  postPerPage: 15,
 };

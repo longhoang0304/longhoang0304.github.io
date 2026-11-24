@@ -1,0 +1,67 @@
+---
+/**
+ * A short list of in-page links ("On this page"). The link for the section being read is
+ * marked aria-current by features/toc-tracker.ts.
+ */
+interface Props {
+    title?: string;
+    items: { href: string; text: string }[];
+}
+
+const { title = 'On this page', items } = Astro.props;
+---
+
+<nav class="toc" aria-label={title} data-toc>
+    <p class="title">{title}</p>
+    <ol class="list">
+        {items.map((item) => (
+                <li><a href={item.href} class="link">{item.text}</a></li>
+        ))}
+    </ol>
+</nav>
+
+<style>
+    .toc {
+        font-size: 0.8125rem;
+        line-height: 1.4;
+    }
+
+    .title {
+        margin: 0 0 0.75rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--c-muted);
+    }
+
+    .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        border-left: 1px solid var(--c-border);
+    }
+
+    .link {
+        display: block;
+        margin-left: -1px;
+        padding: 0.35rem 0 0.35rem 0.875rem;
+        border-left: 1px solid transparent;
+        color: var(--c-muted);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .link[aria-current='true'] {
+        border-left-color: var(--c-accent);
+        color: var(--c-accent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .link { transition: none; }
+    }
+</style>
+
+<script>
+    import { initTocTracker } from '../features/toc-tracker';
+
+    initTocTracker();
+</script>

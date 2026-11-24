@@ -1,0 +1,26 @@
+---
+/**
+ * A line of bracketed details: [11 Oct 2026][Rant]. Dates (with a datetime) are re-formatted
+ * for the visitor's locale by features/local-dates.ts.
+ */
+interface Props {
+    items: { text: string; datetime?: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<p class="meta">
+    {items.map((m) => (m.datetime ? <span>[<time datetime={m.datetime} data-local-date>{m.text}</time>]</span> : <span>[{m.text}]</span>))}
+</p>
+
+<style>
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--c-muted);
+        font-variant-numeric: tabular-nums;
+    }
+</style>

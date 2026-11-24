@@ -2,7 +2,7 @@ import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 
-export const blogSchema = z
+export const postSchema = z
   .object({
     postId: z.string(),
     postSlug: z.string(),
@@ -14,9 +14,21 @@ export const blogSchema = z
   })
   .strict();
 
-const blog = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
-  schema: blogSchema,
+const rants = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/rants" }),
+  schema: postSchema,
 });
 
-export const collections = { blog };
+const projects = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
+  schema: postSchema,
+});
+
+// Long-form research write-ups. The "RFC - *" originals kept in the same folder are
+// source material, not posts, so they're excluded.
+const research = defineCollection({
+  loader: glob({ pattern: ["**/*.md", "!RFC - *"], base: "./src/content/research" }),
+  schema: postSchema,
+});
+
+export const collections = { rants, projects, research };
