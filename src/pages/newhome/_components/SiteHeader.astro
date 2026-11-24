@@ -9,14 +9,16 @@ interface Props {
     timeZone: string;
     /** Shown once the visitor has scrolled past the landing (which has its own nav). */
     links: NavLink[];
+    /** Show the nav from the start, for pages without a landing section. */
+    alwaysShowNav?: boolean;
 }
 
-const { location, timeZone, links } = Astro.props;
+const { location, timeZone, links, alwaysShowNav = false } = Astro.props;
 ---
 
 <header class="corner-row site-header">
     <span class="location">{location}</span>
-    <nav aria-label="Site" class="header-nav">
+    <nav aria-label="Site" class="header-nav" data-always={alwaysShowNav || undefined}>
         {links.map((link) => (
                 <BracketLink href={link.href}>{link.label}</BracketLink>
         ))}
@@ -41,8 +43,8 @@ const { location, timeZone, links } = Astro.props;
     }
 
     /* Hidden on the landing (before JS runs, too), visible on every later section. */
-    :global(:root:not([data-section])) .header-nav,
-    :global(:root[data-section='top']) .header-nav {
+    :global(:root:not([data-section])) .header-nav:not([data-always]),
+    :global(:root[data-section='top']) .header-nav:not([data-always]) {
         opacity: 0;
         visibility: hidden;
     }

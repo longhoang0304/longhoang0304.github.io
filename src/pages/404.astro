@@ -1,55 +1,86 @@
 ---
-import Layout from "@layouts/Layout.astro";
+/**
+ * 404 in the new design; reuses the page frame and pieces from src/pages/newhome.
+ */
+import { SITE } from '@config';
+import BracketLink from './newhome/_components/BracketLink.astro';
+import Caret from './newhome/_components/Caret.astro';
+import PageShell from './newhome/_components/PageShell.astro';
+import { links } from './newhome/_lib/content';
+
+// No landing here, so the header nav is the way out: lead with Home.
+const navLinks = [{ label: 'Home', href: '/' }, ...links];
 ---
 
-<Layout>
-  <div id="e404">
-    <div id="e404-code">404</div>
-    <div id="e404-msg">
-      <div>¯\_(ツ)_/¯</div>
-      <div>Oops! Don"t be lost!</div>
-      <div>There is nothing here</div>
-    </div>
-    <div id="e404-home">
-      <a href="/">Home</a>
-    </div>
-    <div id="e404-back">
-      <a href="#" onclick="history.back()">Go back</a>
-    </div>
-  </div>
-</Layout>
+<PageShell title={`Page not found · ${SITE.title}`} headerNav="always" navLinks={navLinks}>
+    <section class="not-found" aria-labelledby="not-found-heading">
+        <p class="code">404</p>
+        <h1 id="not-found-heading" class="headline">
+            Wandered too <span class="word">far</span><Caret />
+        </h1>
+        <p class="message">Nothing here. Curiosity took a wrong turn.</p>
+
+        <nav aria-label="Way back" class="nav">
+            <BracketLink href="/">Home</BracketLink>
+            <BracketLink href="/" data-go-back>Go back</BracketLink>
+        </nav>
+    </section>
+</PageShell>
+
+<script>
+    import { initGoBack } from './newhome/_lib/go-back';
+
+    initGoBack();
+</script>
 
 <style>
-  #e404 {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
+    .not-found {
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--header-space) var(--edge-x) var(--bar-space);
+        text-align: center;
+    }
 
-  #e404-code {
-    color: rgb(0, 108, 172);
-    font-weight: bold;
-    font-size: 10rem;
-  }
-  
-  #e404-msg {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-  }
+    /* The big, unmistakable "404". */
+    .code {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(7rem, 24vw, 15rem);
+        line-height: 0.85;
+        letter-spacing: -0.05em;
+        color: var(--c-accent);
+    }
 
-  #e404-back a, #e404-home a {
-    color: rgb(0, 108, 172);
-    text-underline-offset: 5px;
-    text-decoration: none;
-    font-size: 1.5rem;
-  }
+    .headline {
+        margin: 1.25rem 0 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(1.75rem, 4.5vw, 3rem);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+    }
 
-  #e404-back a:hover, #e404-home a:hover {
-    text-decoration: underline;
-  }
+    .message {
+        margin: 1rem 0 0;
+        /* One line wherever it fits; only very narrow screens wrap, evenly. */
+        text-wrap: balance;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--c-muted);
+    }
+
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem 1.5rem;
+        margin-top: 2rem;
+        font-size: 0.9375rem;
+    }
 </style>
