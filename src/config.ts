@@ -1,5 +1,5 @@
 export const SITE = {
-  desc: "Driven by curiosity: stray thoughts, side quests and the odd rabbit hole.",
-  title: "Long Hoang",
+  desc: "Stray thoughts, side quests and the odd rabbit hole.",
+  title: "Driven by curiosity",
   ogImage: "thumb.jpg",
 };

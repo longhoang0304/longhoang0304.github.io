@@ -1,6 +1,5 @@
 ---
 /** Search in the new design. Posts are rendered at build time; features/search.ts filters them in the browser. */
-import { SITE } from '@config';
 import { linksWithHome } from '@features/site-info';
 import { getSitePosts } from '@features/site-posts';
 import PageShell from '@shell/PageShell.astro';
@@ -9,7 +8,7 @@ import SearchView from '@views/SearchView.astro';
 const posts = await getSitePosts();
 ---
 
-<PageShell title={`Search · ${SITE.title}`} headerNav="always" navLinks={linksWithHome} bars="flow">
+<PageShell title="Looking for something?" headerNav="always" navLinks={linksWithHome} bars="flow">
     <SearchView posts={posts} />
 </PageShell>
 

@@ -1,6 +1,5 @@
 ---
 /** Every research write-up, newest first. */
-import { SITE } from '@config';
 import { getCategoryPosts } from '@features/category-posts';
 import { categories, linksWithHome } from '@features/site-info';
 import PageShell from '@shell/PageShell.astro';
@@ -10,6 +9,6 @@ const posts = await getCategoryPosts('research');
 const { heading } = categories.research;
 ---
 
-<PageShell title={`Research · ${SITE.title}`} headerNav="always" navLinks={linksWithHome} bars="flow">
+<PageShell title={`${heading.lead} ${heading.accent}`} headerNav="always" navLinks={linksWithHome} bars="flow">
     <PostListView lead={heading.lead} accent={heading.accent} posts={posts} />
 </PageShell>

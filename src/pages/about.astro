@@ -1,11 +1,10 @@
 ---
 /** About in the new design. */
-import { SITE } from '@config';
 import { linksWithHome } from '@features/site-info';
 import PageShell from '@shell/PageShell.astro';
 import AboutView from '@views/AboutView.astro';
 ---
 
-<PageShell title={`About · ${SITE.title}`} headerNav="always" navLinks={linksWithHome}>
+<PageShell title="About" headerNav="always" navLinks={linksWithHome}>
     <AboutView />
 </PageShell>

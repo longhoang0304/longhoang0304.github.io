@@ -1,12 +1,11 @@
 ---
 /** 404 in the new design. */
-import { SITE } from '@config';
 import { linksWithHome } from '@features/site-info';
 import PageShell from '@shell/PageShell.astro';
 import NotFoundView from '@views/NotFoundView.astro';
 ---
 
-<PageShell title={`Page not found · ${SITE.title}`} headerNav="always" navLinks={linksWithHome}>
+<PageShell title="Wandered too far" headerNav="always" navLinks={linksWithHome}>
     <NotFoundView />
 </PageShell>
 
