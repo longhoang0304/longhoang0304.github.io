@@ -5,11 +5,11 @@ import Caret from '../elements/Caret.astro';
 import Heading from '../elements/Heading.astro';
 import Note from '../elements/Note.astro';
 import SearchField from '../elements/SearchField.astro';
-import { toSearchItem } from '../lib/search-item';
-import type { SitePost } from '../lib/site-posts';
+import { toSearchItem } from '../features/search-item';
+import type { SitePost } from '../features/site-posts';
 
 interface Props {
-    /** Every post, newest first; lib/search.ts filters them in the browser. */
+    /** Every post, newest first; features/search.ts filters them in the browser. */
     posts: SitePost[];
 }
 

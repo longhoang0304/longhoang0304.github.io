@@ -1,5 +1,5 @@
 ---
-import type { Section } from '../lib/types';
+import type { Section } from '../features/types';
 
 interface Props {
     /** Page sections in scroll order; the first is the top of the page. */
@@ -80,7 +80,7 @@ const next = sections[1] ?? sections[0];
 </style>
 
 <script>
-    import { initScrollHint } from '../lib/scroll-hint';
+    import { initScrollHint } from '../features/scroll-hint';
 
     initScrollHint();
 </script>

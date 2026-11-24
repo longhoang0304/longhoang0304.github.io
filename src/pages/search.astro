@@ -1,8 +1,8 @@
 ---
-/** Search in the new design. Posts are rendered at build time; lib/search.ts filters them in the browser. */
+/** Search in the new design. Posts are rendered at build time; features/search.ts filters them in the browser. */
 import { SITE } from '@config';
-import { linksWithHome } from '@lib/content';
-import { getSitePosts } from '@lib/site-posts';
+import { linksWithHome } from '@features/content';
+import { getSitePosts } from '@features/site-posts';
 import PageShell from '@shell/PageShell.astro';
 import SearchView from '@views/SearchView.astro';
 
@@ -14,7 +14,7 @@ const posts = await getSitePosts();
 </PageShell>
 
 <script>
-    import { initSearch } from '@lib/search';
+    import { initSearch } from '@features/search';
 
     initSearch();
 </script>

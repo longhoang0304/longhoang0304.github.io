@@ -1,7 +1,7 @@
 ---
 /** 404 in the new design. */
 import { SITE } from '@config';
-import { linksWithHome } from '@lib/content';
+import { linksWithHome } from '@features/content';
 import PageShell from '@shell/PageShell.astro';
 import NotFoundView from '@views/NotFoundView.astro';
 ---
@@ -11,7 +11,7 @@ import NotFoundView from '@views/NotFoundView.astro';
 </PageShell>
 
 <script>
-    import { initGoBack } from '@lib/go-back';
+    import { initGoBack } from '@features/go-back';
 
     initGoBack();
 </script>

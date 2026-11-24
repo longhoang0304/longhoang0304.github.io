@@ -11,8 +11,8 @@ import { SITE } from '@config';
 import '@styles/theme.css';
 import './base.css';
 
-import { email, githubUrl, links, linkedinUrl, location, timeZone } from '../lib/content';
-import type { NavLink } from '../lib/types';
+import { email, githubUrl, links, linkedinUrl, location, timeZone } from '../features/content';
+import type { NavLink } from '../features/types';
 import FooterView from '../views/FooterView.astro';
 import HeaderView from '../views/HeaderView.astro';
 import ThemeInit from './ThemeInit.astro';
@@ -59,8 +59,8 @@ const year = new Date().getFullYear();
 </html>
 
 <script>
-    import { initScrollFade } from '../lib/scroll-fade';
-    import { initSearchShortcut } from '../lib/search-shortcut';
+    import { initScrollFade } from '../features/scroll-fade';
+    import { initSearchShortcut } from '../features/search-shortcut';
 
     initScrollFade();
     initSearchShortcut();

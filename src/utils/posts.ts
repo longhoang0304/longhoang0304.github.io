@@ -12,8 +12,6 @@ export const getSortedPosts = (posts: Posts) => posts
 export const filterByTag = (posts: Posts, tag: string) => posts
     .filter(p => p.tags.includes(tag));
 
-export const getPostById = (posts: Posts, id?: string) => posts.find(post => post.postId == id)
-
 export const getAllTags = (posts: Posts): string[] => {
   const tags = new Set<string>();
   posts.forEach(post => post.tags.forEach(tag => tags.add(tag)))

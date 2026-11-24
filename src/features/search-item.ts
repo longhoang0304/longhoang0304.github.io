@@ -4,7 +4,7 @@ import type { LinkItem } from './types';
 import type { SitePost } from './site-posts';
 
 /**
- * A post as a searchable LinkList row. lib/search.ts reads the data-* fields; only the
+ * A post as a searchable LinkList row. features/search.ts reads the data-* fields; only the
  * newest RECENT_LIMIT rows start visible, as for an empty search.
  */
 export function toSearchItem(post: SitePost, index: number): LinkItem {

@@ -4,7 +4,7 @@
  * Long titles end in "…" and show in full in a pop-up on hover or focus.
  */
 import type { HTMLAttributes } from 'astro/types';
-import type { LinkItem } from '../lib/types';
+import type { LinkItem } from '../features/types';
 
 type Props = HTMLAttributes<'ul'> & {
     items: LinkItem[];
@@ -123,7 +123,7 @@ const { items, ...attrs } = Astro.props;
 </style>
 
 <script>
-    import { initTruncationFlags } from '../lib/truncation';
+    import { initTruncationFlags } from '../features/truncation';
 
     initTruncationFlags();
 </script>

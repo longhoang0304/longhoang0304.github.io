@@ -8,15 +8,15 @@
  *   views/       one region of a page each; lay out only, no colors or type of their own
  *   components/  UI pieces built from elements, business-agnostic
  *   elements/    the smallest pieces; the only places (with components) that own the look
- *   lib/         plain functions, one job per file; used by every layer
+ *   features/    plain functions, one job per file; used by every layer
  *
  * Colour scheme lives in src/styles/theme.css (global).
  * Fonts: all three are SIL OFL, so they can be self-hosted instead of Google Fonts.
  */
 import ScrollHint from '@components/ScrollHint.astro';
-import { links } from '@lib/content';
-import { getRecentPosts, RECENT_LIMIT } from '@lib/recent-posts';
-import { getSitePosts } from '@lib/site-posts';
+import { links } from '@features/content';
+import { getRecentPosts, RECENT_LIMIT } from '@features/recent-posts';
+import { getSitePosts } from '@features/site-posts';
 import PageShell from '@shell/PageShell.astro';
 import LandingView from '@views/LandingView.astro';
 import RecentView from '@views/RecentView.astro';
@@ -36,8 +36,8 @@ const sections = [
 </PageShell>
 
 <script>
-    import { initSectionScroll } from '@lib/section-scroll';
-    import { initSectionTracker } from '@lib/section-tracker';
+    import { initSectionScroll } from '@features/section-scroll';
+    import { initSectionTracker } from '@features/section-tracker';
 
     initSectionTracker();
     initSectionScroll();
