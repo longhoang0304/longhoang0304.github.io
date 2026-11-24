@@ -1,5 +1,5 @@
 ---
-postId: p1
+postId: b1
 postSlug: management-was-never-about-getting-the-job-done
 title: Management was never about getting the job done
 publishedDateTime: 2023-03-28T16:45:00Z
