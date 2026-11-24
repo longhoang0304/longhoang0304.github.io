@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { SITE } from '@config';
-import { categories } from '@features/site-info';
+import { categories, contentLicense } from '@features/site-info';
 import { getSitePosts } from '@features/site-posts';
 
 /** "Rant" and a "rant" tag are the same category to a feed reader. */
@@ -23,7 +23,7 @@ export async function GET(context: APIContext) {
       link: `${post.href}/`,
       categories: uniqueIgnoringCase([categories[post.category].label, ...post.tags]),
     })),
-    customData: `<language>en-gb</language>`,
+    customData: `<language>en-gb</language><copyright>© ${contentLicense.years}. Licensed under ${contentLicense.name}: ${contentLicense.url}</copyright>`,
     trailingSlash: true,
   });
 }

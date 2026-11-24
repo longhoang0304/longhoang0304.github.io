@@ -9,6 +9,7 @@ import Heading from '../elements/Heading.astro';
 import MetaLine from '../elements/MetaLine.astro';
 import Text from '../elements/Text.astro';
 import { toPostHeader } from '../features/post-header';
+import { contentLicense } from '../features/site-info';
 import type { Neighbours } from '../features/post-neighbours';
 import { toNeighbourItems } from '../features/neighbour-items';
 import type { SitePost } from '../features/site-posts';
@@ -55,6 +56,10 @@ const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, te
             )}
             {nextReads.length > 0 && <LinkList items={nextReads} aria-label="More posts" />}
             <BracketLink href={section.href}>← All {section.name.toLowerCase()}</BracketLink>
+            <div class="license">
+                <Text>© {contentLicense.years}</Text>
+                <BracketLink href={contentLicense.url} rel="license">{contentLicense.name}</BracketLink>
+            </div>
         </footer>
     </article>
 
@@ -142,6 +147,13 @@ const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, te
 
     .foot > :global(ul) {
         align-self: stretch;
+    }
+
+    .license {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0 0.5rem;
     }
 
     .tags {

@@ -16,6 +16,20 @@ export const linksWithHome: NavLink[] = [{ label: 'Home', href: '/' }, ...links]
 export const githubUrl = 'https://github.com/longhoang0304';
 export const linkedinUrl = 'https://www.linkedin.com/in/notlonghoang/';
 export const email = 'hey@longhoang.me';
+/** The year the site is built, so © notices stay current with each deploy. */
+export const currentYear = new Date().getFullYear();
+
+/** The year of the first post. */
+const firstYear = 2023;
+
+/** The license for the posts, their images and figures (see LICENSE); the code isn't licensed for reuse. */
+export const contentLicense = {
+    name: 'CC BY-NC-ND 4.0',
+    url: 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
+    /** "2023–2026": from the first post to the build year. */
+    years: currentYear > firstYear ? `${firstYear}–${currentYear}` : `${firstYear}`,
+};
+
 export const cvUrl = 'https://bit.ly/3sPIEcD';
 export const rssUrl = '/rss.xml';
 

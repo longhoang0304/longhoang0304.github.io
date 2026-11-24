@@ -1,0 +1,29 @@
+Copyright (c) 2023-present Long Hoang
+
+This repository holds the source of longhoang.me. It contains two kinds of work,
+licensed differently.
+
+1. Content: Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+   International (CC BY-NC-ND 4.0)
+
+   Covers the posts and everything published with them:
+
+     src/content/         the posts (rants, projects, research)
+     public/blog-assets/  images and figures used in the posts
+     diagrams/            the sources of those figures
+
+   You may copy and share this material in any medium or format, as long as you:
+     - give appropriate credit, link to the license, and link to the original post;
+     - do not use it for commercial purposes;
+     - do not share adapted, remixed or translated versions of it.
+
+   Summary: https://creativecommons.org/licenses/by-nc-nd/4.0/
+   Full legal code: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+
+2. Code: all rights reserved
+
+   Everything else in this repository (the site's code, styles and
+   configuration) is not licensed for reuse. You may read it here, but you may
+   not copy, modify or redistribute it without written permission.
+
+For any use not covered above, ask: hey@longhoang.me

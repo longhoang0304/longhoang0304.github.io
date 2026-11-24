@@ -4,7 +4,7 @@
  * description, Open Graph and Twitter cards, and the feed.
  */
 import { SITE } from '@config';
-import { rssUrl } from '../features/site-info';
+import { contentLicense, rssUrl } from '../features/site-info';
 
 interface Props {
     title: string;
@@ -21,6 +21,7 @@ const imageURL = new URL(SITE.ogImage, Astro.site).href;
 <link rel="canonical" href={canonicalURL} />
 <link rel="icon" href="/favicon.ico" />
 <link rel="alternate" type="application/rss+xml" title={SITE.title} href={rssUrl} />
+<link rel="license" href={contentLicense.url} />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={SITE.title} />
