@@ -8,21 +8,20 @@ import { toPostItem } from '../features/post-item';
 import type { Post } from '../features/types';
 
 interface Props {
-    /** Heading as three parts, the middle one in the accent style: "Things I" "ranted" "about". */
+    /** Heading as two parts, the second in the accent style: "Stray" "thoughts". */
     lead: string;
     accent: string;
-    tail?: string;
     /** Every post of the category, newest first. */
     posts: Post[];
 }
 
-const { lead, accent, tail, posts } = Astro.props;
+const { lead, accent, posts } = Astro.props;
 ---
 
 <section class="category" aria-labelledby="category-heading">
     <div class="block">
         <Heading as="h1" id="category-heading">
-            {`${lead} `}<Accent>{accent}</Accent>{tail && ` ${tail}`}<Caret />
+            {`${lead} `}<Accent>{accent}</Accent><Caret />
         </Heading>
         {posts.length === 0
             ? <Note label="Soon">Nowhere yet. Still wandering, check back soon.</Note>
