@@ -1,6 +1,6 @@
 ---
 /**
- * A list of one-line links with bracketed meta before each: [Oct 11, 2026][Rant] Title.
+ * A list of one-line links with bracketed meta before each: [11 Oct 2026][Rant] Title.
  * Long titles end in "…" and show in full in a pop-up on hover or focus.
  */
 import type { HTMLAttributes } from 'astro/types';
@@ -18,7 +18,7 @@ const { items, ...attrs } = Astro.props;
             <li hidden={item.hidden} {...item.attrs}>
                 <a href={item.href} class="link">
                     <span class="meta">
-                        {item.meta.map((m) => (m.datetime ? <time datetime={m.datetime}>[{m.text}]</time> : <span>[{m.text}]</span>))}
+                        {item.meta.map((m) => (m.datetime ? <span>[<time datetime={m.datetime} data-local-date>{m.text}</time>]</span> : <span>[{m.text}]</span>))}
                     </span>
                     <span class="title" data-truncate>{item.title}</span>
                     <span class="popup" aria-hidden="true">{item.title}</span>

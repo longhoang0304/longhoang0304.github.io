@@ -27,7 +27,8 @@ export interface Section {
 export interface LinkItem {
     href: string;
     title: string;
-    /** Shown before the title, each in brackets: [Oct 11, 2026][Rant]. */
+    /** Shown before the title, each in brackets: [11 Oct 2026][Rant]. With a datetime, the text is
+     *  a date that the browser re-formats for the visitor's locale (features/local-dates.ts). */
     meta: { text: string; datetime?: string }[];
     hidden?: boolean;
     /** Extra attributes for the row, e.g. data-* hooks for scripts. */

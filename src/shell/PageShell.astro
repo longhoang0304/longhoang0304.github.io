@@ -59,9 +59,11 @@ const year = new Date().getFullYear();
 </html>
 
 <script>
+    import { initLocalDates } from '../features/local-dates';
     import { initScrollFade } from '../features/scroll-fade';
     import { initSearchShortcut } from '../features/search-shortcut';
 
+    initLocalDates();
     initScrollFade();
     initSearchShortcut();
 </script>
