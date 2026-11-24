@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "astro build",
+		"build": "node --test src/layers.test.ts && astro build",
+		"test": "node --test src/layers.test.ts",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
