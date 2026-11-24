@@ -1,5 +1,6 @@
 ---
 import Abstract from '../components/Abstract.astro';
+import FloatingTools from '../components/FloatingTools.astro';
 import LinkList from '../components/LinkList.astro';
 import Prose from '../components/Prose.astro';
 import TableOfContents from '../components/TableOfContents.astro';
@@ -63,6 +64,8 @@ const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, te
             </aside>
     )}
 </div>
+
+<FloatingTools />
 
 <style>
     /* One 40rem text column, centered; wide screens add the contents in the right margin. */
