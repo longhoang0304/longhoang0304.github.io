@@ -38,7 +38,7 @@ Even if you only ever ship one product, the same split pays off: it is what make
 - The structure: a UI in six layers, a business layer of plain functions, and a data layer behind repos, with data flowing one way between them (sections 2 and 3).
 - A set of named rules, and a plain test that enforces the structural ones (section 3.7).
 - One page built three ways, with the same change then made to each (section 4).
-- What the structure gives a team, what it costs, and how it scales down to a small project (section 5).
+- What the structure gives a team, what it costs, how it scales down to a small project, and this site as a live example (section 5).
 
 This is a trimmed version of that RFC. The examples here use a small task list instead of the app I built it for, and the code is SolidJS with TypeScript, but none of the rules depend on either.
 
@@ -790,6 +790,24 @@ A small project doesn't need every layer. Layers merge from the bottom up, so th
 **The smallest app** is the minimal version of the worked example: no controller, no `Actions`, no model store; smart views call features themselves. **Grow** when two smart views need the same data, when state must outlive a page, or when one action takes several steps. The features don't change.
 
 **What stays at any size:** imports go downward, views and components stay dumb, elements and components stay business-agnostic, business rules stay in plain functions, and effects stay behind an interface.
+
+### A live example: this site
+
+The site you're reading is built with Blossom at its smallest size, and its code is public: [`src/` on GitHub](https://github.com/longhoang0304/longhoang0304.github.io/tree/main/src). Unlike the app this came from, you can open it and check every claim above against real files.
+
+| Blossom | This site |
+| --- | --- |
+| The UI layers | `pages/` → `views/` → `components/` → `elements/`, with a `shell/` that every page wraps itself in |
+| The business | `features/` only: plain functions, one job per file, such as `format-date.ts`, `reading-time.ts` and `tag-counts.ts`. There is no controller, `Actions` or model store, because a static site has no state to hold |
+| Data | Astro content collections, read in one feature, `site-posts.ts`, which does the job a repo would |
+| The layers test | `src/layers.test.ts` checks UI-1 to UI-3, UI-6, STYLE-6 and that `features/` hold no UI. It runs before every build, so a broken rule stops the deploy |
+
+**Where it bends the rules:**
+
+- **No smart views.** Pages wire their views themselves, as the smallest size allows. The little behavior there is, such as search and the theme toggle, is a plain function in `features/`, started by the page or element that needs it.
+- **No class prefixes or cascade layers.** Astro scopes each file's styles to that file, which does the job STYLE-2 and the cascade layers do here.
+- **The shell sits below the pages.** In Astro a page wraps itself in its layout, so the shell is imported by pages and imports views, rather than picking the page.
+- **Markdown is styled from outside.** A post is rendered Markdown with no classes of its own, so the `Prose` component styles its tags directly.
 
 ## Related work
 
