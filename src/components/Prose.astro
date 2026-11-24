@@ -227,7 +227,7 @@ const { variant = 'post' } = Astro.props;
 
     /* ---- Paper: numbered sections ---- */
     .prose[data-variant='paper'] {
-        counter-reset: section;
+        counter-reset: section appendix;
     }
 
     .prose[data-variant='paper'] :global(h2) {
@@ -248,5 +248,15 @@ const { variant = 'post' } = Astro.props;
 
     .prose[data-variant='paper'] :global(h2::before) { content: counter(section) '.'; }
     .prose[data-variant='paper'] :global(h3::before) { content: counter(section) '.' counter(subsection); }
+
+    /* Appendices ("## Appendix A: …") are lettered: their own heading already says the letter,
+       and the sections inside them are A.1, A.2, … */
+    .prose[data-variant='paper'] :global(h2[id^='appendix']) {
+        counter-increment: appendix;
+        counter-reset: subsection;
+    }
+
+    .prose[data-variant='paper'] :global(h2[id^='appendix']::before) { content: none; }
+    .prose[data-variant='paper'] :global(h2[id^='appendix'] ~ h3::before) { content: counter(appendix, upper-alpha) '.' counter(subsection); }
 
 </style>

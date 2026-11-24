@@ -27,7 +27,7 @@ const paper = post.type === 'paper';
 const { meta, summary, section } = toPostHeader(post);
 const nextReads = toNeighbourItems(neighbours);
 // A contents list only helps once there's something to skip between.
-const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, text: s.text })) : [];
+const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, text: s.text, appendix: s.slug.startsWith('appendix') })) : [];
 ---
 
 <div class="layout">

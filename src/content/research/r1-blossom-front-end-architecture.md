@@ -40,6 +40,7 @@ Even if you only ever ship one product, the same split pays off: it is what make
 - A set of named rules, and a plain test that enforces the structural ones (section 3.7).
 - One page built three ways, with the same change then made to each (section 4).
 - What the structure gives a team, what it costs, how it scales down to a small project, and this site as a live example (section 5).
+- Every rule in one place, reference tables and code, and a sample `CLAUDE.md` (appendices A and B).
 
 This is a trimmed version of that RFC. The examples here use a small task list instead of the app I built it for, and the code is SolidJS with TypeScript, but none of the rules depend on either.
 
@@ -165,21 +166,7 @@ Views stay short by being built from bigger pieces than elements. A **domain com
 
 #### UI rules
 
-**UI-1. Imports go downward only.** Shell → pages → smart views → views → domain components → components → elements. A layer may skip down, but never import up.
-
-**UI-2. No imports within a level.** A page doesn't use another page, a view another view, an element another element.
-
-**UI-3. Components don't use other components,** and domain components don't use other domain components. A component that wraps content (dialog, panel, tabs) takes it as a slot the caller fills. So "a dialog with a form in it" is a view, or a domain component, that puts a form group into a dialog.
-
-**UI-4. Elements and components are business-agnostic.** They take UI data: text, a tone, rows, column specs. The more of the UI that is dumb, the more of it carries over to other projects.
-
-**UI-5. Only pages and smart views call `actions`.**
-
-**UI-6. HTML controls and visual styles stay in elements and components.** They write `button`, `input`, `select`, `textarea`, `a` and `table` with their accessibility, and own color, type and borders. The layers above use HTML and CSS only for layout. This keeps the look consistent.
-
-**UI-7. Events go up through callback props.** Named ones (`onPin`, `onRemove`) when a piece has a few events, or one `onEvent` with its own event union when it has many. With `onEvent`, the smart view handles them all in one switch, and a new event fails to compile until it has a case.
-
-**UI-8. UI control logic lives in a `create…State()` primitive.** Its transitions are plain functions that tests call without the framework or a DOM; the primitive only holds the signals.
+Eight rules keep the UI in shape; Appendix A.1 has them in full. In short: imports only go down and never within a layer, elements and components know nothing about the business, only pages and smart views call `actions`, and only elements and components draw controls and own the look.
 
 #### Why no cross imports
 
@@ -235,26 +222,7 @@ It is small (an interface of two methods, and a SolidJS version of a few dozen l
 - **It turns a replaced model into the framework's own way of updating.** With SolidJS it reconciles only the parts that changed; with React it gives a subscription and a snapshot (`useSyncExternalStore`).
 - **It gives one writer and one direction.** Only the controller writes it, so "what changed the screen?" has one answer.
 
-```typescript
-// src/solid-model-store.ts: beside the shell, since it imports the UI framework
-export function createSolidModelStore(initial: AppModel): ModelStore & { readonly view: AppModel } {
-  let model = initial
-  const [view, setView] = createStore<AppModel>(structuredClone(initial))
-  return {
-    view,
-    get: () => model,
-    update(change) {
-      const next = change(model)
-      batch(() => {
-        for (const key of keysOf(model, next)) {
-          if (next[key] !== model[key]) setView(key, reconcile(structuredClone(next[key])))
-        }
-      })
-      model = next
-    },
-  }
-}
-```
+Appendix B.2 shows a SolidJS version.
 
 #### The path of one change
 
@@ -271,16 +239,7 @@ draw:      only the bindings that read what changed update
 
 ### State, routes and text
 
-| State | Examples | Where |
-| --- | --- | --- |
-| Business state | queries, the data a page is working on, running actions, prompts, form errors | the controller, as plain TypeScript |
-| What the screen draws | every page's view model, prompts, the toast | the model store, written only by the controller |
-| Data kept between calls | the session, reference lists such as labels, pages already loaded | an in-memory cache in `storage/`, behind a repo |
-| Data saved on the device | preferences such as page size, the light or dark choice | local storage in `storage/`, behind a preferences repo |
-| Current page | which page is open | `model.route`, kept in step with the URL by the shell |
-| UI control state | selection, focus, an open menu, text being typed | a `create…State()` primitive beside the component that owns it |
-| UI state that views share | a selection that a list and its detail both show | the page, passed to its views |
-| UI state that outlives a page | a list's selection while one of its items is open | the shell, passed to the page |
+Each kind of state has one home: business state in the controller, what the screen draws in the model store, data kept or saved in storage behind a repo, the current page in the model, and UI-only state in the component, page or shell that needs it. Appendix B.1 lists every kind with examples.
 
 **Not used:** data-fetching libraries (such as TanStack Query or SWR) and the framework's resource helpers. They fetch from inside components, which puts server calls in the UI. A query cache with no UI framework in it can still go inside a repo, if cached data shown while refetching is ever needed.
 
@@ -321,21 +280,9 @@ src/features/
 
 **The UI meets the business only through `Actions` and view models,** so the business can be built in whatever architecture fits the project: these features and flows, Clean Architecture's use cases, a state machine, or a mix. The rules below are Blossom's default.
 
-**BIZ-1. One feature per file,** named after what it does (`pin-task.ts`), never after a role (`task-service.ts`, `manager.ts`). With object-oriented services, a function is bound to its class: to use one operation, the caller builds the whole class with everything its constructor needs, and a test has to build or mock all of it. A feature file exports a plain function that takes data and the repos it needs, and returns data.
-
-**BIZ-2. Functions, not services.** Data are types, not classes, because models and view models are copied and compared as plain data.
-
-**BIZ-3. Pure functions, effects at the edge.** No module-level state, and no `fetch`, `localStorage`, `window` or `document` in `features/`. Changing local variables inside a function is fine; don't bend TypeScript to look pure.
-
-**BIZ-4. Features don't import other features.** When a second feature needs some code, move it down then, not before: functions to `shared/`, types to `models/`.
-
-**BIZ-5. Flows chain features into one action** (create a task: validate the form, save the task, notify the assignee) and hold no rules of their own. Only the controller runs flows.
-
-**BIZ-6. The controller holds the state; features hold the rules.** Each area of the controller keeps what its page is working on, what is loading, running or failed, and which dialog is open. For each action it runs a feature or flow, aborts a run that a newer one replaces, drops an answer that arrives after the user has moved on, and writes its page's model to the store in one place.
+Seven rules shape the business layer; Appendix A.2 has them in full. In short: one feature per file, plain functions instead of services, effects kept at the edge, no feature importing another, flows that only chain features, a controller that holds the state while features hold the rules, and a new piece beside the old one instead of a branch.
 
 **Rule or state?** Ask whether it would still hold with nobody watching, in a script or a batch job. If it would, it is a business rule, and goes in a feature. If it exists only because someone is working on a screen (a loading flag, an open dialog, an answer that came too late), it is the controller's state.
-
-**BIZ-7. A new piece, not a branch.** When a big change would change what other callers rely on, write a new feature beside the old one, and point only the callers that need it at the new one. Don't add an `if`/`else` to shared code for it: branches spread to every caller, and later nobody can tell which path ran. Duplicating is fine; once both settle, move what they share down. An `if`/`else` is right when the condition is part of the rule itself, such as when a task is overdue.
 
 #### Models and view models
 
@@ -361,15 +308,7 @@ src/storage/     http-client.ts    the server, over fetch
                  memory-cache.ts   data kept between calls
 ```
 
-**REPO-1. One repo per kind of data,** named after the data, not its source: `tasks-repo.ts`, never `http-tasks.ts`.
-
-**REPO-2. Repos speak models.** Reading and writing wire formats happens in the repo, never in features.
-
-**REPO-3. Repos hold no business rules.** They choose the source and may cache, but what the data means is decided in features.
-
-**REPO-4. Features take repos, never storage.** Only the entry builds storage and repos, so swapping a source, or a fake for a test, is one change in one place.
-
-**REPO-5. Storage is small, generic, and the only place with effects.** It knows nothing of the business, so another project can reuse it as it is.
+Five rules keep data access in one place; Appendix A.3 has them in full. In short: one repo per kind of data, repos speak models, hold no business rules, are the only thing features take, and sit on storage, the only place with effects.
 
 Repos and the model store are both ports, interfaces whose implementations the entry chooses, but they face opposite ways, so they stay separate. If the model store were a repo, any feature could change the screen directly, and the one-way flow would break.
 
@@ -395,13 +334,7 @@ The CSS cascade layers mirror the UI layers, so which style wins follows the arc
 
 #### Style rules, in short
 
-- **STYLE-1. One stylesheet per file that draws,** beside its `.tsx`, imported only by it.
-- **STYLE-2. Class names start with their layer's prefix,** then the block and BEM: `.c-table__head`, `.e-button--primary`. A stylesheet styles only its own block, never bare tags or another file's classes.
-- **STYLE-3. Each control is styled once,** in its element or component, so changing the button's padding changes every button on every page. That is what makes a design system easy to build and change.
-- **STYLE-4. Above components, layout only:** display, flex, grid, gap, padding, margin, size. Color, type, borders and shadows belong to elements and components.
-- **STYLE-5. States use attributes,** not modifier classes: `[aria-selected="true"]`, `:disabled`, `[data-state="open"]`. The style then can't drift from what assistive technology is told.
-- **STYLE-6. Every color comes from the theme.** No hex, `rgb()` or named color outside `themes/`, so every product and mode works everywhere.
-- **STYLE-7. Ids and test ids use the same names as classes:** `data-testid="v-task-form__submit"`. Inspect anything in the browser, and its name says which file to open.
+Seven rules keep the look consistent; Appendix A.4 has them in full. In short: one stylesheet per file that draws, classes prefixed by layer, each control styled once, only layout above components, states as attributes, every color from the theme, and ids that match class names.
 
 #### Themes
 
@@ -749,7 +682,7 @@ Each piece has one way in: a feature is one function, an action is one entry in 
 
 #### Working with an AI assistant
 
-A change follows the imports. To change page A, an assistant reads page A and only what it imports; imports only go down and views can't import each other, so nothing else can change what page A does. And what it didn't read can't quietly break a rule: the type checker catches wrong props, and the layers test catches imports and styles in the wrong place. A short `CLAUDE.md` (or your assistant's equivalent) that lists the folders, what each may import, and the rules that are never broken goes a long way.
+A change follows the imports. To change page A, an assistant reads page A and only what it imports; imports only go down and views can't import each other, so nothing else can change what page A does. And what it didn't read can't quietly break a rule: the type checker catches wrong props, and the layers test catches imports and styles in the wrong place. A short `CLAUDE.md` (or your assistant's equivalent) that lists the folders, what each may import, and the rules that are never broken goes a long way; Appendix B.3 has one to start from.
 
 ### Trade-offs
 
@@ -861,3 +794,291 @@ Some ideas were weighed and dropped. I keep them written down, with the reason, 
 - Brad Frost, [Atomic Design](https://atomicdesign.bradfrost.com/) (2016): layers sorted by size, where Blossom sorts by what each solves.
 - Robert C. Martin, *Clean Architecture* (2017): use cases and boundaries, one way to build the business layer.
 - MDN, [`@layer`](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer): the CSS cascade layers the styling rules use.
+
+## Appendix A: The rules
+
+Every rule the paper refers to, in one place. Each has a name, so a code review can say "this breaks UI-5" instead of arguing it again.
+
+### UI rules
+
+**UI-1. Imports go downward only.** Shell → pages → smart views → views → domain components → components → elements. A layer may skip down, but never import up.
+
+**UI-2. No imports within a level.** A page doesn't use another page, a view another view, an element another element.
+
+**UI-3. Components don't use other components,** and domain components don't use other domain components. A component that wraps content (dialog, panel, tabs) takes it as a slot the caller fills. So "a dialog with a form in it" is a view, or a domain component, that puts a form group into a dialog.
+
+**UI-4. Elements and components are business-agnostic.** They take UI data: text, a tone, rows, column specs. The more of the UI that is dumb, the more of it carries over to other projects.
+
+**UI-5. Only pages and smart views call `actions`.**
+
+**UI-6. HTML controls and visual styles stay in elements and components.** They write `button`, `input`, `select`, `textarea`, `a` and `table` with their accessibility, and own color, type and borders. The layers above use HTML and CSS only for layout. This keeps the look consistent.
+
+**UI-7. Events go up through callback props.** Named ones (`onPin`, `onRemove`) when a piece has a few events, or one `onEvent` with its own event union when it has many. With `onEvent`, the smart view handles them all in one switch, and a new event fails to compile until it has a case.
+
+**UI-8. UI control logic lives in a `create…State()` primitive.** Its transitions are plain functions that tests call without the framework or a DOM; the primitive only holds the signals.
+
+### Business rules
+
+**BIZ-1. One feature per file,** named after what it does (`pin-task.ts`), never after a role (`task-service.ts`, `manager.ts`). With object-oriented services, a function is bound to its class: to use one operation, the caller builds the whole class with everything its constructor needs, and a test has to build or mock all of it. A feature file exports a plain function that takes data and the repos it needs, and returns data.
+
+**BIZ-2. Functions, not services.** Data are types, not classes, because models and view models are copied and compared as plain data.
+
+**BIZ-3. Pure functions, effects at the edge.** No module-level state, and no `fetch`, `localStorage`, `window` or `document` in `features/`. Changing local variables inside a function is fine; don't bend TypeScript to look pure.
+
+**BIZ-4. Features don't import other features.** When a second feature needs some code, move it down then, not before: functions to `shared/`, types to `models/`.
+
+**BIZ-5. Flows chain features into one action** (create a task: validate the form, save the task, notify the assignee) and hold no rules of their own. Only the controller runs flows.
+
+**BIZ-6. The controller holds the state; features hold the rules.** Each area of the controller keeps what its page is working on, what is loading, running or failed, and which dialog is open. For each action it runs a feature or flow, aborts a run that a newer one replaces, drops an answer that arrives after the user has moved on, and writes its page's model to the store in one place.
+
+**BIZ-7. A new piece, not a branch.** When a big change would change what other callers rely on, write a new feature beside the old one, and point only the callers that need it at the new one. Don't add an `if`/`else` to shared code for it: branches spread to every caller, and later nobody can tell which path ran. Duplicating is fine; once both settle, move what they share down. An `if`/`else` is right when the condition is part of the rule itself, such as when a task is overdue.
+
+### Repo rules
+
+**REPO-1. One repo per kind of data,** named after the data, not its source: `tasks-repo.ts`, never `http-tasks.ts`.
+
+**REPO-2. Repos speak models.** Reading and writing wire formats happens in the repo, never in features.
+
+**REPO-3. Repos hold no business rules.** They choose the source and may cache, but what the data means is decided in features.
+
+**REPO-4. Features take repos, never storage.** Only the entry builds storage and repos, so swapping a source, or a fake for a test, is one change in one place.
+
+**REPO-5. Storage is small, generic, and the only place with effects.** It knows nothing of the business, so another project can reuse it as it is.
+
+### Style rules
+
+- **STYLE-1. One stylesheet per file that draws,** beside its `.tsx`, imported only by it.
+- **STYLE-2. Class names start with their layer's prefix,** then the block and BEM: `.c-table__head`, `.e-button--primary`. A stylesheet styles only its own block, never bare tags or another file's classes.
+- **STYLE-3. Each control is styled once,** in its element or component, so changing the button's padding changes every button on every page. That is what makes a design system easy to build and change.
+- **STYLE-4. Above components, layout only:** display, flex, grid, gap, padding, margin, size. Color, type, borders and shadows belong to elements and components.
+- **STYLE-5. States use attributes,** not modifier classes: `[aria-selected="true"]`, `:disabled`, `[data-state="open"]`. The style then can't drift from what assistive technology is told.
+- **STYLE-6. Every color comes from the theme.** No hex, `rgb()` or named color outside `themes/`, so every product and mode works everywhere.
+- **STYLE-7. Ids and test ids use the same names as classes:** `data-testid="v-task-form__submit"`. Inspect anything in the browser, and its name says which file to open.
+
+## Appendix B: Reference
+
+### Where state lives
+
+| State | Examples | Where |
+| --- | --- | --- |
+| Business state | queries, the data a page is working on, running actions, prompts, form errors | the controller, as plain TypeScript |
+| What the screen draws | every page's view model, prompts, the toast | the model store, written only by the controller |
+| Data kept between calls | the session, reference lists such as labels, pages already loaded | an in-memory cache in `storage/`, behind a repo |
+| Data saved on the device | preferences such as page size, the light or dark choice | local storage in `storage/`, behind a preferences repo |
+| Current page | which page is open | `model.route`, kept in step with the URL by the shell |
+| UI control state | selection, focus, an open menu, text being typed | a `create…State()` primitive beside the component that owns it |
+| UI state that views share | a selection that a list and its detail both show | the page, passed to its views |
+| UI state that outlives a page | a list's selection while one of its items is open | the shell, passed to the page |
+
+### A model store in SolidJS
+
+```typescript
+// src/solid-model-store.ts: beside the shell, since it imports the UI framework
+export function createSolidModelStore(initial: AppModel): ModelStore & { readonly view: AppModel } {
+  let model = initial
+  const [view, setView] = createStore<AppModel>(structuredClone(initial))
+  return {
+    view,
+    get: () => model,
+    update(change) {
+      const next = change(model)
+      batch(() => {
+        for (const key of keysOf(model, next)) {
+          if (next[key] !== model[key]) setView(key, reconcile(structuredClone(next[key])))
+        }
+      })
+      model = next
+    },
+  }
+}
+```
+
+### A sample CLAUDE.md
+
+A starting point for a Blossom project's `CLAUDE.md`, so an AI assistant such as Claude Code follows these rules on every change. Copy it to the project's root, fill in the commands, and list the project's own exceptions in its `docs/architecture.md`. For a project at a smaller size, adjust the folder table (for example, one `api/` instead of `repos/` and `storage/`).
+
+```markdown
+# CLAUDE.md
+
+This front-end follows **Blossom**:
+https://longhoang.me/research/r1-blossom-front-end-architecture
+Rule IDs below (UI-1, BIZ-3 …) are the post's. Project-specific choices and
+exceptions are in `docs/architecture.md`. If a change doesn't fit a rule, stop
+and ask; never bend a rule to make code fit.
+
+## Commands
+
+- Test: `<yarn test>`. It includes `src/layers.test.ts`, which enforces most
+  rules below. Run it before you say a change is done.
+- Type check and build: `<yarn build>`
+- Run on fake data: `<yarn dev:fake>`
+
+## Where code goes
+
+Imports only go down this table. A folder may skip downward, never upward,
+and never sideways within the same level (UI-1, UI-2).
+
+| Folder | Holds | May import |
+|---|---|---|
+| `pages/` | one page; lays out views, holds the UI state they share | lower UI layers; types from `controller/`, `view-model/`, `models/` |
+| `smart-views/` | the logic: wires one view, and the domain components in it, to `actions` | views and below; the same types |
+| `views/` | dumb: one sub-problem of a page, as a region of it; reports its events through callbacks | domain components, components, elements; view-model and model types |
+| `domain-components/` | dumb: a piece of a solution that views are built from (due-date card, task form) | components, elements; view-model and model types |
+| `components/` | dumb: a UI problem, layouts included: table, dialog, tabs | elements |
+| `elements/` | the smallest UI piece: button, text input | nothing from the UI or the business |
+| `controller/` | business state; implements `Actions`; writes the model store | `view-model/`, `features/`, repo types, `shared/`, `models/` |
+| `view-model/` | one plain-data model per page | `shared/`, `models/` |
+| `features/` | one business rule or action per file; `flows/` chain them | repo types, `shared/`, `models/` |
+| `repos/` | data access, one repo per kind of data, speaking models | `storage/`, `shared/`, `models/` |
+| `storage/` | the only effects: HTTP, local storage, cache | `shared/`, `models/` |
+| `shared/` | functions used by two or more features, or features and repos | `models/` |
+| `models/` | types and their own functions | nothing |
+
+UI folders import from `models/` with `import type` only; elements and
+components import nothing from it.
+
+## Rules that are never broken
+
+- Elements and components know nothing about the business: no imports from
+  `controller/`, `view-model/`, `features/` or `models/` (UI-4).
+- Logic comes from smart views: only pages and smart views call `actions`,
+  and no component, generic or domain, does. No UI file holds the
+  controller, and nothing uses context for business data (UI-5).
+- Components, domain components and views report events through callback
+  props: named ones (`onPin`, `onRemove`) when they have a few, one `onEvent`
+  with an event union when they have many or pass on their pieces' events.
+  Hover and focus that only change UI state stay in the component's
+  `.state.ts`. Wiring longer than a line goes in the smart view's
+  `.handle.ts`, so it is tested (UI-7, UI-8).
+- Only elements and components write HTML controls (`button`, `input`,
+  `select`, `textarea`, `a`, `table`) and visual styles. Domain components,
+  views and pages use only layout: containers with flex, grid, gap,
+  padding, margin and size (UI-6, STYLE-4).
+- Components don't use other components, and domain components don't use
+  other domain components; pass content as slots (`children` or a named
+  `JSX.Element` prop) (UI-3). A domain component may use any component. A
+  cross import between two elements or two components needs a recorded
+  exception in `docs/architecture.md` first: one way, one level, with its
+  reason.
+- Business rules live in `features/`, never in the UI or the controller. The
+  controller holds each area's state (loading, running, busy, errors, open
+  dialogs), runs a feature or flow with the repos it needs, and writes the
+  model store (BIZ-6).
+- One feature per file, named after what it does (`pin-task.ts`): a plain
+  function over plain data, with its test beside it. No classes, no
+  services, no `utils.ts` or `helpers.ts` (BIZ-1, BIZ-2).
+- Features take the repos they need as arguments. `fetch`, `localStorage`,
+  `sessionStorage`, `window` and `document` appear only in `storage/` (BIZ-3,
+  REPO-4).
+- Features don't import features. A flow chains them, and only the
+  controller runs flows (BIZ-4, BIZ-5).
+- Only the controller writes the model store; features return data.
+- Every color comes from a theme: no hex, `rgb()`, `hsl()` or named color
+  outside `themes/` (STYLE-6).
+- Prefer a new piece to a branch. When a big change to business logic or UI
+  would change what other callers rely on, write a new feature, flow, view
+  or component beside the old one, and point only the callers that need it
+  at the new one. Don't add an `if`/`else` or a flag to shared code for it:
+  branches spread, and later nobody can tell which path ran. Duplicating is
+  fine; once both settle, move what they share down (BIZ-4). An `if`/`else`
+  is right when the condition is part of the rule itself, such as when a
+  task is overdue (BIZ-7).
+- Don't add a dependency (router, state-management or data-fetching library,
+  UI kit) without asking.
+
+## Naming
+
+- UI components: one folder per component, PascalCase, the file named after
+  its export, with its siblings beside it:
+  `components/Table/Table.tsx`, `Table.css`, `Table.state.ts`,
+  `Table.state.test.ts`.
+- Dumb views end in `View`, pages in `Page`; a smart view takes the plain
+  name (`TaskTableView` is wrapped by `TaskTable`).
+- Everything else is kebab-case, named after what it holds
+  (`tasks-repo.ts`, `chevron-down.svg`).
+- Classes, ids and test ids: layer prefix + block + BEM. `e-` elements, `c-`
+  components, `d-` domain components, `v-` views, `p-` pages:
+  `.c-table__head`, `.e-button--primary`,
+  `data-testid="v-task-form__submit"`. The file that knows what a thing is
+  names it; smart views only pass on their caller's `testId`, adding a
+  suffix (STYLE-2, STYLE-7).
+
+## Styling
+
+- One stylesheet per file that draws, with the same name, imported only by
+  its `.tsx`. It starts by referencing the shared base and wraps every rule
+  in `@layer ui.<its layer>` (STYLE-1).
+- Style only your own block: never bare tags, ids or another file's classes
+  (STYLE-2).
+- In elements and components, group framework classes into ours
+  (`.e-button { @apply btn btn-sm; }`). In domain components, views and
+  pages, put at most three layout utilities in markup; more go into a `d-`,
+  `v-` or `p-` class.
+- Show states with attributes (`aria-selected`, `aria-invalid`,
+  `data-state`), not modifier classes (STYLE-5).
+
+## State
+
+- What the screen draws: view models built in `view-model/`, written to the
+  model store by the controller.
+- Data kept between calls or saved on the device: behind a repo.
+- UI control state (selection, focus, an open menu, text being typed): a
+  `create…State()` primitive in a `.state.ts` file beside the component that
+  owns it, with its transitions as pure functions (UI-8). State that several
+  views share goes in their page; state that outlives a page, in the shell.
+- Text the user types stays in UI state until submit; the smart view then
+  calls one action with the whole form.
+
+## Tests
+
+- Keep logic out of markup: in `.state.ts` functions, in smart views'
+  `handle(event, …, actions)` in a `.handle.ts` file, in features and in view
+  models. Test each beside its file, in Node.
+- Smart views: call `handle` with the fake `Actions` and compare its recorded
+  calls. Features: test with fake repos. View models: build from data and
+  compare.
+
+## Adding a page: what to read
+
+Read only what the page touches. Imports only go down and views can't import
+each other, so nothing else can change what the page does; the type checker
+catches wrong props, and the layers test wrong imports.
+
+1. The spec: that page's part of the design or ticket.
+2. Sketch the page's regions: each region that solves one of its problems is
+   a view. That is the list of what to find.
+3. Pick pieces by name: list `elements/`, `components/` and
+   `domain-components/`, and read only the props of the ones the page uses
+   (the top of each file), not their bodies, state or stylesheets.
+4. Read one existing page of the same shape as a template, its whole slice:
+   page, smart views, views, controller area, view model and features.
+5. Read the contracts the page plugs into, only the parts you change:
+   `models/route.ts`, the repos it needs and their fakes,
+   `controller/actions.ts`, `controller/index.ts`, `view-model/app.ts` and
+   the shell.
+
+Don't read other pages, their views and smart views, other features or
+controller areas, or stylesheets. Read more only when a piece almost fits
+(read its body before changing it), when the page changes what another page
+shows (the controller's hooks between areas), or when its UI state must
+outlive the page (the shell).
+
+## Adding a page, in this order
+
+1. A route variant in `models/route.ts`, with tests both ways.
+2. Repo methods, or a new repo, each with its fake.
+3. Features with tests; a flow if one action takes several steps.
+4. The page's view model in `view-model/`, its `Actions` group, and the
+   controller's area file.
+5. The page, its dumb views and their smart views, each `handle` in a tested
+   `.handle.ts`, and the domain components they are built from.
+6. Stylesheets (layout only above components) and test ids. Then run the
+   tests.
+
+## If the app is translated
+
+i18n is optional. When it is used: the UI holds no text of its own; view-model
+builders turn message keys into text with the current catalog; catalogs come
+through a translations repo; dates, numbers and plurals are formatted with
+the locale in view models.
+```
