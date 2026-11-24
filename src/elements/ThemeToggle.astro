@@ -1,0 +1,54 @@
+---
+---
+
+<button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme">
+    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+</button>
+
+<style>
+    .theme-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        border: 1px solid var(--c-border);
+        border-radius: 999px;
+        background: transparent;
+        color: var(--c-muted);
+        cursor: pointer;
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+        color: var(--c-accent);
+        border-color: var(--c-accent);
+    }
+
+    .theme-toggle:focus-visible {
+        outline: 2px solid var(--c-accent);
+        outline-offset: 3px;
+    }
+
+    .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .icon-sun { display: none; }
+    :global(:root[data-theme='dark']) .icon-sun { display: block; }
+    :global(:root[data-theme='dark']) .icon-moon { display: none; }
+</style>
+
+<script>
+    import { initThemeToggle } from '../lib/theme';
+
+    initThemeToggle();
+</script>

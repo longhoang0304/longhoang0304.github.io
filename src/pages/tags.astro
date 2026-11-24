@@ -4,7 +4,7 @@ import { transformPostCollectionToPosts, removeDraft, getAllTags } from "@utils/
 import TagList from "@layouts/TagList.astro";
 
 
-const postCollection = await getCollection("blog")
+const postCollection = await getCollection("rants")
 const publishedPosts = removeDraft(postCollection)
 const transformedPosts = transformPostCollectionToPosts(publishedPosts)
 const allTags = getAllTags(transformedPosts)

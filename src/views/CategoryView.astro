@@ -1,0 +1,50 @@
+---
+import LinkList from '../components/LinkList.astro';
+import Accent from '../elements/Accent.astro';
+import Caret from '../elements/Caret.astro';
+import Heading from '../elements/Heading.astro';
+import Note from '../elements/Note.astro';
+import { toPostItem } from '../lib/post-item';
+import type { Post } from '../lib/types';
+
+interface Props {
+    /** Heading as three parts, the middle one in the accent style: "Things I" "ranted" "about". */
+    lead: string;
+    accent: string;
+    tail?: string;
+    /** Every post of the category, newest first. */
+    posts: Post[];
+}
+
+const { lead, accent, tail, posts } = Astro.props;
+---
+
+<section class="category" aria-labelledby="category-heading">
+    <div class="block">
+        <Heading as="h1" id="category-heading">
+            {`${lead} `}<Accent>{accent}</Accent>{tail && ` ${tail}`}<Caret />
+        </Heading>
+        {posts.length === 0
+            ? <Note label="Soon">Nowhere yet. Still wandering, check back soon.</Note>
+            : <LinkList items={posts.map((post) => toPostItem(post, false))} />}
+    </div>
+</section>
+
+<style>
+    .category {
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        /* Top-aligned like search, so a long list grows downward. */
+        padding: calc(var(--header-space) + 3rem) var(--edge-x) var(--bar-space);
+    }
+
+    .block {
+        width: min(40rem, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+</style>

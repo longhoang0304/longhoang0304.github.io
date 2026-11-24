@@ -1,0 +1,14 @@
+---
+/** Every rant, newest first. */
+import { SITE } from '@config';
+import { getCategoryPosts } from '@lib/category-posts';
+import { linksWithHome } from '@lib/content';
+import PageShell from '@shell/PageShell.astro';
+import CategoryView from '@views/CategoryView.astro';
+
+const posts = await getCategoryPosts('rant');
+---
+
+<PageShell title={`Rants · ${SITE.title}`} headerNav="always" navLinks={linksWithHome}>
+    <CategoryView lead="Things I" accent="ranted" tail="about" posts={posts} />
+</PageShell>

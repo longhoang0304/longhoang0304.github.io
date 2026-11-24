@@ -1,86 +1,17 @@
 ---
-/**
- * 404 in the new design; reuses the page frame and pieces from src/pages/newhome.
- */
+/** 404 in the new design. */
 import { SITE } from '@config';
-import BracketLink from './newhome/_components/BracketLink.astro';
-import Caret from './newhome/_components/Caret.astro';
-import PageShell from './newhome/_components/PageShell.astro';
-import { links } from './newhome/_lib/content';
-
-// No landing here, so the header nav is the way out: lead with Home.
-const navLinks = [{ label: 'Home', href: '/' }, ...links];
+import { linksWithHome } from '@lib/content';
+import PageShell from '@shell/PageShell.astro';
+import NotFoundView from '@views/NotFoundView.astro';
 ---
 
-<PageShell title={`Page not found · ${SITE.title}`} headerNav="always" navLinks={navLinks}>
-    <section class="not-found" aria-labelledby="not-found-heading">
-        <p class="code">404</p>
-        <h1 id="not-found-heading" class="headline">
-            Wandered too <span class="word">far</span><Caret />
-        </h1>
-        <p class="message">Nothing here. Curiosity took a wrong turn.</p>
-
-        <nav aria-label="Way back" class="nav">
-            <BracketLink href="/">Home</BracketLink>
-            <BracketLink href="/" data-go-back>Go back</BracketLink>
-        </nav>
-    </section>
+<PageShell title={`Page not found · ${SITE.title}`} headerNav="always" navLinks={linksWithHome}>
+    <NotFoundView />
 </PageShell>
 
 <script>
-    import { initGoBack } from './newhome/_lib/go-back';
+    import { initGoBack } from '@lib/go-back';
 
     initGoBack();
 </script>
-
-<style>
-    .not-found {
-        min-height: 100vh;
-        min-height: 100dvh;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: var(--header-space) var(--edge-x) var(--bar-space);
-        text-align: center;
-    }
-
-    /* The big, unmistakable "404". */
-    .code {
-        margin: 0;
-        font-family: var(--font-display);
-        font-weight: 400;
-        font-size: clamp(7rem, 24vw, 15rem);
-        line-height: 0.85;
-        letter-spacing: -0.05em;
-        color: var(--c-accent);
-    }
-
-    .headline {
-        margin: 1.25rem 0 0;
-        font-family: var(--font-display);
-        font-weight: 400;
-        font-size: clamp(1.75rem, 4.5vw, 3rem);
-        line-height: 1.1;
-        letter-spacing: -0.03em;
-    }
-
-    .message {
-        margin: 1rem 0 0;
-        /* One line wherever it fits; only very narrow screens wrap, evenly. */
-        text-wrap: balance;
-        font-size: 0.9375rem;
-        line-height: 1.6;
-        color: var(--c-muted);
-    }
-
-    .nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem 1.5rem;
-        margin-top: 2rem;
-        font-size: 0.9375rem;
-    }
-</style>

@@ -1,0 +1,45 @@
+---
+/** Display-font heading. Spacing around it is the caller's layout, so it has no margin. */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'h1'> & {
+    as?: 'h1' | 'h2' | 'p';
+    /** giant: the 404 code · hero: landing · title: section headings · subtitle: under a giant. */
+    size?: 'giant' | 'hero' | 'title' | 'subtitle';
+};
+
+const { as: Tag = 'h2', size = 'title', ...attrs } = Astro.props;
+---
+
+<Tag {...attrs} class="heading" data-size={size}><slot /></Tag>
+
+<style>
+    .heading {
+        margin: 0;
+        font-family: var(--font-display);
+        font-weight: 400;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+    }
+
+    .heading[data-size='giant'] {
+        font-size: clamp(7rem, 24vw, 15rem);
+        line-height: 0.85;
+        letter-spacing: -0.05em;
+        color: var(--c-accent);
+    }
+
+    .heading[data-size='hero'] {
+        font-size: clamp(3rem, 9vw, 8rem);
+        line-height: 1;
+        letter-spacing: -0.035em;
+    }
+
+    .heading[data-size='title'] {
+        font-size: clamp(2rem, 5vw, 3.25rem);
+    }
+
+    .heading[data-size='subtitle'] {
+        font-size: clamp(1.75rem, 4.5vw, 3rem);
+    }
+</style>

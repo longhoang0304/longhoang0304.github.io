@@ -1,0 +1,49 @@
+---
+/**
+ * A bar fixed to the top or bottom edge, holding small uppercase text and controls.
+ * It fades out while the page scrolls ([data-scrolling], set by lib/scroll-fade.ts).
+ */
+interface Props {
+    edge: 'top' | 'bottom';
+}
+
+const { edge } = Astro.props;
+const Tag = edge === 'top' ? 'header' : 'footer';
+---
+
+<Tag class="bar" data-edge={edge}><slot /></Tag>
+
+<style>
+    .bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        min-height: calc(44px + 2 * var(--edge-y));
+        padding: var(--edge-y) var(--edge-x);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--c-muted);
+        background: var(--c-bg);
+        transition: opacity 0.3s ease;
+    }
+
+    .bar[data-edge='top'] { top: 0; }
+    .bar[data-edge='bottom'] { bottom: 0; }
+
+    :global(:root[data-scrolling]) .bar {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bar { transition: none; }
+    }
+</style>

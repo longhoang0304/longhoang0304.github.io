@@ -1,0 +1,21 @@
+---
+/** A short muted paragraph, e.g. the line under a heading. */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'p'>;
+
+const attrs = Astro.props;
+---
+
+<p {...attrs} class="text"><slot /></p>
+
+<style>
+    .text {
+        margin: 0;
+        /* One line wherever it fits; only very narrow screens wrap, evenly. */
+        text-wrap: balance;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--c-muted);
+    }
+</style>

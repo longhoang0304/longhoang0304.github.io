@@ -5,7 +5,7 @@ import type { Post } from "@types";
 export interface Props extends Post {}
 
 const { postId, postSlug, title, tags, formatedDate } = Astro.props;
-const href = `/post/${postId}-${postSlug}`;
+const href = `/rants/${postId}-${postSlug}`;
 const tagList = tags.slice(0, -1)
 const lastTag = tags.at(-1);
 ---

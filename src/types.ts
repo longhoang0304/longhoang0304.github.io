@@ -17,7 +17,7 @@ export type Post = {
   tags: string[];
   draft: boolean;
   description?: string;
-  originalPost: CollectionEntry<"blog" | "research">,
+  originalPost: CollectionEntry<"rants" | "projects" | "research">,
 };
 
 export type Posts = Post[];

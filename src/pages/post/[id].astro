@@ -1,33 +1,16 @@
 ---
+// Short rant links (/post/<id>, used by the old RSS feed) forward to /rants/<id>-<slug>.
 import { getCollection } from "astro:content";
-import { transformPostCollectionToPosts, getPostById, removeDraft } from "@utils/posts";
-import PostLayout from "@layouts/PostLayout.astro";
+import { removeDraft } from "@utils/posts";
 
 export async function getStaticPaths() {
-  const postCollection = await getCollection("blog")
-  const publishedPosts = removeDraft(postCollection)
-  const transformedPosts = transformPostCollectionToPosts(publishedPosts)
-  const statisPath = transformedPosts.map(post => ({
-    params: {id: post.postId }
+  const rants = removeDraft(await getCollection("rants"))
+  return rants.map(({ data }) => ({
+    params: { id: data.postId },
+    props: { href: `/rants/${data.postId}-${data.postSlug}` },
   }))
-  return statisPath;
 }
 
-const { id: postId } = Astro.params;
-
-const postCollection = await getCollection("blog")
-const publishedPosts = removeDraft(postCollection)
-const transformedPosts = transformPostCollectionToPosts(publishedPosts)
-const post = getPostById(transformedPosts, postId)
-
+const { href } = Astro.props as { href: string };
+return Astro.redirect(href, 301);
 ---
-{!post && (
-  <script>
-    window.location.replace("/404");
-  </script>
-)}
-
-<PostLayout post={post} />
-
-<style>
-</style>

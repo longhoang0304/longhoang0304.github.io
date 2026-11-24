@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { transformPostCollectionToPosts, removeDraft, getSortedPosts } from "@utils/posts";
 
 export async function GET(context) {
-  const postCollection = await getCollection("blog")
+  const postCollection = await getCollection("rants")
   const publishedPosts = removeDraft(postCollection)
   const transformedPosts = transformPostCollectionToPosts(publishedPosts)
   const sortedPost = getSortedPosts(transformedPosts)
@@ -11,7 +11,7 @@ export async function GET(context) {
     title: post.title,
     pubDate: post.date.toISOString(),
     description: post.description,
-    link: `/post/${post.postId}/`,
+    link: `/rants/${post.postId}-${post.postSlug}/`,
     customData: post.tags.map(tag => `<tag>${tag}</tag>`).join(),
   }))
 

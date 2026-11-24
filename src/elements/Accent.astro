@@ -1,0 +1,16 @@
+---
+/** Italic accent word inside a heading, e.g. "curiosity", "led". */
+---
+
+<span class="accent"><slot /></span>
+
+<style>
+    .accent {
+        font-family: var(--font-poetic);
+        font-style: italic;
+        font-weight: 500;
+        font-size: 1.22em;
+        letter-spacing: -0.01em;
+        color: var(--c-accent);
+    }
+</style>

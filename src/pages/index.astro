@@ -1,11 +1,44 @@
 ---
+/**
+ * Home — "Driven by curiosity" landing page.
+ *
+ * UI layers (Blossom, small size): pages → views → components → elements. Imports only go
+ * downward. Everything below the pages lives in src/:
+ *   shell/       the frame every page wraps itself in: head, header and footer views, base styles
+ *   views/       one region of a page each; lay out only, no colors or type of their own
+ *   components/  UI pieces built from elements, business-agnostic
+ *   elements/    the smallest pieces; the only places (with components) that own the look
+ *   lib/         plain functions, one job per file; used by every layer
+ *
+ * Colour scheme lives in src/styles/theme.css (global).
+ * Fonts: all three are SIL OFL, so they can be self-hosted instead of Google Fonts.
+ */
+import ScrollHint from '@components/ScrollHint.astro';
+import { links } from '@lib/content';
+import { getRecentPosts, RECENT_LIMIT } from '@lib/recent-posts';
+import { getSitePosts } from '@lib/site-posts';
+import PageShell from '@shell/PageShell.astro';
+import LandingView from '@views/LandingView.astro';
+import RecentView from '@views/RecentView.astro';
+
+const recentPosts = getRecentPosts(await getSitePosts(), RECENT_LIMIT);
+const sections = [
+    { id: 'top', label: 'top' },
+    { id: 'recent', label: 'where it led' },
+];
 ---
 
-<div></div>
+<PageShell>
+    <LandingView links={links} />
+    <RecentView id="recent" posts={recentPosts} />
 
-<style>
-</style>
+    <ScrollHint slot="after" sections={sections} />
+</PageShell>
 
 <script>
-  window.location.replace("/posts/1");
+    import { initSectionScroll } from '@lib/section-scroll';
+    import { initSectionTracker } from '@lib/section-tracker';
+
+    initSectionTracker();
+    initSectionScroll();
 </script>

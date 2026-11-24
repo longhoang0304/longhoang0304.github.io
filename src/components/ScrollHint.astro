@@ -1,0 +1,86 @@
+---
+import type { Section } from '../lib/types';
+
+interface Props {
+    /** Page sections in scroll order; the first is the top of the page. */
+    sections: Section[];
+}
+
+const { sections } = Astro.props;
+const next = sections[1] ?? sections[0];
+---
+
+<a
+        href={`#${next.id}`}
+        class="scroll-hint fixed-hint"
+        data-scroll-hint
+        data-sections={JSON.stringify(sections)}
+        aria-label={`Scroll to ${next.label}`}
+>
+    <span class="hint-text">Scroll</span>
+    <svg class="scroll-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="m6 13 6 6 6-6"></path></svg>
+</a>
+
+<style>
+    .scroll-hint {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        min-height: 44px;
+        padding: 0 0.5rem;
+        color: var(--c-muted);
+    }
+
+    .scroll-arrow {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        animation: nudge 2s ease-in-out infinite;
+    }
+
+    @keyframes nudge {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(5px); }
+    }
+
+    .fixed-hint {
+        position: fixed;
+        left: 50%;
+        bottom: var(--edge-y);
+        z-index: 11;
+        translate: -50% 0;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: var(--c-bg);
+        border-radius: 999px;
+    }
+
+    .fixed-hint.is-up {
+        flex-direction: column-reverse;
+    }
+
+    .fixed-hint.is-up .scroll-arrow {
+        rotate: 180deg;
+    }
+
+    @media (max-width: 480px) {
+        .hint-text { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .scroll-arrow { animation: none; }
+    }
+</style>
+
+<script>
+    import { initScrollHint } from '../lib/scroll-hint';
+
+    initScrollHint();
+</script>

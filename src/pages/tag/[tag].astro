@@ -5,7 +5,7 @@ import PostsByTag from "@layouts/PostsByTag.astro";
 
 
 export async function getStaticPaths() {
-  const postCollection = await getCollection("blog")
+  const postCollection = await getCollection("rants")
   const publishedPosts = removeDraft(postCollection)
   const transformedPosts = transformPostCollectionToPosts(publishedPosts)
   const allTags = getAllTags(transformedPosts)
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 
-const postCollection = await getCollection("blog")
+const postCollection = await getCollection("rants")
 const publishedPosts = removeDraft(postCollection)
 const transformedPosts = transformPostCollectionToPosts(publishedPosts)
 const sortedPost = getSortedPosts(transformedPosts)

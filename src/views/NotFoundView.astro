@@ -1,0 +1,57 @@
+---
+import Accent from '../elements/Accent.astro';
+import BracketLink from '../elements/BracketLink.astro';
+import Caret from '../elements/Caret.astro';
+import Heading from '../elements/Heading.astro';
+import Text from '../elements/Text.astro';
+---
+
+<section class="not-found" aria-labelledby="not-found-heading">
+    <div class="title">
+        <Heading as="p" size="giant">404</Heading>
+        <Heading as="h1" size="subtitle" id="not-found-heading">
+            Wandered too <Accent>far</Accent><Caret />
+        </Heading>
+    </div>
+    <div class="message">
+        <Text>Nothing here. Curiosity took a wrong turn.</Text>
+    </div>
+
+    <nav aria-label="Way back" class="nav">
+        <BracketLink href="/" size="body">Home</BracketLink>
+        <BracketLink href="/" size="body" data-go-back>Go back</BracketLink>
+    </nav>
+</section>
+
+<style>
+    .not-found {
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--header-space) var(--edge-x) var(--bar-space);
+        text-align: center;
+    }
+
+    .title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+    }
+
+    .message {
+        margin-top: 1rem;
+    }
+
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem 1.5rem;
+        margin-top: 2rem;
+    }
+</style>

@@ -1,0 +1,47 @@
+---
+import LinkList from '../components/LinkList.astro';
+import Accent from '../elements/Accent.astro';
+import Caret from '../elements/Caret.astro';
+import Heading from '../elements/Heading.astro';
+import Note from '../elements/Note.astro';
+import { toPostItem } from '../lib/post-item';
+import type { Post } from '../lib/types';
+
+interface Props {
+    id: string;
+    posts: Post[];
+}
+
+const { id, posts } = Astro.props;
+---
+
+<section id={id} class="recent" aria-labelledby={`${id}-heading`} data-section>
+    <div class="block">
+        <Heading id={`${id}-heading`}>Where it <Accent>led</Accent><Caret /></Heading>
+        {posts.length === 0
+            ? <Note label="Soon">Nowhere yet. Still wandering, check back soon.</Note>
+            : <LinkList items={posts.map((post) => toPostItem(post))} />}
+    </div>
+</section>
+
+<style>
+    .recent {
+        position: relative;
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--header-space) var(--edge-x) var(--bar-space);
+    }
+
+    /* Shrink to the widest line so the visible text is centered, not a mostly-empty box. */
+    .block {
+        width: fit-content;
+        max-width: min(40rem, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+</style>

@@ -1,0 +1,34 @@
+---
+interface Props {
+    timeZone: string;
+}
+
+const { timeZone } = Astro.props;
+---
+
+<span class="clock">
+    <span class="dot" aria-hidden="true"></span>
+    <time data-local-time data-tz={timeZone}>Local time</time>
+</span>
+
+<style>
+    .clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--c-pollen);
+    }
+</style>
+
+<script>
+    import { initClocks } from '../lib/clock';
+
+    initClocks();
+</script>
