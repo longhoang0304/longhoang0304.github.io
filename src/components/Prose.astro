@@ -125,13 +125,30 @@ const { variant = 'post' } = Astro.props;
         border-radius: 4px;
     }
 
-    /* Code blocks keep Shiki's own colors; long lines scroll instead of wrapping. */
+    /* Code blocks use Shiki's Everforest colors, light or dark with the site theme (the dark ones
+       come as --shiki-dark variables); long lines scroll instead of wrapping. */
     .prose :global(pre) {
+        border: 1px solid var(--c-border);
         padding: 1rem 1.25rem;
         border-radius: 8px;
         overflow-x: auto;
         font-size: 0.9375rem;
         line-height: 1.6;
+    }
+
+    :global(:root[data-theme='dark']) .prose :global(.astro-code),
+    :global(:root[data-theme='dark']) .prose :global(.astro-code span) {
+        color: var(--shiki-dark) !important;
+        background-color: var(--shiki-dark-bg) !important;
+    }
+
+    /* Before the theme script runs (or without JavaScript), follow the system setting. */
+    @media (prefers-color-scheme: dark) {
+        :global(:root:not([data-theme])) .prose :global(.astro-code),
+        :global(:root:not([data-theme])) .prose :global(.astro-code span) {
+            color: var(--shiki-dark) !important;
+            background-color: var(--shiki-dark-bg) !important;
+        }
     }
 
     /* Wide tables scroll sideways on narrow screens instead of widening the page. */
