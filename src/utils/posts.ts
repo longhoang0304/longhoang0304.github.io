@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import dayjs from "dayjs";
 
 
-export const removeDraft = (posts: CollectionEntry<"blog">[]) => posts
+export const removeDraft = <T extends CollectionEntry<"blog" | "research">>(posts: T[]) => posts
     .filter(({ data }, ..._) => !data.draft);
 
 export const getSortedPosts = (posts: Posts) => posts
@@ -20,7 +20,7 @@ export const getAllTags = (posts: Posts): string[] => {
   return [...tags];
 }
 
-export const transformPostCollectionToPosts = (posts: CollectionEntry<"blog">[]) => posts
+export const transformPostCollectionToPosts = (posts: CollectionEntry<"blog" | "research">[]) => posts
     .map(post => {
       const { data } = post;
       const postDate = dayjs(data.publishedDateTime);

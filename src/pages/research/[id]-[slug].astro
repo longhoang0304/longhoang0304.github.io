@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import { transformPostCollectionToPosts, removeDraft } from "@utils/posts";
+import PostLayout from "@layouts/PostLayout.astro";
+import type { Post } from "@types";
+
+// Drafts are previewable with `astro dev` but never built for production.
+export async function getStaticPaths() {
+  const researchCollection = await getCollection("research")
+  const visible = import.meta.env.DEV ? researchCollection : removeDraft(researchCollection)
+  const posts = transformPostCollectionToPosts(visible)
+  return posts.map(post => ({
+    params: { id: post.postId, slug: post.postSlug },
+    props: { post },
+  }))
+}
+
+const { post } = Astro.props as { post: Post };
+---
+
+<PostLayout post={post} />

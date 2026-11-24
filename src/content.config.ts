@@ -19,4 +19,11 @@ const blog = defineCollection({
   schema: blogSchema,
 });
 
-export const collections = { blog };
+// Long-form research write-ups. The "RFC - *" originals kept in the same folder are
+// source material, not posts, so they're excluded.
+const research = defineCollection({
+  loader: glob({ pattern: ["**/*.md", "!RFC - *"], base: "./src/content/researchs" }),
+  schema: blogSchema,
+});
+
+export const collections = { blog, research };
