@@ -10,8 +10,6 @@ description: Layers for the UI, plain functions for the business, one direction 
 tags:
   - frontend
   - architecture
-  - typescript
-  - solidjs
 ---
 
 ## Introduction
@@ -758,7 +756,7 @@ Most of the parts exist elsewhere under other names. The closest match is Androi
 
 | Here | Also called | Why it differs here |
 | --- | --- | --- |
-| `Actions` | actions, messages, intents, commands | typed functions, not objects sent through one `dispatch`: the compiler checks every call |
+| Actions | actions, messages, intents, commands | typed functions, not objects sent through one `dispatch`: the compiler checks every call |
 | Controller | presenter, store, BLoC, state holder | it holds the state around the features; the rules stay in features |
 | View model | presentation model, UI state | plain data built by pure functions, easy to test, copy and compare |
 | Features | use cases, interactors | one plain function per file, not a class per use case |
@@ -847,13 +845,19 @@ Every rule the paper refers to, in one place. Each has a name, so a code review 
 
 ### Style rules
 
-- **STYLE-1. One stylesheet per file that draws,** beside its `.tsx`, imported only by it.
-- **STYLE-2. Class names start with their layer's prefix,** then the block and BEM: `.c-table__head`, `.e-button--primary`. A stylesheet styles only its own block, never bare tags or another file's classes.
-- **STYLE-3. Each control is styled once,** in its element or component, so changing the button's padding changes every button on every page. That is what makes a design system easy to build and change.
-- **STYLE-4. Above components, layout only:** display, flex, grid, gap, padding, margin, size. Color, type, borders and shadows belong to elements and components.
-- **STYLE-5. States use attributes,** not modifier classes: `[aria-selected="true"]`, `:disabled`, `[data-state="open"]`. The style then can't drift from what assistive technology is told.
-- **STYLE-6. Every color comes from the theme.** No hex, `rgb()` or named color outside `themes/`, so every product and mode works everywhere.
-- **STYLE-7. Ids and test ids use the same names as classes:** `data-testid="v-task-form__submit"`. Inspect anything in the browser, and its name says which file to open.
+**STYLE-1. One stylesheet per file that draws,** beside its `.tsx`, imported only by it.
+
+**STYLE-2. Class names start with their layer's prefix,** then the block and BEM: `.c-table__head`, `.e-button--primary`. A stylesheet styles only its own block, never bare tags or another file's classes.
+
+**STYLE-3. Each control is styled once,** in its element or component, so changing the button's padding changes every button on every page. That is what makes a design system easy to build and change.
+
+**STYLE-4. Above components, layout only:** display, flex, grid, gap, padding, margin, size. Color, type, borders and shadows belong to elements and components.
+
+**STYLE-5. States use attributes,** not modifier classes: `[aria-selected="true"]`, `:disabled`, `[data-state="open"]`. The style then can't drift from what assistive technology is told.
+
+**STYLE-6. Every color comes from the theme.** No hex, `rgb()` or named color outside `themes/`, so every product and mode works everywhere.
+
+**STYLE-7. Ids and test ids use the same names as classes:** `data-testid="v-task-form__submit"`. Inspect anything in the browser, and its name says which file to open.
 
 ## Appendix B: Reference
 
