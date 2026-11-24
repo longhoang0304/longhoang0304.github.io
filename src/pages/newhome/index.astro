@@ -14,10 +14,11 @@ import Landing from './_components/Landing.astro';
 import PageShell from './_components/PageShell.astro';
 import RecentSection from './_components/RecentSection.astro';
 import ScrollHint from './_components/ScrollHint.astro';
-import { categories, links, posts } from './_lib/content';
-import { getRecentPosts } from './_lib/posts';
+import { categories, links } from './_lib/content';
+import { getRecentPosts, RECENT_LIMIT } from './_lib/posts';
+import { getSitePosts } from './_lib/site-posts';
 
-const recentPosts = getRecentPosts(posts);
+const recentPosts = getRecentPosts(await getSitePosts(), RECENT_LIMIT);
 const sections = [
     { id: 'top', label: 'top' },
     { id: 'recent', label: 'where it led' },

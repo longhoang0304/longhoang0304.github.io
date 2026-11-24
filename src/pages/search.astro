@@ -1,28 +1,154 @@
 ---
-import { getCollection } from "astro:content";
-import { transformPostCollectionToPosts, getSortedPosts, removeDraft } from "@utils/posts";
-import { SITE } from "@config";
-import SearchLayout from "@layouts/SearchLayout.astro";
+/**
+ * Search in the new design; reuses the page frame and pieces from src/pages/newhome.
+ * All posts are rendered at build time; newhome/_lib/search.ts filters them in the browser.
+ */
+import { SITE } from '@config';
+import Caret from './newhome/_components/Caret.astro';
+import PageShell from './newhome/_components/PageShell.astro';
+import { categories, links } from './newhome/_lib/content';
+import { formatFullDate, RECENT_LIMIT } from './newhome/_lib/posts';
+import { getSitePosts } from './newhome/_lib/site-posts';
+import './newhome/_styles/feed.css';
 
+// No landing here, so the header nav is the way out: lead with Home.
+const navLinks = [{ label: 'Home', href: '/' }, ...links];
 
-export async function getStaticPaths() {
-  const postCollection = await getCollection("blog")
-  const publishedPosts = removeDraft(postCollection)
-  const maxPage = Math.ceil(publishedPosts.length / SITE.postPerPage);
-  const statisPath = [...new Array(maxPage)].map((_, idx) => ({
-    params: {page: String(idx + 1)}
-  }))
-  return statisPath;
-}
-
-const postCollection = await getCollection("blog")
-const publishedPosts = removeDraft(postCollection)
-const transformedPosts = transformPostCollectionToPosts(publishedPosts)
-const sortedPost = getSortedPosts(transformedPosts)
-
+const posts = await getSitePosts();
 ---
 
-<SearchLayout posts={sortedPost} />
+<PageShell title={`Search · ${SITE.title}`} headerNav="always" navLinks={navLinks}>
+    <section class="search" aria-labelledby="search-heading">
+        <div class="search-block">
+            <h1 id="search-heading" class="headline">
+                Looking for <span class="word">something</span>?<Caret />
+            </h1>
+
+            <div class="search-row">
+                <label for="search-input" class="visually-hidden">Search posts</label>
+                <input
+                        id="search-input"
+                        class="search-input"
+                        type="search"
+                        placeholder="a word, a tag, a hunch…"
+                        autocomplete="off"
+                        spellcheck="false"
+                        autofocus
+                        data-search-input
+                />
+                <span class="feed-meta search-status" aria-live="polite" data-search-status>
+                    [Recent]
+                </span>
+            </div>
+
+            <ul class="feed-list" data-search-list>
+                {posts.map((post, i) => (
+                        <li
+                                hidden={i >= RECENT_LIMIT}
+                                data-search-item
+                                data-title={post.title}
+                                data-description={post.description}
+                                data-tags={post.tags.join(' ')}
+                        >
+                            <a href={post.href} class="feed-link">
+                                <span class="feed-meta">
+                                    <time datetime={post.date}>[{formatFullDate(post.date)}]</time>
+                                    <span>[{categories[post.category].label}]</span>
+                                </span>
+                                <span class="feed-title" data-truncate>{post.title}</span>
+                                <span class="feed-popup" aria-hidden="true">{post.title}</span>
+                            </a>
+                        </li>
+                ))}
+            </ul>
+
+            <p class="feed-empty" data-search-empty hidden={posts.length !== 0}>
+                <span class="feed-meta">[None]</span>
+                <span>Nothing turned up. Try another word.</span>
+            </p>
+        </div>
+    </section>
+</PageShell>
+
+<script>
+    import { initSearch } from './newhome/_lib/search';
+    import { initTruncationFlags } from './newhome/_lib/truncation';
+
+    // Rows hidden at load measure 0 wide, so re-check truncation whenever results change.
+    initSearch(initTruncationFlags());
+</script>
 
 <style>
+    .search {
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        /* Top-aligned (unlike the other pages) so results grow downward, not around the input. */
+        padding: calc(var(--header-space) + 3rem) var(--edge-x) var(--bar-space);
+    }
+
+    .search-block {
+        width: min(40rem, 100%);
+    }
+
+    .headline {
+        margin: 0 0 2rem;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+    }
+
+    .search-row {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        margin-bottom: 1.25rem;
+        border-bottom: 1px solid var(--c-border);
+        transition: border-color 0.2s ease;
+    }
+
+    .search-row:focus-within {
+        border-color: var(--c-accent);
+    }
+
+    .search-input {
+        flex: 1;
+        min-width: 0;
+        min-height: 44px;
+        padding: 0.5rem 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--c-text);
+        font-family: var(--font-display);
+        font-size: 1.375rem;
+        line-height: 1.35;
+        caret-color: var(--c-accent);
+    }
+
+    .search-input::placeholder {
+        color: var(--c-bracket);
+    }
+
+    /* Native clear button clashes with the look; Escape clears instead. */
+    .search-input::-webkit-search-cancel-button {
+        appearance: none;
+    }
+
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .search-row { transition: none; }
+    }
 </style>
