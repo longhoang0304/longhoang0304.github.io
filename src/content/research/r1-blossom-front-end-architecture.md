@@ -67,8 +67,11 @@ The sap rises one way, from the roots to the petals, as data does from the repos
 Figure 1 shows the whole architecture on one screen. The rest of the paper is the detail.
 
 <figure>
-  <a href="/blog-assets/r1/r1-figure-1.svg">
-    <img src="/blog-assets/r1/r1-figure-1.svg" alt="Three bands stacked top to bottom. UI: pages, smart views, views, domain components, components and elements. Business: controller, features and flows, view models and the model store. Data: repos, storage, and the server and browser. Actions go down from the UI to the business, view models come back up, and the business reads and writes data through repos. Models and shared code sit below everything." width="1096" height="929" loading="lazy" />
+  <a class="figure-light" href="/blog-assets/r1/r1-figure-1-light.svg">
+    <img src="/blog-assets/r1/r1-figure-1-light.svg" alt="Three bands stacked top to bottom. UI: pages, smart views, views, domain components, components and elements. Business: controller, features and flows, view models and the model store. Data: repos, storage, and the server and browser. Actions go down from the UI to the business, view models come back up, and the business reads and writes data through repos. Models and shared code sit below everything." width="1096" height="929" loading="lazy" />
+  </a>
+  <a class="figure-dark" href="/blog-assets/r1/r1-figure-1-dark.svg">
+    <img src="/blog-assets/r1/r1-figure-1-dark.svg" alt="Three bands stacked top to bottom. UI: pages, smart views, views, domain components, components and elements. Business: controller, features and flows, view models and the model store. Data: repos, storage, and the server and browser. Actions go down from the UI to the business, view models come back up, and the business reads and writes data through repos. Models and shared code sit below everything." width="1096" height="929" loading="lazy" />
   </a>
   <figcaption><strong>Figure 1.</strong> Blossom at a glance. What the user asks for goes down as actions; the business turns it into view models that come back up to the screen. Only the data layer reaches the outside.</figcaption>
 </figure>

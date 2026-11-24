@@ -195,6 +195,17 @@ const { variant = 'post' } = Astro.props;
         border: 1px solid var(--c-border);
     }
 
+    /* Figures come in a light and a dark rendering; show the one for the current theme.
+       Both images load lazily, and a hidden lazy image is never fetched. */
+    .prose :global(.figure-dark) { display: none; }
+    :global(:root[data-theme='dark']) .prose :global(.figure-light) { display: none; }
+    :global(:root[data-theme='dark']) .prose :global(.figure-dark) { display: block; }
+
+    @media (prefers-color-scheme: dark) {
+        :global(:root:not([data-theme])) .prose :global(.figure-light) { display: none; }
+        :global(:root:not([data-theme])) .prose :global(.figure-dark) { display: block; }
+    }
+
     .prose :global(figcaption) {
         margin-top: 0.75em;
         font-family: var(--font-display);
