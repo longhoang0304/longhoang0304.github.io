@@ -1,53 +1,100 @@
 ---
+import LinkList from '../components/LinkList.astro';
 import Prose from '../components/Prose.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import BracketLink from '../elements/BracketLink.astro';
 import Heading from '../elements/Heading.astro';
 import MetaLine from '../elements/MetaLine.astro';
 import Text from '../elements/Text.astro';
 import { toPostHeader } from '../features/post-header';
+import type { Neighbours } from '../features/post-neighbours';
+import { toNeighbourItems } from '../features/neighbour-items';
 import type { SitePost } from '../features/site-posts';
 
 interface Props {
     post: SitePost;
+    minutes: number;
+    /** The post's main sections (its h2s), for the table of contents. */
+    sections: { slug: string; text: string }[];
+    neighbours: Neighbours;
 }
 
 /** The post's rendered Markdown goes in the default slot. */
-const { post } = Astro.props;
+const { post, minutes, sections, neighbours } = Astro.props;
 const { meta, summary, section } = toPostHeader(post);
+const nextReads = toNeighbourItems(neighbours);
+// A contents list only helps once there's something to skip between.
+const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, text: s.text })) : [];
 ---
 
-<article class="post" aria-labelledby="post-title">
-    <header class="head">
-        <BracketLink href={section.href}>← {section.name}</BracketLink>
-        <div class="title">
-            <MetaLine items={meta} />
-            <Heading as="h1" id="post-title">{post.title}</Heading>
-            {summary && <Text>{summary}</Text>}
-        </div>
-    </header>
+<div class="layout">
+    <article class="post" aria-labelledby="post-title">
+        <header class="head">
+            <BracketLink href={section.href}>← {section.name}</BracketLink>
+            <div class="title">
+                <MetaLine items={[...meta, { text: `${minutes} min read` }]} />
+                <Heading as="h1" id="post-title">{post.title}</Heading>
+                {summary && <Text>{summary}</Text>}
+            </div>
+        </header>
 
-    <Prose><slot /></Prose>
+        <Prose><slot /></Prose>
 
-    <footer class="foot">
-        {post.tags.length > 0 && (
-                <nav aria-label="Tags" class="tags">
-                    {post.tags.map((tag) => <BracketLink href={`/tag/${tag}`}>#{tag}</BracketLink>)}
-                </nav>
-        )}
-        <BracketLink href={section.href}>← All {section.name.toLowerCase()}</BracketLink>
-    </footer>
-</article>
+        <footer class="foot">
+            {post.tags.length > 0 && (
+                    <nav aria-label="Tags" class="tags">
+                        {post.tags.map((tag) => <BracketLink href={`/tag/${tag}`}>#{tag}</BracketLink>)}
+                    </nav>
+            )}
+            {nextReads.length > 0 && <LinkList items={nextReads} aria-label="More posts" />}
+            <BracketLink href={section.href}>← All {section.name.toLowerCase()}</BracketLink>
+        </footer>
+    </article>
+
+    {toc.length > 0 && (
+            <aside class="aside">
+                <TableOfContents items={toc} />
+            </aside>
+    )}
+</div>
 
 <style>
-    .post {
+    /* One 40rem text column, centered; wide screens add the contents in the right margin. */
+    .layout {
+        /* Room for tables and code to break out of the text column: up to 8rem a side, never
+           into the page gutters (the 1.5rem spare also covers a scrollbar). */
+        --breakout: max(0px, min(8rem, (100vw - 40rem) / 2 - var(--edge-x) - 1.5rem));
+        display: grid;
+        grid-template-columns: 1fr minmax(0, 40rem) 1fr;
         box-sizing: border-box;
-        /* A 40rem text column plus the page gutters. */
-        width: min(calc(40rem + 2 * var(--edge-x)), 100%);
-        margin: 0 auto;
+        padding: calc(var(--header-space) + 2rem) var(--edge-x) calc(var(--bar-space) + 4rem);
+    }
+
+    .post {
+        grid-column: 2;
+        min-width: 0;
         display: flex;
         flex-direction: column;
         gap: 3rem;
-        padding: calc(var(--header-space) + 2rem) var(--edge-x) calc(var(--bar-space) + 2rem);
+    }
+
+    .aside {
+        display: none;
+    }
+
+    /* Only where the margin fits the contents beside the widest tables. */
+    @media (min-width: 90rem) {
+        .aside {
+            display: block;
+            grid-column: 3;
+            max-width: 15rem;
+            padding-left: calc(var(--breakout) + 2rem);
+        }
+
+        .aside > :global(*) {
+            position: sticky;
+            top: 2rem;
+        }
     }
 
     .head {
@@ -67,8 +114,12 @@ const { meta, summary, section } = toPostHeader(post);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 2rem;
         padding-top: 1rem;
+    }
+
+    .foot > :global(ul) {
+        align-self: stretch;
     }
 
     .tags {

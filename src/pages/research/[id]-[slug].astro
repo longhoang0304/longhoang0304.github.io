@@ -2,6 +2,7 @@
 /** One post in the new design. Drafts are previewable with `astro dev` but never built for production. */
 import { render } from 'astro:content';
 import { SITE } from '@config';
+import type { Neighbours } from '@features/post-neighbours';
 import { getPostPages } from '@features/post-pages';
 import { linksWithHome } from '@features/site-info';
 import type { PostEntry, SitePost } from '@features/site-posts';
@@ -10,12 +11,18 @@ import PostView from '@views/PostView.astro';
 
 export const getStaticPaths = () => getPostPages('research');
 
-const { entry, post } = Astro.props as { entry: PostEntry; post: SitePost };
-const { Content } = await render(entry);
+const { entry, post, minutes, neighbours } = Astro.props as {
+    entry: PostEntry;
+    post: SitePost;
+    minutes: number;
+    neighbours: Neighbours;
+};
+const { Content, headings } = await render(entry);
+const sections = headings.filter((h) => h.depth === 2);
 ---
 
-<PageShell title={`${post.title} · ${SITE.title}`} description={post.description} headerNav="always" navLinks={linksWithHome}>
-    <PostView post={post}>
+<PageShell title={`${post.title} · ${SITE.title}`} description={post.description} headerNav="always" navLinks={linksWithHome} bars="flow">
+    <PostView post={post} minutes={minutes} sections={sections} neighbours={neighbours}>
         <Content />
     </PostView>
 </PageShell>
