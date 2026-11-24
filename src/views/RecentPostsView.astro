@@ -1,6 +1,6 @@
 ---
 import LinkList from '../components/LinkList.astro';
-import Accent from '../elements/Accent.astro';
+import AccentWord from '../elements/AccentWord.astro';
 import Caret from '../elements/Caret.astro';
 import Heading from '../elements/Heading.astro';
 import Note from '../elements/Note.astro';
@@ -17,7 +17,7 @@ const { id, posts } = Astro.props;
 
 <section id={id} class="recent" aria-labelledby={`${id}-heading`} data-section>
     <div class="block">
-        <Heading id={`${id}-heading`}>Where it <Accent>led</Accent><Caret /></Heading>
+        <Heading id={`${id}-heading`}>Where it <AccentWord>led</AccentWord><Caret /></Heading>
         {posts.length === 0
             ? <Note label="Soon">Nowhere yet. Still wandering, check back soon.</Note>
             : <LinkList items={posts.map((post) => toPostItem(post))} />}

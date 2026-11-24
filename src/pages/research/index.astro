@@ -2,13 +2,13 @@
 /** Every research write-up, newest first. */
 import { SITE } from '@config';
 import { getCategoryPosts } from '@features/category-posts';
-import { linksWithHome } from '@features/content';
+import { linksWithHome } from '@features/site-info';
 import PageShell from '@shell/PageShell.astro';
-import CategoryView from '@views/CategoryView.astro';
+import PostListView from '@views/PostListView.astro';
 
 const posts = await getCategoryPosts('research');
 ---
 
 <PageShell title={`Research · ${SITE.title}`} headerNav="always" navLinks={linksWithHome}>
-    <CategoryView lead="Rabbit" accent="holes" posts={posts} />
+    <PostListView lead="Rabbit" accent="holes" posts={posts} />
 </PageShell>

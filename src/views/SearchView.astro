@@ -1,6 +1,6 @@
 ---
 import LinkList from '../components/LinkList.astro';
-import Accent from '../elements/Accent.astro';
+import AccentWord from '../elements/AccentWord.astro';
 import Caret from '../elements/Caret.astro';
 import Heading from '../elements/Heading.astro';
 import Note from '../elements/Note.astro';
@@ -19,7 +19,7 @@ const { posts } = Astro.props;
 <section class="search" aria-labelledby="search-heading">
     <div class="block">
         <Heading as="h1" id="search-heading">
-            Looking for <Accent>something</Accent>?<Caret />
+            Looking for <AccentWord>something</AccentWord>?<Caret />
         </Heading>
 
         <div class="results">

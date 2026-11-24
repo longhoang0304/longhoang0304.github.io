@@ -1,6 +1,6 @@
 ---
-import CornerBar from '../components/CornerBar.astro';
-import Socials from '../components/Socials.astro';
+import FixedBar from '../components/FixedBar.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 
 interface Props {
     year: number;
@@ -12,7 +12,7 @@ interface Props {
 const { year, githubUrl, linkedinUrl, email } = Astro.props;
 ---
 
-<CornerBar edge="bottom">
+<FixedBar edge="bottom">
     <span>© {year}</span>
-    <Socials githubUrl={githubUrl} linkedinUrl={linkedinUrl} email={email} />
-</CornerBar>
+    <SocialLinks githubUrl={githubUrl} linkedinUrl={linkedinUrl} email={email} />
+</FixedBar>

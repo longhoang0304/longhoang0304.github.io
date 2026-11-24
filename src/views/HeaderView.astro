@@ -1,5 +1,5 @@
 ---
-import CornerBar from '../components/CornerBar.astro';
+import FixedBar from '../components/FixedBar.astro';
 import BracketLink from '../elements/BracketLink.astro';
 import LocalClock from '../elements/LocalClock.astro';
 import SearchButton from '../elements/SearchButton.astro';
@@ -18,7 +18,7 @@ interface Props {
 const { location, timeZone, links, alwaysShowNav = false } = Astro.props;
 ---
 
-<CornerBar edge="top">
+<FixedBar edge="top">
     <span>{location}</span>
     <nav aria-label="Site" class="nav" data-always={alwaysShowNav || undefined}>
         {links.map((link) => (
@@ -30,7 +30,7 @@ const { location, timeZone, links, alwaysShowNav = false } = Astro.props;
         <SearchButton />
         <ThemeToggle />
     </div>
-</CornerBar>
+</FixedBar>
 
 <style>
     .nav {

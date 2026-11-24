@@ -1,4 +1,4 @@
-import { categories } from './content';
+import { categories } from './site-info';
 import { formatFullDate } from './format-date';
 import type { LinkItem, Post } from './types';
 

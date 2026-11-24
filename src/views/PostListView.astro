@@ -1,6 +1,6 @@
 ---
 import LinkList from '../components/LinkList.astro';
-import Accent from '../elements/Accent.astro';
+import AccentWord from '../elements/AccentWord.astro';
 import Caret from '../elements/Caret.astro';
 import Heading from '../elements/Heading.astro';
 import Note from '../elements/Note.astro';
@@ -21,7 +21,7 @@ const { lead, accent, posts } = Astro.props;
 <section class="category" aria-labelledby="category-heading">
     <div class="block">
         <Heading as="h1" id="category-heading">
-            {`${lead} `}<Accent>{accent}</Accent><Caret />
+            {`${lead} `}<AccentWord>{accent}</AccentWord><Caret />
         </Heading>
         {posts.length === 0
             ? <Note label="Soon">Nowhere yet. Still wandering, check back soon.</Note>

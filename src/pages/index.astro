@@ -9,17 +9,18 @@
  *   components/  UI pieces built from elements, business-agnostic
  *   elements/    the smallest pieces; the only places (with components) that own the look
  *   features/    plain functions, one job per file; used by every layer
+ *   legacy/      the old blog design, still used by the post and tag pages; not part of the layers
  *
  * Colour scheme lives in src/styles/theme.css (global).
  * Fonts: all three are SIL OFL, so they can be self-hosted instead of Google Fonts.
  */
 import ScrollHint from '@components/ScrollHint.astro';
-import { links } from '@features/content';
+import { links } from '@features/site-info';
 import { getRecentPosts, RECENT_LIMIT } from '@features/recent-posts';
 import { getSitePosts } from '@features/site-posts';
 import PageShell from '@shell/PageShell.astro';
 import LandingView from '@views/LandingView.astro';
-import RecentView from '@views/RecentView.astro';
+import RecentPostsView from '@views/RecentPostsView.astro';
 
 const recentPosts = getRecentPosts(await getSitePosts(), RECENT_LIMIT);
 const sections = [
@@ -30,7 +31,7 @@ const sections = [
 
 <PageShell>
     <LandingView links={links} />
-    <RecentView id="recent" posts={recentPosts} />
+    <RecentPostsView id="recent" posts={recentPosts} />
 
     <ScrollHint slot="after" sections={sections} />
 </PageShell>
