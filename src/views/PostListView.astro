@@ -5,27 +5,33 @@ import Caret from '../elements/Caret.astro';
 import Heading from '../elements/Heading.astro';
 import Note from '../elements/Note.astro';
 import { toPostItem } from '../features/post-item';
-import type { Post } from '../features/types';
+import BracketLink from '../elements/BracketLink.astro';
+import type { NavLink, Post } from '../features/types';
 
 interface Props {
     /** Heading as two parts, the second in the accent style: "Stray" "thoughts". */
     lead: string;
     accent: string;
-    /** Every post of the category, newest first. */
+    /** Every post to list, newest first. */
     posts: Post[];
+    /** Show each post's section ([Rant]); off for lists of a single section. */
+    withCategory?: boolean;
+    /** A way back up, shown above the heading. */
+    back?: NavLink;
 }
 
-const { lead, accent, posts } = Astro.props;
+const { lead, accent, posts, withCategory = false, back } = Astro.props;
 ---
 
 <section class="category" aria-labelledby="category-heading">
     <div class="block">
+        {back && <BracketLink href={back.href}>← {back.label}</BracketLink>}
         <Heading as="h1" id="category-heading">
             {`${lead} `}<AccentWord>{accent}</AccentWord><Caret />
         </Heading>
         {posts.length === 0
             ? <Note label="Soon">Nowhere yet. Still wandering, check back soon.</Note>
-            : <LinkList items={posts.map((post) => toPostItem(post, false))} />}
+            : <LinkList items={posts.map((post) => toPostItem(post, withCategory))} />}
     </div>
 </section>
 
@@ -43,6 +49,11 @@ const { lead, accent, posts } = Astro.props;
         width: min(40rem, 100%);
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         gap: 2rem;
+    }
+
+    .block > :global(ul) {
+        align-self: stretch;
     }
 </style>

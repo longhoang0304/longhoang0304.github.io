@@ -1,0 +1,41 @@
+---
+import TagCloud from '../components/TagCloud.astro';
+import AccentWord from '../elements/AccentWord.astro';
+import Caret from '../elements/Caret.astro';
+import Heading from '../elements/Heading.astro';
+import Note from '../elements/Note.astro';
+import type { TagCount } from '../features/tag-counts';
+
+interface Props {
+    tags: TagCount[];
+}
+
+const { tags } = Astro.props;
+---
+
+<section class="tags" aria-labelledby="tags-heading">
+    <div class="block">
+        <Heading as="h1" id="tags-heading">Pick a <AccentWord>trail</AccentWord><Caret /></Heading>
+        {tags.length === 0
+            ? <Note label="Soon">No trails yet. Still wandering, check back soon.</Note>
+            : <TagCloud items={tags.map(({ tag, count }) => ({ label: tag, href: `/tag/${tag}`, count }))} />}
+    </div>
+</section>
+
+<style>
+    .tags {
+        min-height: var(--screen-height);
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        /* Top-aligned like the list pages. */
+        padding: calc(var(--header-space) + 3rem) var(--edge-x) var(--bar-space);
+    }
+
+    .block {
+        width: min(40rem, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+</style>

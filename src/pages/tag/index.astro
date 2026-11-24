@@ -1,11 +1,4 @@
 ---
+// /tag on its own has no page; send it to the list of every tag.
+return Astro.redirect('/tags', 301);
 ---
-
-<div></div>
-
-<style>
-</style>
-
-<script>
-  window.location.replace("/tags");
-</script>

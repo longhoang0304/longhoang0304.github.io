@@ -1,7 +1,6 @@
 // Real posts from the content collections, in the new design's Post shape (build time only).
 
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { removeDraft } from '@utils/posts';
 import type { Category, Post } from './types';
 
 export interface SitePost extends Post {
@@ -13,6 +12,7 @@ export type PostCollection = 'rants' | 'projects' | 'research';
 export type PostEntry = CollectionEntry<PostCollection>;
 
 const isoDate = (date: Date) => date.toISOString().slice(0, 10);
+const removeDraft = (entries: PostEntry[]) => entries.filter(({ data }) => !data.draft);
 
 /** Each collection's category and the path its post pages live under. */
 const sources: Record<PostCollection, { category: Category; path: string }> = {

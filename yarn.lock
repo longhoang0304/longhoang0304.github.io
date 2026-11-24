@@ -1602,13 +1602,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.11.23":
-  version: 1.11.23
-  resolution: "dayjs@npm:1.11.23"
-  checksum: 10/61d29544ca1553369f75541b5abf9c1bb6a978991498923a2d5721c9df3eca513b2c15ff5534de6930dc553de5d6f2b8f8047149f3528df906b21f51df637463
-  languageName: node
-  linkType: hard
-
 "defu@npm:^6.1.6":
   version: 6.1.7
   resolution: "defu@npm:6.1.7"
@@ -2121,7 +2114,6 @@ __metadata:
     "@astrojs/rss": "npm:^4.0.19"
     "@astrojs/sitemap": "npm:^3.7.6"
     astro: "npm:^7.4.13"
-    dayjs: "npm:^1.11.23"
     fuse.js: "npm:^7.5.0"
   languageName: unknown
   linkType: soft

@@ -1,16 +1,14 @@
 ---
-import { getCollection } from "astro:content";
-import { transformPostCollectionToPosts, removeDraft, getAllTags } from "@utils/posts";
-import TagList from "@legacy/TagList.astro";
+/** Every tag, most used first. */
+import { linksWithHome } from '@features/site-info';
+import { getSitePosts } from '@features/site-posts';
+import { getTagCounts } from '@features/tag-counts';
+import PageShell from '@shell/PageShell.astro';
+import TagsView from '@views/TagsView.astro';
 
-
-const postCollection = await getCollection("rants")
-const publishedPosts = removeDraft(postCollection)
-const transformedPosts = transformPostCollectionToPosts(publishedPosts)
-const allTags = getAllTags(transformedPosts)
-
+const tags = getTagCounts(await getSitePosts());
 ---
-<TagList tags={allTags} />
 
-<style>
-</style>
+<PageShell title="Pick a trail" headerNav="always" navLinks={linksWithHome} bars="flow">
+    <TagsView tags={tags} />
+</PageShell>
