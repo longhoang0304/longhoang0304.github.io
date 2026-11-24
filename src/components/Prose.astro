@@ -5,10 +5,18 @@
  *
  * Text keeps the container's width. Tables and code blocks may break out by --breakout on
  * each side (set by the layout that has room for it; 0 by default), centered on the text.
+ *
+ * Body text is serif; headings and tables use the display font, code the mono font.
+ * "paper" adds numbered sections, for research-paper style posts.
  */
+interface Props {
+    variant?: 'post' | 'paper';
+}
+
+const { variant = 'post' } = Astro.props;
 ---
 
-<div class="prose"><slot /></div>
+<div class="prose" data-variant={variant}><slot /></div>
 
 <style>
     .prose {
@@ -16,9 +24,9 @@
         display: grid;
         grid-template-columns: [wide-start] var(--wide) [text-start] minmax(0, 1fr) [text-end] var(--wide) [wide-end];
         margin-inline: calc(-1 * var(--wide));
-        font-family: var(--font-display);
-        font-size: 1.125rem;
-        line-height: 1.7;
+        font-family: var(--font-serif);
+        font-size: 1.1875rem;
+        line-height: 1.65;
         color: var(--c-text);
         overflow-wrap: break-word;
     }
@@ -27,13 +35,22 @@
 
     /* Wide content: at least the text width, at most the breakout width, centered. */
     .prose > :global(table),
-    .prose > :global(pre) {
+    .prose > :global(pre),
+    .prose > :global(figure) {
         grid-column: wide;
         justify-self: center;
         box-sizing: border-box;
         width: fit-content;
         min-width: calc(100% - 2 * var(--wide));
         max-width: 100%;
+    }
+
+    .prose :global(h2),
+    .prose :global(h3),
+    .prose :global(h4),
+    .prose :global(table),
+    .prose :global(.post-p-image) {
+        font-family: var(--font-display);
     }
 
     .prose > :global(:first-child) { margin-top: 0; }
@@ -108,13 +125,30 @@
         border-radius: 4px;
     }
 
-    /* Code blocks keep Shiki's own colors; long lines scroll instead of wrapping. */
+    /* Code blocks use Shiki's GitHub colors, light or dark with the site theme (the dark ones
+       come as --shiki-dark variables); long lines scroll instead of wrapping. */
     .prose :global(pre) {
+        border: 1px solid var(--c-border);
         padding: 1rem 1.25rem;
         border-radius: 8px;
         overflow-x: auto;
         font-size: 0.9375rem;
         line-height: 1.6;
+    }
+
+    :global(:root[data-theme='dark']) .prose :global(.astro-code),
+    :global(:root[data-theme='dark']) .prose :global(.astro-code span) {
+        color: var(--shiki-dark) !important;
+        background-color: var(--shiki-dark-bg) !important;
+    }
+
+    /* Before the theme script runs (or without JavaScript), follow the system setting. */
+    @media (prefers-color-scheme: dark) {
+        :global(:root:not([data-theme])) .prose :global(.astro-code),
+        :global(:root:not([data-theme])) .prose :global(.astro-code span) {
+            color: var(--shiki-dark) !important;
+            background-color: var(--shiki-dark-bg) !important;
+        }
     }
 
     /* Wide tables scroll sideways on narrow screens instead of widening the page. */
@@ -150,6 +184,37 @@
         border-radius: 8px;
     }
 
+    /* A numbered figure: the image framed like a printed page, a small caption under it. */
+    .prose :global(figure) {
+        margin: 0.5em 0 1.75em;
+    }
+
+    .prose :global(figure img) {
+        display: block;
+        width: 100%;
+        border: 1px solid var(--c-border);
+    }
+
+    /* Figures come in a light and a dark rendering; show the one for the current theme.
+       Both images load lazily, and a hidden lazy image is never fetched. */
+    .prose :global(.figure-dark) { display: none; }
+    :global(:root[data-theme='dark']) .prose :global(.figure-light) { display: none; }
+    :global(:root[data-theme='dark']) .prose :global(.figure-dark) { display: block; }
+
+    @media (prefers-color-scheme: dark) {
+        :global(:root:not([data-theme])) .prose :global(.figure-light) { display: none; }
+        :global(:root:not([data-theme])) .prose :global(.figure-dark) { display: block; }
+    }
+
+    .prose :global(figcaption) {
+        margin-top: 0.75em;
+        font-family: var(--font-display);
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        color: var(--c-muted);
+        text-align: center;
+    }
+
     /* Older posts wrap an image and its caption in <div class="post-p-image">. */
     .prose :global(.post-p-image) {
         margin: 0 0 1.25em;
@@ -159,4 +224,39 @@
     }
 
     .prose :global(.post-p-image p) { margin: 0.5em 0 0; }
+
+    /* ---- Paper: numbered sections ---- */
+    .prose[data-variant='paper'] {
+        counter-reset: section appendix;
+    }
+
+    .prose[data-variant='paper'] :global(h2) {
+        counter-increment: section;
+        counter-reset: subsection;
+    }
+
+    .prose[data-variant='paper'] :global(h3) {
+        counter-increment: subsection;
+    }
+
+    .prose[data-variant='paper'] :global(h2::before),
+    .prose[data-variant='paper'] :global(h3::before) {
+        margin-right: 0.5em;
+        color: var(--c-accent);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .prose[data-variant='paper'] :global(h2::before) { content: counter(section) '.'; }
+    .prose[data-variant='paper'] :global(h3::before) { content: counter(section) '.' counter(subsection); }
+
+    /* Appendices ("## Appendix A: …") are lettered: their own heading already says the letter,
+       and the sections inside them are A.1, A.2, … */
+    .prose[data-variant='paper'] :global(h2[id^='appendix']) {
+        counter-increment: appendix;
+        counter-reset: subsection;
+    }
+
+    .prose[data-variant='paper'] :global(h2[id^='appendix']::before) { content: none; }
+    .prose[data-variant='paper'] :global(h2[id^='appendix'] ~ h3::before) { content: counter(appendix, upper-alpha) '.' counter(subsection); }
+
 </style>

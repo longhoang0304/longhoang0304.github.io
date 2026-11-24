@@ -1,0 +1,73 @@
+---
+/**
+ * A paper-style summary box: a small "Abstract" label, the summary, and an optional
+ * keywords line linking to each keyword's page.
+ */
+interface Props {
+    label?: string;
+    keywords?: { label: string; href: string }[];
+}
+
+const { label = 'Abstract', keywords = [] } = Astro.props;
+---
+
+<section class="abstract" aria-label={label}>
+    <p class="label">{label}</p>
+    <p class="text"><slot /></p>
+    {keywords.length > 0 && (
+            <p class="keywords">
+                <span class="keywords-label">Keywords</span>
+                {keywords.map((k, i) => (
+                        <>{i > 0 && <span class="dot" aria-hidden="true">·</span>}<a href={k.href} class="keyword">{k.label}</a></>
+                ))}
+            </p>
+    )}
+</section>
+
+<style>
+    .abstract {
+        padding: 1.25rem 1.5rem;
+        border: 1px solid var(--c-border);
+        border-radius: 8px;
+        text-align: left;
+    }
+
+    .label,
+    .keywords-label {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--c-muted);
+    }
+
+    .text {
+        margin: 0.5rem 0 0;
+        font-family: var(--font-serif);
+        font-size: 1.0625rem;
+        line-height: 1.6;
+        color: var(--c-text);
+    }
+
+    .keywords {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0 0.5rem;
+        margin: 1rem 0 0;
+        font-size: 0.875rem;
+    }
+
+    .keywords-label {
+        margin-right: 0.25rem;
+    }
+
+    .dot {
+        color: var(--c-bracket);
+    }
+
+    .keyword {
+        color: var(--c-muted);
+    }
+</style>

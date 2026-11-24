@@ -6,6 +6,8 @@ import type { Category, Post } from './types';
 export interface SitePost extends Post {
     tags: string[];
     draft: boolean;
+    type: 'post' | 'paper';
+    abstract?: string;
 }
 
 export type PostCollection = 'rants' | 'projects' | 'research';
@@ -38,6 +40,8 @@ export function toSitePost(collection: PostCollection, { data }: PostEntry): Sit
         description: data.description,
         tags: data.tags,
         draft: data.draft,
+        type: data.type,
+        abstract: data.abstract,
     };
 }
 

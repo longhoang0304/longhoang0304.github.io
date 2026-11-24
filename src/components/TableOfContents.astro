@@ -5,17 +5,20 @@
  */
 interface Props {
     title?: string;
-    items: { href: string; text: string }[];
+    /** `appendix` entries keep their own "Appendix A" wording and take no number. */
+    items: { href: string; text: string; appendix?: boolean }[];
+    /** Number the entries 1., 2., … to match numbered section headings. */
+    numbered?: boolean;
 }
 
-const { title = 'On this page', items } = Astro.props;
+const { title = 'On this page', items, numbered = false } = Astro.props;
 ---
 
 <nav class="toc" aria-label={title} data-toc>
     <p class="title">{title}</p>
-    <ol class="list">
+    <ol class="list" data-numbered={numbered || undefined}>
         {items.map((item) => (
-                <li><a href={item.href} class="link">{item.text}</a></li>
+                <li><a href={item.href} class="link" data-appendix={item.appendix || undefined}>{item.text}</a></li>
         ))}
     </ol>
 </nav>
@@ -48,6 +51,23 @@ const { title = 'On this page', items } = Astro.props;
         border-left: 1px solid transparent;
         color: var(--c-muted);
         transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .list[data-numbered] {
+        counter-reset: entry;
+    }
+
+    .list[data-numbered] .link::before {
+        counter-increment: entry;
+        content: counter(entry) '.';
+        display: inline-block;
+        min-width: 2.5em;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .list[data-numbered] .link[data-appendix]::before {
+        content: none;
+        counter-increment: none;
     }
 
     .link[aria-current='true'] {

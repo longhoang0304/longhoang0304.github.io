@@ -1,0 +1,52 @@
+---
+/**
+ * Back to top, the theme toggle and jump to bottom, floating in the bottom-right corner of a long
+ * page once its header has scrolled away (features/scroll-helpers.ts shows and hides it).
+ */
+import IconButton from '../elements/IconButton.astro';
+import ThemeToggle from '../elements/ThemeToggle.astro';
+---
+
+<div class="tools" data-float-tools>
+    <IconButton label="Back to top" data-scroll-to="top">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"></path><path d="m6 11 6-6 6 6"></path></svg>
+    </IconButton>
+    <ThemeToggle />
+    <IconButton label="Jump to the end" data-scroll-to="bottom">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="m6 13 6 6 6-6"></path></svg>
+    </IconButton>
+</div>
+
+<style>
+    .tools {
+        position: fixed;
+        right: var(--edge-x);
+        bottom: var(--edge-y);
+        z-index: 12;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+    }
+
+    .tools[data-visible] {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .tools,
+        .tools[data-visible] { transition: none; transform: none; }
+    }
+</style>
+
+<script>
+    import { initScrollHelpers } from '../features/scroll-helpers';
+
+    initScrollHelpers();
+</script>
