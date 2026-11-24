@@ -10,6 +10,6 @@ const posts = await getCategoryPosts('rant');
 const { heading } = categories.rant;
 ---
 
-<PageShell title={`Rants · ${SITE.title}`} headerNav="always" navLinks={linksWithHome}>
+<PageShell title={`Rants · ${SITE.title}`} headerNav="always" navLinks={linksWithHome} bars="flow">
     <PostListView lead={heading.lead} accent={heading.accent} posts={posts} />
 </PageShell>

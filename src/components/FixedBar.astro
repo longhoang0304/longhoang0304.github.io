@@ -2,6 +2,7 @@
 /**
  * A bar fixed to the top or bottom edge, holding small uppercase text and controls.
  * It fades out while the page scrolls ([data-scrolling], set by features/scroll-fade.ts).
+ * When the shell puts the bars in the page flow (data-bars="flow"), it scrolls with the page instead.
  */
 interface Props {
     edge: 'top' | 'bottom';
@@ -38,7 +39,11 @@ const Tag = edge === 'top' ? 'header' : 'footer';
     .bar[data-edge='top'] { top: 0; }
     .bar[data-edge='bottom'] { bottom: 0; }
 
-    :global(:root[data-scrolling]) .bar {
+    :global(.site[data-bars='flow']) .bar {
+        position: static;
+    }
+
+    :global(:root[data-scrolling] .site[data-bars='pinned']) .bar {
         opacity: 0;
         pointer-events: none;
     }

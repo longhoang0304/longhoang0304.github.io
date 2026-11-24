@@ -25,9 +25,11 @@ interface Props {
     headerNav?: 'auto' | 'always';
     /** Header nav links; defaults to the site links from site-info.ts. */
     navLinks?: NavLink[];
+    /** "pinned": header and footer stay on screen. "flow": they scroll away with the page (long reads). */
+    bars?: 'pinned' | 'flow';
 }
 
-const { title = SITE.title, description = SITE.desc, headerNav = 'auto', navLinks = links } = Astro.props;
+const { title = SITE.title, description = SITE.desc, headerNav = 'auto', navLinks = links, bars = 'pinned' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -48,7 +50,7 @@ const year = new Date().getFullYear();
     />
 </head>
 <body>
-    <div class="site">
+    <div class="site" data-bars={bars}>
         <HeaderView location={location} timeZone={timeZone} links={navLinks} alwaysShowNav={headerNav === 'always'} />
 
         <main>
@@ -79,10 +81,12 @@ const year = new Date().getFullYear();
 
         /* Page gutters; sections pad by --bar-space so the fixed header/footer never cover them. */
         --edge-x: 2.5rem;
-        --edge-y: 2rem;
+        --edge-y: 1.25rem;
         --bar-space: calc(44px + 2 * var(--edge-y) + 1rem);
         /* Header is taller where its nav wraps to a second row (see HeaderView). */
         --header-space: var(--bar-space);
+        /* Full-screen sections fill the viewport; in the page flow they just take their content's height. */
+        --screen-height: 100vh;
 
         display: block;
         background: var(--c-bg);
@@ -96,10 +100,30 @@ const year = new Date().getFullYear();
         }
     }
 
+    @supports (height: 100dvh) {
+        .site { --screen-height: 100dvh; }
+    }
+
+    /* Bars in the page flow take their own space, so content needs no room kept for them;
+       main grows so the footer still sits at the bottom of a short page. */
+    .site[data-bars='flow'] {
+        --header-space: 0px;
+        --bar-space: 0px;
+        --screen-height: auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    .site[data-bars='flow'] > main {
+        flex: 1;
+    }
+
     @media (max-width: 480px) {
         .site {
             --edge-x: 1.25rem;
-            --edge-y: 1.25rem;
+            --edge-y: 0.75rem;
         }
     }
 </style>

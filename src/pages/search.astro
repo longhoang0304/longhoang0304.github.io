@@ -9,7 +9,7 @@ import SearchView from '@views/SearchView.astro';
 const posts = await getSitePosts();
 ---
 
-<PageShell title={`Search · ${SITE.title}`} headerNav="always" navLinks={linksWithHome}>
+<PageShell title={`Search · ${SITE.title}`} headerNav="always" navLinks={linksWithHome} bars="flow">
     <SearchView posts={posts} />
 </PageShell>
 
