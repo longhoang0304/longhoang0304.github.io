@@ -1,19 +1,26 @@
 ---
 /**
- * A line of bracketed details: [11 Oct 2026][Rant]. Dates (with a datetime) are re-formatted
+ * A line of bracketed details: [11 Oct 2026] - [Rant]. Dates (with a datetime) are re-formatted
  * for the visitor's locale by features/local-dates.ts.
  */
 interface Props {
     items: { text: string; datetime?: string }[];
     /** Center the items, including any that wrap onto a second line. */
     centered?: boolean;
+    /** Shown between the items: [11 Oct 2026] - [Research]. */
+    separator?: string;
 }
 
-const { items, centered = false } = Astro.props;
+const { items, centered = false, separator } = Astro.props;
 ---
 
 <p class="meta" data-centered={centered || undefined}>
-    {items.map((m) => (m.datetime ? <span>[<time datetime={m.datetime} data-local-date>{m.text}</time>]</span> : <span>[{m.text}]</span>))}
+    {items.map((m, i) => (
+        <>
+            {separator && i > 0 && <span class="separator" aria-hidden="true">{separator}</span>}
+            {m.datetime ? <span>[<time datetime={m.datetime} data-local-date>{m.text}</time>]</span> : <span>[{m.text}]</span>}
+        </>
+    ))}
 </p>
 
 <style>
@@ -24,6 +31,10 @@ const { items, centered = false } = Astro.props;
         font-size: 0.875rem;
         color: var(--c-muted);
         font-variant-numeric: tabular-nums;
+    }
+
+    .separator {
+        padding: 0 0.5em;
     }
 
     .meta[data-centered] {

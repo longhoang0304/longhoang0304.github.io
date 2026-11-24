@@ -28,26 +28,28 @@ const { post, minutes, sections, neighbours } = Astro.props;
 const paper = post.type === 'paper';
 const { meta, summary, section } = toPostHeader(post);
 const nextReads = toNeighbourItems(neighbours);
+// The abstract box falls back to the description, so a paper without its own abstract doesn't repeat it here.
+const lede = paper && !post.abstract ? undefined : summary;
 // A contents list only helps once there's something to skip between.
 const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, text: s.text, appendix: s.slug.startsWith('appendix') })) : [];
 ---
 
 <div class="layout">
     <article class="post" aria-labelledby="post-title">
-        <header class="head">
+        <header class="head" data-paper={paper || undefined}>
             <BracketLink href={section.href}>← {section.name}</BracketLink>
             <div class="title" data-paper={paper || undefined}>
-                <MetaLine items={[...meta, { text: `${minutes} min read` }]} centered={paper} />
+                <MetaLine items={meta} separator="-" centered={paper} />
                 <Heading as="h1" id="post-title">{post.title}</Heading>
-                {paper
-                    ? (post.abstract ?? summary) && <Abstract keywords={post.tags.map((tag) => ({ label: tag, href: `/tag/${tag}` }))}>{post.abstract ?? summary}</Abstract>
-                    : summary && <Text>{summary}</Text>}
+                {lede && <Text>{lede}</Text>}
+                <Text>{minutes} min read</Text>
+                {paper && (post.abstract ?? summary) && <Abstract keywords={post.tags.map((tag) => ({ label: tag, href: `/tag/${tag}` }))}>{post.abstract ?? summary}</Abstract>}
             </div>
         </header>
 
         <Prose variant={post.type}><slot /></Prose>
 
-        <footer class="foot">
+        <footer class="foot" data-paper={paper || undefined}>
             {/* A paper lists its tags as keywords up top instead. */}
             {!(paper && (post.abstract ?? summary)) && post.tags.length > 0 && (
                     <nav aria-label="Tags" class="tags">
@@ -116,6 +118,12 @@ const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, te
         flex-direction: column;
         align-items: flex-start;
         gap: 1.5rem;
+    }
+
+    /* Paper: the ways back and the license line up with the centered title. */
+    .head[data-paper],
+    .foot[data-paper] {
+        align-items: center;
     }
 
     .title {
