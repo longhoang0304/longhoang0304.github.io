@@ -25,7 +25,7 @@ export const LINKS = [
   },
   {
     iconName: "brand-linkedin",
-    href: "https://linkedin.com/in/notlonghoang/",
+    href: "https://www.linkedin.com/in/notlonghoang/",
     title: "Linkedin",
     newTab: true,
   },

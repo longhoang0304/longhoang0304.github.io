@@ -13,9 +13,9 @@ export const links: NavLink[] = [
 /** For pages without the landing (whose own nav is the way around): lead with Home. */
 export const linksWithHome: NavLink[] = [{ label: 'Home', href: '/' }, ...links];
 
-export const githubUrl = 'https://github.com/';
-export const linkedinUrl = 'https://www.linkedin.com/';
-export const email = 'hello@example.com';
+export const githubUrl = 'https://github.com/longhoang0304';
+export const linkedinUrl = 'https://www.linkedin.com/in/notlonghoang/';
+export const email = 'hey@longhoang.me';
 
 export const categories: Record<Category, CategoryInfo> = {
     rant: { label: 'Rant', href: '/rants', heading: { lead: 'Stray', accent: 'thoughts' } },
