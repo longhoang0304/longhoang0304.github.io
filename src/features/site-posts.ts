@@ -7,9 +7,11 @@ import type { Category, Post } from './types';
 export interface SitePost extends Post {
     description?: string;
     tags: string[];
+    draft: boolean;
 }
 
-type PostCollection = 'rants' | 'projects' | 'research';
+export type PostCollection = 'rants' | 'projects' | 'research';
+export type PostEntry = CollectionEntry<PostCollection>;
 
 const isoDate = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -20,24 +22,31 @@ const sources: Record<PostCollection, { category: Category; path: string }> = {
     research: { category: 'research', path: '/research' },
 };
 
-async function load(collection: PostCollection): Promise<SitePost[]> {
-    const { category, path } = sources[collection];
-    const all: CollectionEntry<PostCollection>[] = await getCollection(collection);
-    // Matches the post routes: drafts are previewable in dev, never built for production.
-    const visible = import.meta.env.DEV ? all : removeDraft(all);
+/** Drafts are previewable in dev, never built for production. */
+export async function getVisibleEntries(collection: PostCollection): Promise<PostEntry[]> {
+    const all: PostEntry[] = await getCollection(collection);
+    return import.meta.env.DEV ? all : removeDraft(all);
+}
 
-    return visible.map(({ data }) => ({
+/** One collection entry in the site's Post shape. */
+export function toSitePost(collection: PostCollection, { data }: PostEntry): SitePost {
+    const { category, path } = sources[collection];
+    return {
         date: isoDate(data.publishedDateTime),
         category,
         title: data.title,
         href: `${path}/${data.postId}-${data.postSlug}`,
         description: data.description,
         tags: data.tags,
-    }));
+        draft: data.draft,
+    };
 }
 
 /** Published rants, projects and research, newest first. */
 export async function getSitePosts(): Promise<SitePost[]> {
-    const posts = (await Promise.all((Object.keys(sources) as PostCollection[]).map(load))).flat();
-    return posts.sort((a, b) => b.date.localeCompare(a.date));
+    const collections = Object.keys(sources) as PostCollection[];
+    const posts = await Promise.all(
+        collections.map(async (collection) => (await getVisibleEntries(collection)).map((entry) => toSitePost(collection, entry))),
+    );
+    return posts.flat().sort((a, b) => b.date.localeCompare(a.date));
 }

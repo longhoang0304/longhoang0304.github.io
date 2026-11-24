@@ -18,7 +18,7 @@ export const linkedinUrl = 'https://www.linkedin.com/';
 export const email = 'hello@example.com';
 
 export const categories: Record<Category, CategoryInfo> = {
-    rant: { label: 'Rant', href: '/rants' },
-    project: { label: 'Project', href: '/projects' },
-    research: { label: 'Research', href: '/research' },
+    rant: { label: 'Rant', href: '/rants', heading: { lead: 'Stray', accent: 'thoughts' } },
+    project: { label: 'Project', href: '/projects', heading: { lead: 'Side', accent: 'quests' } },
+    research: { label: 'Research', href: '/research', heading: { lead: 'Rabbit', accent: 'holes' } },
 };

@@ -6,8 +6,12 @@ export interface NavLink {
 export type Category = 'rant' | 'project' | 'research';
 
 export interface CategoryInfo {
+    /** Singular, for row meta: [Rant]. */
     label: string;
+    /** The section's list page. */
     href: string;
+    /** The section's heading, second word in the accent style: "Stray" "thoughts". */
+    heading: { lead: string; accent: string };
 }
 
 export interface Post {

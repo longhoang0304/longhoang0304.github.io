@@ -1,21 +1,21 @@
 ---
-import { getCollection } from "astro:content";
-import { transformPostCollectionToPosts, removeDraft } from "@utils/posts";
-import PostLayout from "@legacy/PostLayout.astro";
-import type { Post } from "@types";
+/** One post in the new design. Drafts are previewable with `astro dev` but never built for production. */
+import { render } from 'astro:content';
+import { SITE } from '@config';
+import { getPostPages } from '@features/post-pages';
+import { linksWithHome } from '@features/site-info';
+import type { PostEntry, SitePost } from '@features/site-posts';
+import PageShell from '@shell/PageShell.astro';
+import PostView from '@views/PostView.astro';
 
-// Drafts are previewable with `astro dev` but never built for production.
-export async function getStaticPaths() {
-  const rantCollection = await getCollection("rants")
-  const visible = import.meta.env.DEV ? rantCollection : removeDraft(rantCollection)
-  const posts = transformPostCollectionToPosts(visible)
-  return posts.map(post => ({
-    params: { id: post.postId, slug: post.postSlug },
-    props: { post },
-  }))
-}
+export const getStaticPaths = () => getPostPages('rants');
 
-const { post } = Astro.props as { post: Post };
+const { entry, post } = Astro.props as { entry: PostEntry; post: SitePost };
+const { Content } = await render(entry);
 ---
 
-<PostLayout post={post} />
+<PageShell title={`${post.title} · ${SITE.title}`} description={post.description} headerNav="always" navLinks={linksWithHome}>
+    <PostView post={post}>
+        <Content />
+    </PostView>
+</PageShell>

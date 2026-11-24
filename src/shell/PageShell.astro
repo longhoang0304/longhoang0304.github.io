@@ -19,13 +19,15 @@ import ThemeInit from './ThemeInit.astro';
 
 interface Props {
     title?: string;
+    /** For search results and link previews. */
+    description?: string;
     /** "auto": header nav appears after scrolling past the landing. "always": shown from the start. */
     headerNav?: 'auto' | 'always';
-    /** Header nav links; defaults to the site links from content.ts. */
+    /** Header nav links; defaults to the site links from site-info.ts. */
     navLinks?: NavLink[];
 }
 
-const { title = SITE.title, headerNav = 'auto', navLinks = links } = Astro.props;
+const { title = SITE.title, description = SITE.desc, headerNav = 'auto', navLinks = links } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -34,6 +36,7 @@ const year = new Date().getFullYear();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <meta name="description" content={description} />
 
     <ThemeInit />
 
@@ -41,7 +44,7 @@ const year = new Date().getFullYear();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Bricolage+Grotesque:opsz,wght@12..96,400&family=JetBrains+Mono:wght@400;500&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
 </head>
 <body>
