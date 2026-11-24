@@ -1,0 +1,27 @@
+---
+import Accent from '../elements/Accent.astro';
+import Caret from '../elements/Caret.astro';
+import Heading from '../elements/Heading.astro';
+import Text from '../elements/Text.astro';
+---
+
+<section class="about" aria-labelledby="about-heading">
+    <Heading as="h1" size="hero" id="about-heading">Hi, I'm <Accent>Long</Accent><Caret /></Heading>
+    <Text>Welcome to my corner of the internet: stray thoughts, side quests and the odd rabbit hole.</Text>
+</section>
+
+<style>
+    /* Laid out like the landing: hero heading centered on the screen. */
+    .about {
+        min-height: 100vh;
+        min-height: 100dvh;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        padding: var(--header-space) var(--edge-x) var(--bar-space);
+        text-align: center;
+    }
+</style>
