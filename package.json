@@ -11,8 +11,8 @@
 	},
 	"dependencies": {
 		"@astrojs/rss": "^4.0.19",
-		"@astrojs/sitemap": "^3.7.4",
-		"astro": "^7.4.0",
+		"@astrojs/sitemap": "^3.7.6",
+		"astro": "^7.4.13",
 		"dayjs": "^1.11.23",
 		"fuse.js": "^7.5.0"
 	},
