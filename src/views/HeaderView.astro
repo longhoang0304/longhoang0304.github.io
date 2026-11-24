@@ -2,6 +2,7 @@
 import CornerBar from '../components/CornerBar.astro';
 import BracketLink from '../elements/BracketLink.astro';
 import LocalClock from '../elements/LocalClock.astro';
+import SearchButton from '../elements/SearchButton.astro';
 import ThemeToggle from '../elements/ThemeToggle.astro';
 import type { NavLink } from '../lib/types';
 
@@ -26,6 +27,7 @@ const { location, timeZone, links, alwaysShowNav = false } = Astro.props;
     </nav>
     <div class="right">
         <LocalClock timeZone={timeZone} />
+        <SearchButton />
         <ThemeToggle />
     </div>
 </CornerBar>

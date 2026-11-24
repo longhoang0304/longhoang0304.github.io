@@ -1,0 +1,47 @@
+---
+/** Round magnifier link to the search page, sized and styled like the theme toggle. */
+---
+
+<a href="/search" class="search-button" aria-label="Search" title="Search (/)" aria-keyshortcuts="/">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
+</a>
+
+<style>
+    .search-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--c-border);
+        border-radius: 999px;
+        color: var(--c-muted);
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .search-button:hover {
+        color: var(--c-accent);
+        border-color: var(--c-accent);
+    }
+
+    .search-button:focus-visible {
+        outline: 2px solid var(--c-accent);
+        outline-offset: 3px;
+        border-radius: 999px;
+    }
+
+    .search-button svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .search-button { transition: none; }
+    }
+</style>
