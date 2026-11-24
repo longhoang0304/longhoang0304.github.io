@@ -1,0 +1,29 @@
+%% Figure 1 of the Blossom post: the layers and the one-way flow.
+%% Render with `yarn diagrams`; the SVG lands in public/blog-assets/r1/.
+%% Links join whole bands, not the boxes inside them: Mermaid keeps a band's
+%% left-to-right row only while no box in it links outside the band.
+flowchart TB
+    user(["what the user asks for"])
+
+    subgraph UI["UI: draws, and reports what the user asks for"]
+        direction LR
+        pages["pages"] --> smart["smart views"] --> views["views"] --> domain["domain components"] --> components["components"] --> elements["elements"]
+    end
+
+    subgraph Business["Business: holds the rules and the state"]
+        direction LR
+        controller["controller"] --> features["features and flows"] --> viewModels["view models"] --> store["model store"]
+    end
+
+    subgraph Data["Data: the only way out"]
+        direction LR
+        repos["repos"] --> storage["storage"] --> outside[("the server, the browser")]
+    end
+
+    base["models/ and shared/: used by everything above"]
+
+    user --> UI
+    UI -- "actions" --> Business
+    Business -- "view models" --> UI
+    Business -- "reads and writes" --> Data
+    Data ~~~ base

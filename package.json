@@ -7,6 +7,7 @@
 		"start": "astro dev",
 		"build": "node --test src/layers.test.ts && astro build",
 		"test": "node --test src/layers.test.ts",
+		"diagrams": "node diagrams/render.mjs",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
