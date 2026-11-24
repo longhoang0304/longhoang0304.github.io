@@ -23,7 +23,7 @@ export interface Post {
     description?: string;
 }
 
-export type IconName = 'github' | 'linkedin' | 'mail' | 'cv' | 'rss';
+export type IconName = 'github' | 'linkedin' | 'mail' | 'cv' | 'tag' | 'rss';
 
 /** A link drawn as an icon only; `label` is its accessible name. */
 export interface IconLink {

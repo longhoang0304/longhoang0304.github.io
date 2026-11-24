@@ -25,6 +25,7 @@ export const socialLinks: IconLink[] = [
     { label: 'LinkedIn', href: linkedinUrl, icon: 'linkedin', external: true, me: true },
     { label: 'Email', href: `mailto:${email}`, icon: 'mail' },
     { label: 'CV', href: cvUrl, icon: 'cv', external: true },
+    { label: 'Tags', href: '/tags', icon: 'tag' },
     { label: 'RSS feed', href: rssUrl, icon: 'rss', external: true },
 ];
 
