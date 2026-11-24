@@ -3,7 +3,7 @@ postId: r1
 postSlug: blossom-front-end-architecture
 title: "Blossom: a front-end architecture"
 publishedDateTime: 2026-11-24T12:00:00Z
-draft: true
+draft: false
 type: paper
 abstract: "Front-end code tends to lose its shape as requirements pile up: rules spread through components, products branch on if-else, and it gets harder to say where a change should go. Blossom gives each kind of code one place: a UI in six layers that only draws, a business layer of plain functions that holds the rules, and repos that reach the data, with data flowing one way between them. Its rules have names, and a plain test enforces the structural ones. This paper describes the design, builds one page three ways, and discusses what the structure gives a team, what it costs, and how it scales down."
 description: Layers for the UI, plain functions for the business, one direction of flow, and a test that keeps it all in place.
