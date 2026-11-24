@@ -4,6 +4,7 @@ postSlug: blossom-front-end-architecture
 title: "Blossom: a front-end architecture"
 publishedDateTime: 2026-11-24T12:00:00Z
 draft: true
+type: paper
 description: Layers for the UI, plain functions for the business, one direction of flow, and a test that keeps it all in place.
 tags:
   - research

@@ -5,10 +5,18 @@
  *
  * Text keeps the container's width. Tables and code blocks may break out by --breakout on
  * each side (set by the layout that has room for it; 0 by default), centered on the text.
+ *
+ * Body text is serif; headings and tables use the display font, code the mono font.
+ * "paper" adds numbered sections, for research-paper style posts.
  */
+interface Props {
+    variant?: 'post' | 'paper';
+}
+
+const { variant = 'post' } = Astro.props;
 ---
 
-<div class="prose"><slot /></div>
+<div class="prose" data-variant={variant}><slot /></div>
 
 <style>
     .prose {
@@ -16,9 +24,9 @@
         display: grid;
         grid-template-columns: [wide-start] var(--wide) [text-start] minmax(0, 1fr) [text-end] var(--wide) [wide-end];
         margin-inline: calc(-1 * var(--wide));
-        font-family: var(--font-display);
-        font-size: 1.125rem;
-        line-height: 1.7;
+        font-family: var(--font-serif);
+        font-size: 1.1875rem;
+        line-height: 1.65;
         color: var(--c-text);
         overflow-wrap: break-word;
     }
@@ -34,6 +42,14 @@
         width: fit-content;
         min-width: calc(100% - 2 * var(--wide));
         max-width: 100%;
+    }
+
+    .prose :global(h2),
+    .prose :global(h3),
+    .prose :global(h4),
+    .prose :global(table),
+    .prose :global(.post-p-image) {
+        font-family: var(--font-display);
     }
 
     .prose > :global(:first-child) { margin-top: 0; }
@@ -159,4 +175,29 @@
     }
 
     .prose :global(.post-p-image p) { margin: 0.5em 0 0; }
+
+    /* ---- Paper: numbered sections ---- */
+    .prose[data-variant='paper'] {
+        counter-reset: section;
+    }
+
+    .prose[data-variant='paper'] :global(h2) {
+        counter-increment: section;
+        counter-reset: subsection;
+    }
+
+    .prose[data-variant='paper'] :global(h3) {
+        counter-increment: subsection;
+    }
+
+    .prose[data-variant='paper'] :global(h2::before),
+    .prose[data-variant='paper'] :global(h3::before) {
+        margin-right: 0.5em;
+        color: var(--c-accent);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .prose[data-variant='paper'] :global(h2::before) { content: counter(section) '.'; }
+    .prose[data-variant='paper'] :global(h3::before) { content: counter(section) '.' counter(subsection); }
+
 </style>

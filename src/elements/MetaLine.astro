@@ -5,12 +5,14 @@
  */
 interface Props {
     items: { text: string; datetime?: string }[];
+    /** Center the items, including any that wrap onto a second line. */
+    centered?: boolean;
 }
 
-const { items } = Astro.props;
+const { items, centered = false } = Astro.props;
 ---
 
-<p class="meta">
+<p class="meta" data-centered={centered || undefined}>
     {items.map((m) => (m.datetime ? <span>[<time datetime={m.datetime} data-local-date>{m.text}</time>]</span> : <span>[{m.text}]</span>))}
 </p>
 
@@ -22,5 +24,9 @@ const { items } = Astro.props;
         font-size: 0.875rem;
         color: var(--c-muted);
         font-variant-numeric: tabular-nums;
+    }
+
+    .meta[data-centered] {
+        justify-content: center;
     }
 </style>
