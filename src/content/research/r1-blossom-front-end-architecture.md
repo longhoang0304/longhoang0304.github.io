@@ -64,21 +64,14 @@ The sap rises one way, from the roots to the petals, as data does from the repos
 
 ## Blossom at a glance
 
-This is the whole architecture on one screen. The rest of the post is the detail.
+Figure 1 shows the whole architecture on one screen. The rest of the paper is the detail.
 
-```text
-what the user asks for                         what the screen draws
-                        │                                               ▲
-UI         pages · smart views · views · domain components · components · elements
-                        │ actions                                       │ view models
-                        ▼                                               │
-Business   controller ──► features and flows ──► view models ──► model store
-                        │
-                        ▼
-Data       repos ──► storage ──► the server, the browser
-
-Base       models/ and shared/, used by everything above
-```
+<figure>
+  <a href="/blog-assets/r1/r1-figure-1.svg">
+    <img src="/blog-assets/r1/r1-figure-1.svg" alt="Three bands stacked top to bottom. UI: pages, smart views, views, domain components, components and elements. Business: controller, features and flows, view models and the model store. Data: repos, storage, and the server and browser. Actions go down from the UI to the business, view models come back up, and the business reads and writes data through repos. Models and shared code sit below everything." width="1096" height="929" loading="lazy" />
+  </a>
+  <figcaption><strong>Figure 1.</strong> Blossom at a glance. What the user asks for goes down as actions; the business turns it into view models that come back up to the screen. Only the data layer reaches the outside.</figcaption>
+</figure>
 
 Data moves one way. An action goes down to the controller, the controller runs features that read and write through repos, and the result comes back up to the screen as view models, through the model store. Imports only go downward.
 
