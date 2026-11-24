@@ -38,7 +38,7 @@ const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, te
                 <MetaLine items={[...meta, { text: `${minutes} min read` }]} centered={paper} />
                 <Heading as="h1" id="post-title">{post.title}</Heading>
                 {paper
-                    ? summary && <Abstract keywords={post.tags.map((tag) => ({ label: tag, href: `/tag/${tag}` }))}>{summary}</Abstract>
+                    ? (post.abstract ?? summary) && <Abstract keywords={post.tags.map((tag) => ({ label: tag, href: `/tag/${tag}` }))}>{post.abstract ?? summary}</Abstract>
                     : summary && <Text>{summary}</Text>}
             </div>
         </header>
@@ -47,7 +47,7 @@ const toc = sections.length >= 3 ? sections.map((s) => ({ href: `#${s.slug}`, te
 
         <footer class="foot">
             {/* A paper lists its tags as keywords up top instead. */}
-            {!(paper && summary) && post.tags.length > 0 && (
+            {!(paper && (post.abstract ?? summary)) && post.tags.length > 0 && (
                     <nav aria-label="Tags" class="tags">
                         {post.tags.map((tag) => <BracketLink href={`/tag/${tag}`}>#{tag}</BracketLink>)}
                     </nav>

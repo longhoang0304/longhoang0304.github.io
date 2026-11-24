@@ -7,6 +7,7 @@ export interface SitePost extends Post {
     tags: string[];
     draft: boolean;
     type: 'post' | 'paper';
+    abstract?: string;
 }
 
 export type PostCollection = 'rants' | 'projects' | 'research';
@@ -40,6 +41,7 @@ export function toSitePost(collection: PostCollection, { data }: PostEntry): Sit
         tags: data.tags,
         draft: data.draft,
         type: data.type,
+        abstract: data.abstract,
     };
 }
 

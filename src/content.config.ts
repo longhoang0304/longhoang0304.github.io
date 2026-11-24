@@ -11,6 +11,8 @@ export const postSchema = z
     tags: z.array(z.string()).default(["others"]),
     draft: z.boolean().default(false),
     description: z.string().optional(),
+    // A paper's longer summary for its Abstract box; lists and previews keep the short description.
+    abstract: z.string().optional(),
     // The kind of content: a "post" reads as an article; a "paper" gets the research-paper
     // look (abstract, keywords, numbered sections, serif text).
     type: z.enum(["post", "paper"]).default("post"),
